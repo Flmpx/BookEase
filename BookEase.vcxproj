@@ -132,8 +132,9 @@
     <ClCompile Include="Lists\BookList\booklist.cpp" />
     <ClCompile Include="Lists\UserList\userlist.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="copy.cpp" />
     <ClCompile Include="menu\LoginMenu\loginmenu.cpp" />
-    <ClCompile Include="menu\menulists.cpp" />
+    <ClCompile Include="menu\RevealMenu\revealmenu.cpp" />
     <ClCompile Include="saveandload\saveandload.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +149,7 @@
     <ClInclude Include="Lists\BookList\booklist.h" />
     <ClInclude Include="Lists\UserList\userlist.h" />
     <ClInclude Include="menu\LoginMenu\loginmenu.h" />
-    <ClInclude Include="menu\menulists.h" />
+    <ClInclude Include="menu\RevealMenu\revealmenu.h" />
     <ClInclude Include="saveandload\saveandload.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

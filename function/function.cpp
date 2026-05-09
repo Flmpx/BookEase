@@ -1,4 +1,6 @@
 ﻿#include "function.h"
+#include <easyx.h>
+
 
 InfoOfReturn linkBookForUser(Book* book, UserList* plist) {
 	//一本书一定有售卖者
@@ -19,3 +21,5 @@ InfoOfReturn linkBookForUser(Book* book, UserList* plist) {
 	book->reserver = reserverInfo;
 	return Success;
 }
+
+//void printBookInfo

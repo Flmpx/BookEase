@@ -24,9 +24,6 @@
     <ClCompile Include="Lists\UserList\userlist.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="menu\menulists.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -37,6 +34,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="menu\LoginMenu\loginmenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="copy.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="menu\RevealMenu\revealmenu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,9 +56,6 @@
     <ClInclude Include="Lists\UserList\userlist.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="menu\menulists.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="saveandload\saveandload.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -63,6 +63,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="menu\LoginMenu\loginmenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\RevealMenu\revealmenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
