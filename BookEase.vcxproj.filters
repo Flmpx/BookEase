@@ -18,8 +18,52 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Lists\BookList\booklist.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Lists\UserList\userlist.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="menu\menulists.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="saveandload\saveandload.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="function\function.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="menu\LoginMenu\loginmenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Lists\BookList\booklist.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Lists\UserList\userlist.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\menulists.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="saveandload\saveandload.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="function\function.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\LoginMenu\loginmenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

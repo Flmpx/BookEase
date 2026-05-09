@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -103,6 +103,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)easyx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,13 +127,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="base.cpp" />
+    <ClCompile Include="function\function.cpp" />
+    <ClCompile Include="Lists\BookList\booklist.cpp" />
+    <ClCompile Include="Lists\UserList\userlist.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu\LoginMenu\loginmenu.cpp" />
+    <ClCompile Include="menu\menulists.cpp" />
+    <ClCompile Include="saveandload\saveandload.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
       <SubType>
       </SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base.h" />
+    <ClInclude Include="function\function.h" />
+    <ClInclude Include="Lists\BookList\booklist.h" />
+    <ClInclude Include="Lists\UserList\userlist.h" />
+    <ClInclude Include="menu\LoginMenu\loginmenu.h" />
+    <ClInclude Include="menu\menulists.h" />
+    <ClInclude Include="saveandload\saveandload.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
