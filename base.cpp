@@ -1,4 +1,7 @@
 ﻿#include "base.h"
+char BookStatusStr[4][101] = {"在售卖", "已预约", "已售卖", "已下架"};
+char BookConditionStr[4][101] = {"几乎全新", "有点破损", "还可以用", "可以接受"};
+
 #include "Lists/BookList/booklist.h"
 #include "Lists/UserList/userlist.h"
 #include <string.h>

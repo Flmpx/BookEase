@@ -3,7 +3,8 @@
 #include <stdbool.h>
 #include <time.h>
 #define EPS 1e-9
-
+extern char BookStatusStr[4][101];
+extern char BookConditionStr[4][101];
 //无效时间, 虽然-1也是一个时间点, 但不合理
 #define InValid_Time -1ll	
 
@@ -69,17 +70,17 @@ typedef enum {
 
 typedef enum {
 	Invalid_BookCondition = -1,				//无效的书籍新旧条件
-	NEW = 1,								//几乎全新
-	LIKE_NEW = 2,							//有点破损或书上笔记有点多
-	GOOD = 3,								//还能用
+	NEW = 0,								//几乎全新
+	LIKE_NEW = 1,							//有点破损或书上笔记有点多
+	GOOD = 2,								//还能用
 	ACCEPTABLE = 4							//可接受
 } BookCondition;
 
 typedef enum {
-	ON_SALE = 1,							//在售
-	RESERVED = 2,							//已预约
-	SOLD = 0,								//已售
-	REMOVED = -1,							//已下架
+	ON_SALE = 0,							//在售
+	RESERVED = 1,							//已预约
+	SOLD = 2,								//已售
+	REMOVED = 3,							//已下架
 } BookStatus;
 
 typedef struct UserInfoCmpCondition {
