@@ -54,7 +54,8 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 		Sleep(10);
 		bool hover_reg = false, hover_log = false;
 
-		peekmessage(&msg, EX_MOUSE);
+		//peekmessage(&msg, EX_MOUSE);
+		msg = getmessage();
 
 		if (msg.x >= regBlockxy[2] && msg.x <= regBlockxy[3] && msg.y >= regBlockxy[0] && msg.y <= regBlockxy[1]) {
 			hover_reg = true;

@@ -20,16 +20,19 @@ int main()
 	book.condition = NEW;
 	BookList list;
 	initBookList(&list);
-	insertBookInBookList(&list, &book);
+	for (int i = 0; i < 89; i++) {
+		insertBookInBookList(&list, &book);
+	}
 
 	int circle;
 	do {
 		circle = 1;
-
+		cleardevice();
 		int input_num = loginMenu(200, 90, 400);
 		int i;
 		char ins[2][101] = {"1", "2"};
-		revealMenu(&i, 200, 80, 2, ins, 60, 20, "返回", 30, "aaaa", 10, 60, 40, "aaaa", &list, 5, 3, 3);
+		cleardevice();
+		revealMenu(&i, 200, 80, 2, ins, 60, 20, "返回", 30, "aaaa", 10, 60, 40, "aaaa", &list, 5, 5, 5);
 
 	} while (circle);
 	

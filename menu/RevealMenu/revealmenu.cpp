@@ -48,25 +48,40 @@ static void style_book_click() {
 }
 
 
+void getRectangleBlock(const char* text, int l, int t, int w, int h) {
+	int tw = textwidth(text);
+	int th = textheight(text);
+	fillrectangle(l, t, l + w, t + h);
+	outtextxy(l + (w - tw)/2, t + (h - th)/2, text);
+}
+
+
+void getRoundRectleBlock(const char* text, int l, int t, int w, int h) {
+	int tw = textwidth(text);
+	int th = textheight(text);
+	fillroundrect(l, t, l + w, t + h, 10, 10);
+	outtextxy(l + (w - tw)/2, t + (h - th)/2, text);
+}
+
 Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selections[][101], int backW, int backH, const char* back, int instruH, const char* instruction, int grapInbcAndInsrtru, int dictionW, int dictionH, const char* booksTips, BookList* bookList, int grapInSeleAndBooks, int row, int col) {
+	
+	//t-->top, l-->left, h-->height, w-->width
+	int t, l, h, w;	//用于绘制的
+
+	//tw-->textwidth, th-->textheight
+
 	int tw, th;
-	//先显示引导信息, 引导信息不参与hover
-	int instruW = selectH;
-	tw = textwidth(instruction);
-	th = textheight(instruction);
 	//获取窗口大小
 	int screenH = getheight();
 	int screenW = getwidth();
 
-	style_instruction();	//引导信息样式
-	fillrectangle(0, backH + grapInbcAndInsrtru, instruW, backH + grapInbcAndInsrtru + instruH);
-	outtextxy((instruW - tw)/2, (backH + grapInbcAndInsrtru) + (instruH - th)/2, instruction);
+
+	
+	
 	
 
-	int startHOfSelectAndBooks = backH + grapInbcAndInsrtru + instruH;
-	//吧书籍提示信息先写出
-	th = textheight(booksTips);
-	outtextxy(selectW + grapInSeleAndBooks, (startHOfSelectAndBooks - th)/2, booksTips);
+	int startHOfSelect = backH + grapInbcAndInsrtru + instruH;
+	int startHOfBooks = backH + grapInbcAndInsrtru;
 
 	ExMessage msg = {0};
 	int click_back_flag;
@@ -83,14 +98,13 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 
 	//得到每本书的展示宽度
 	int singleBookW = (screenW - selectW - grapInSeleAndBooks)/col;
-	int singleBookH = (screenH - startHOfSelectAndBooks)/row;
+	int singleBookH = (screenH - startHOfBooks)/row;
 
 	int startBooksNum = 0;
 	BookNode* q = bookList->head;
-	int t, l, h, w;	//用于绘制的
 	
 	while (true) {
-		//Sleep(10);
+		Sleep(10);
 		click_back_flag = -1;
 		click_select_flag = -1;
 		click_diction_flag = -1;
@@ -113,8 +127,8 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		}
 		//selections检测
 
-		if (msg.x <= selectW && msg.x >= 0 && msg.y <= startHOfSelectAndBooks + selectH * selectNum && msg.y >= startHOfSelectAndBooks) {
-			hover_select_flag = (msg.y - startHOfSelectAndBooks)/selectH;
+		if (msg.x <= selectW && msg.x >= 0 && msg.y <= startHOfSelect + selectH * selectNum && msg.y >= startHOfSelect) {
+			hover_select_flag = (msg.y - startHOfSelect)/selectH;
 			if (msg.message == WM_LBUTTONDOWN) {
 				click_select_flag = hover_select_flag;
 			}
@@ -138,8 +152,8 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 
 		//books检测
 
-		if (msg.x <= screenW && msg.x >= selectW + grapInSeleAndBooks && msg.y <= screenH && msg.y >= startHOfSelectAndBooks) {
-			hover_book_flag = (msg.y - startHOfSelectAndBooks)/singleBookH + (msg.x - selectW - grapInSeleAndBooks)/singleBookW;
+		if (msg.x <= screenW && msg.x >= selectW + grapInSeleAndBooks && msg.y <= screenH && msg.y >= startHOfBooks) {
+			hover_book_flag = (msg.y - startHOfBooks)/singleBookH*col + (msg.x - selectW - grapInSeleAndBooks)/singleBookW;
 			if (msg.message == WM_LBUTTONDOWN) {
 				//防止空闲的位置
 				if (hover_book_flag + startBooksNum < bookList->size) {
@@ -149,8 +163,10 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			}
 		}
 
+		//绘制之前先清屏, 书籍的信息会变动
 		//开始绘制
 		BeginBatchDraw();
+		cleardevice();
 		
 		//绘制back键
 		style_back_button_start();
@@ -158,26 +174,48 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			if (click_back_flag == 1) style_button_dbclick();
 			else style_button_hover();
 		}
-		tw = textwidth(back);
-		th = textheight(back);
+		
 		t = 0, l = 0; h = backH; w = backW;
+		getRoundRectleBlock(back, l, t, w, h);
+
+		/*tw = textwidth(back);
+		th = textheight(back);
 		fillroundrect(l, t, l + w, t + h, 10, 10);
-		outtextxy(l + (w - tw)/2, t + (h - th) / 2 , back);
+		outtextxy(l + (w - tw)/2, t + (h - th) / 2 , back);*/
+
+		//绘制引导信息
+		style_instruction();	//引导信息样式
+
+		int instruW = selectW;
+		t = backH + grapInbcAndInsrtru;
+		l = 0; w = instruW; h = instruH;
+
+		getRectangleBlock(instruction, l, t, w, h);
+
+		/*tw = textwidth(instruction);
+		th = textheight(instruction);
+
+		fillrectangle(l, t, l + w, t + h);
+		outtextxy(l + (w - tw)/2, t + (h - th) / 2, instruction);*/
+
+
 
 		//绘制select
 		for (int i = 0; i < selectNum; i++) {
-			style_back_button_start();
+			style_button_start();
 			if (i == hover_select_flag) {
 				if (click_select_flag >= 0) style_button_dbclick();
 				else style_button_hover();
 			}
 			//块的上界
-			t = startHOfSelectAndBooks + i*selectH;
+			t = startHOfSelect + i*selectH;
 			l = 0; w = selectW; h = selectH;
-			fillrectangle(l, t, l + w, t + h);
+			
+			getRectangleBlock(selections[i], l, t, w, h);
+			/*fillrectangle(l, t, l + w, t + h);
 			tw = textwidth(selections[i]);
 			th = textwidth(selections[i]);
-			outtextxy(l + (w - tw)/2, t + (h - th) / 2, selections[i]);
+			outtextxy(l + (w - tw)/2, t + (h - th) / 2, selections[i]);*/
 		}
 
 		//绘制方向键
@@ -189,10 +227,13 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		}
 		t = screenH - dictionH;
 		l = 0; h = dictionH; w = dictionW;
-		fillrectangle(l, t, l + w, t + h);
+
+		getRectangleBlock("<<<", l, t, w, h);
+
+		/*fillrectangle(l, t, l + w, t + h);
 		tw = textwidth("<<<");
 		th = textwidth("<<<");
-		outtextxy(l + (w - tw)/2, t + (h - th) / 2, "<<<");
+		outtextxy(l + (w - tw)/2, t + (h - th) / 2, "<<<");*/
 
 		//>
 		style_button_start();
@@ -203,12 +244,30 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		t = screenH - dictionH;
 		l = selectW - dictionW;
 		h = dictionH; w = dictionW;
-		fillrectangle(l, t, l + w, t + h);
+
+		getRectangleBlock(">>>", l, t, w, h);
+
+		/*fillrectangle(l, t, l + w, t + h);
 		tw = textwidth(">>>");
 		th = textwidth(">>>");
-		outtextxy(l + (w - tw)/2, t + (h - th) / 2, ">>>");
+		outtextxy(l + (w - tw)/2, t + (h - th) / 2, ">>>");*/
 
-		//
+
+		//绘制书籍提示信息
+		style_button_start();
+		t = 0;
+		l = selectW + grapInSeleAndBooks;
+		h = startHOfBooks;
+		w = screenW - l;
+
+		getRoundRectleBlock(booksTips, l, t, w, h);
+
+		/*th = textheight(booksTips);
+		tw = textheight(booksTips);
+
+		outtextxy(selectW + grapInSeleAndBooks, (startHOfSelectAndBooks - th)/2, booksTips);*/
+
+		//绘制书籍信息
 		BookNode* p = q;
 		for (int i = 0; i < col * row && i < bookList->size - startBooksNum; i++, p = p->next) {
 			style_book_start();
@@ -216,14 +275,17 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 				if (click_book_flag >= 0) style_book_click();
 				else style_book_hover();
 			}
+
 			l = selectW + grapInSeleAndBooks + (i%col)*singleBookW;
-			t = startHOfSelectAndBooks + (i/col)*singleBookH;
+			t = startHOfBooks + (i/col)*singleBookH;
 			h = singleBookH; w = singleBookW;
 			printSimpleBookInfo(p->book, l, t, w, h);
 		}
 		settextstyle(16, 0, "宋体");
 		EndBatchDraw();
 
+
+		//进行点击后的行为
 		if (click_back_flag != -1) {
 			*res = 0;
 			return NULL;
