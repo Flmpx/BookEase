@@ -5,6 +5,7 @@
 #include "Lists/BookList/booklist.h"
 #include "Lists/UserList/userlist.h"
 #include "menu/RevealMenu/revealmenu.h"
+#include "menu/NormalMenu/normalmenu.h"
 
 int main()
 {
@@ -13,8 +14,8 @@ int main()
 	setbkcolor(RGB(34, 166, 242));
 	cleardevice();
 	Book book;
-	memcpy(book.author, "ddd", 4);
-	memcpy(book.title, "aaa", 4);
+	memcpy(book.author, "aaa你好", 8);
+	memcpy(book.title, "aaa你好", 8);
 	memcpy(book.ISBN, "aa", 3);
 	book.price = 100;
 	book.condition = NEW;
@@ -32,6 +33,9 @@ int main()
 		int i;
 		char ins[2][101] = {"1", "2"};
 		cleardevice();
+		normalMenu(200, 80, 2, ins, 60, 20, "back", 30, "bbbb", 10);
+
+
 		revealMenu(&i, 200, 80, 2, ins, 60, 20, "返回", 30, "aaaa", 10, 60, 40, "aaaa", &list, 5, 5, 5);
 
 	} while (circle);

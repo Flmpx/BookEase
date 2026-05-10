@@ -10,21 +10,21 @@
 extern InfoOfReturn linkBookForUser(Book* book, UserList* plist);
 
 
-/// @brief 打印书籍的简单信息
+/// @brief 在一个矩形中打印书籍的简单信息
 /// @param book 书籍指针
-/// @param x 左上角x
-/// @param y 左上角y
-/// @param width 宽度
-/// @param height 高度
-extern void printSimpleBookInfo(Book* book, int x, int y, int width, int height);
+/// @param l 矩形左边界
+/// @param t 矩形上边界
+/// @param w 矩形宽度
+/// @param h 矩形高度
+extern void printSimpleBookInfo(Book* book, int l, int t, int w, int h);
 
 
-/// @brief 打印书籍的全部信息
+/// @brief 在一个矩形中打印书籍的全部信息
 /// @param book 书籍指针
-/// @param x 左上角x
-/// @param y 左上角y
-/// @param width 宽度
-/// @param height 高度
-extern void printAllBookInfo(Book* book, int x, int y, int width, int height);
+/// @param l 矩形左边界
+/// @param t 矩形上边界
+/// @param w 矩形宽度
+/// @param h 矩形高度
+extern void printAllBookInfo(Book* book, int l, int t, int w, int h);
 
 #endif

@@ -23,28 +23,28 @@ InfoOfReturn linkBookForUser(Book* book, UserList* plist) {
 	return Success;
 }
 
-void printSimpleBookInfo(Book* book, int x, int y, int width, int height) {
+void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	int InfoNum = 5;
-	int th = height/InfoNum;
+	int th = h/InfoNum;
 	settextstyle(th, 0, "宋体");
-	fillrectangle(x, y, x + width, y + height);
+	fillrectangle(l, t, l + w, t + h);
 
 	char tempStr[1001];
 	int cnt = 0;
 	sprintf(tempStr, "书名:%s", book->title);
-	outtextxy(x, y+(cnt++*th), tempStr);
+	outtextxy(l, t+(cnt++*th), tempStr);
 
 	sprintf(tempStr, "作者:%s", book->author);
-	outtextxy(x, y+(cnt++*th), tempStr);
+	outtextxy(l, t+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "ISBN:%s", book->ISBN);
-	outtextxy(x, y+(cnt++*th), tempStr);
+	outtextxy(l, t+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "价格:%g", book->price);
-	outtextxy(x, y+(cnt++*th), tempStr);
+	outtextxy(l, t+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "新旧程度:%s", BookConditionStr[book->condition]);
-	outtextxy(x, y+(cnt++*th), tempStr);
+	outtextxy(l, t+(cnt++*th), tempStr);
 }
 
 

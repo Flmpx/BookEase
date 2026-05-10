@@ -1,5 +1,6 @@
 ﻿#include "../../base.h"
 #include <easyx.h>
+#include "../menu.h"
 
 static void style_button_start() {
 	setfillcolor(WHITE);
@@ -11,7 +12,7 @@ static void style_button_hover() {
 	setlinecolor(BLACK);
 	setlinestyle(PS_SOLID, 3);
 }
-static void style_button_dbclick() {
+static void style_button_click() {
 	setfillcolor(RED);
 	setlinecolor(BLACK);
 	setlinestyle(PS_SOLID, 2);
@@ -19,31 +20,16 @@ static void style_button_dbclick() {
 
 
 int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
-	int screenWidth = getwidth();	
-	int screenHeight = getheight();
+	int screenW = getwidth();	
+	int screenH = getheight();
+
+	int l, t, w, h;
 
 	//reg-->register-->注册
 	//log-->login-->登录
 
 	const char* regStr = "注册";
 	const char* logStr = "登录";
-	//两个数组分别代表注册和登陆的两个block的上下界, 左右界
-	//0-->上, 1-->下, 2-->左, 3-->右
-	int regBlockxy[4];
-	int logBlockxy[4];
-	regBlockxy[0] = logBlockxy[0] = (screenHeight/3*2) - (blockHeight/2);
-	regBlockxy[1] = logBlockxy[1] = (screenHeight/3*2) + (blockHeight/2);
-
-	regBlockxy[3] = (screenWidth/2) - (marginOfBlock/2);
-	logBlockxy[2] = (screenWidth/2) + (marginOfBlock/2);
-
-	regBlockxy[2] = regBlockxy[3] - blockWidth;
-	logBlockxy[3] = logBlockxy[2] + blockWidth;
-
-	int twOfreg = textwidth(regStr);
-	int thOfreg = textheight(regStr);
-	int twOflog = textwidth(logStr);
-	int thOflog = textheight(logStr);
 
 	int flagReturn = -1;	//0代表返回注册, 1代表返回登录
 
@@ -52,52 +38,69 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 	ExMessage msg = {0};
 	while (true) {
 		Sleep(10);
+
 		bool hover_reg = false, hover_log = false;
 
 		//peekmessage(&msg, EX_MOUSE);
 		msg = getmessage();
 
-		if (msg.x >= regBlockxy[2] && msg.x <= regBlockxy[3] && msg.y >= regBlockxy[0] && msg.y <= regBlockxy[1]) {
+		//检测注册
+		w = blockWidth; h = blockHeight;
+		l = screenW/2 - marginOfBlock/2 - w;
+		t = screenH/3*2 - h/2;
+		if (isInBlock(&msg, l, t, w, h)) {
 			hover_reg = true;
 			if (msg.message == WM_LBUTTONDOWN) {
-				//点击了登录
+				//点击了注册
 				flagReturn = 0;
 			}
 		}
 
-		if (msg.x >= logBlockxy[2] && msg.x <= logBlockxy[3] && msg.y >= logBlockxy[0] && msg.y <= logBlockxy[1]) {
+		//检测登录键
+		w = blockWidth; h = blockHeight;
+		l = screenW/2 + marginOfBlock/2;
+		t = screenH/3*2 - h/2;
+		if (isInBlock(&msg, l, t, w, h)) {
 			hover_log = true;
 			if (msg.message == WM_LBUTTONDOWN) {
-				//点击了注册
+				//点击了登录
 				flagReturn = 1;
 			}
 		}
 		BeginBatchDraw();
 
 		//绘制Reg
+
 		style_button_start();
 		if (hover_reg) {
-			if (flagReturn >= 0) style_button_dbclick();
+			if (flagReturn >= 0) style_button_click();
 			else style_button_hover();
 		}
-		//					左			上				右				下
-		fillroundrect(regBlockxy[2], regBlockxy[0], regBlockxy[3], regBlockxy[1], 10, 10);
-		outtextxy(regBlockxy[2] + (blockWidth - twOfreg)/2, regBlockxy[0] + (blockHeight - thOfreg)/2, regStr);
+		w = blockWidth; h = blockHeight;
+		l = screenW/2 - marginOfBlock/2 - w;
+		t = screenH/3*2 - h/2;
+
+		getRoundRectleBlock(regStr, l, t, w, h);
 
 
 
 		//绘制Log
 		style_button_start();
 		if (hover_log) {
-			if (flagReturn >= 0) style_button_dbclick();
+			if (flagReturn >= 0) style_button_click();
 			else style_button_hover();
 		}
-		//					左			上				右				下
-		fillroundrect(logBlockxy[2], logBlockxy[0], logBlockxy[3], logBlockxy[1], 10, 10);
-		outtextxy(logBlockxy[2] + (blockWidth - twOflog)/2, logBlockxy[0] + (blockHeight - thOflog)/2, logStr);
+
+		w = blockWidth; h = blockHeight;
+		l = screenW/2 + marginOfBlock/2;
+		t = screenH/3*2 - h/2;
+
+		getRoundRectleBlock(logStr, l, t, w, h);
 
 		EndBatchDraw();
 
+
+		//判断低级行为
 		if (flagReturn != -1) {
 			Sleep(200);
 			return flagReturn;

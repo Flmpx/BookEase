@@ -42,6 +42,12 @@
     <ClCompile Include="menu\RevealMenu\revealmenu.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="menu\menu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="menu\NormalMenu\normalmenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -66,6 +72,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="menu\RevealMenu\revealmenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu\NormalMenu\normalmenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
