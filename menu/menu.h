@@ -2,6 +2,64 @@
 #define MENU_H
 #include <easyx.h>
 
+//普通样式
+
+extern void style_normal();
+
+
+
+//提示信息样式
+
+extern void style_tips();
+
+
+//引导信息样式
+
+extern void style_instruction();
+
+
+
+//返回键样式
+
+extern void style_back_start();
+
+extern void style_back_hover();
+
+extern void style_back_click();
+
+
+
+//选项键样式
+
+extern void style_select_start();
+
+extern void style_select_hover();
+
+extern void style_select_click();
+
+extern void style_diction_start();
+
+
+
+//方向键样式
+
+extern void style_diction_hover();
+
+extern void style_diction_click();
+
+
+
+//书籍样式
+
+extern void style_book_start();
+
+extern void style_book_hover();
+
+extern void style_book_click();
+
+
+
+
 /// @brief 得到文字在中间的直角矩形
 /// @param text 文字内容
 /// @param l 矩形左边界

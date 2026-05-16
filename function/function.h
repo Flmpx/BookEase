@@ -10,6 +10,16 @@
 extern InfoOfReturn linkBookForUser(Book* book, UserList* plist);
 
 
+
+/// @brief 在一个矩形中打印用户信息
+/// @param info 信息指针
+/// @param l 矩形左边界
+/// @param t 矩形上边界
+/// @param w 矩形宽度
+/// @param h 矩形高度
+/// @note 一般为当前登录的用户信息
+extern void printUserInfo(UserInfo* info, int l, int t, int w, int h);
+
 /// @brief 在一个矩形中打印书籍的简单信息
 /// @param book 书籍指针
 /// @param l 矩形左边界

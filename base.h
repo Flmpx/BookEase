@@ -5,18 +5,18 @@
 #define EPS 1e-9
 extern char BookStatusStr[4][101];
 extern char BookConditionStr[4][101];
-//无效时间, 虽然-1也是一个时间点, 但不合理
-#define InValid_Time -1ll	
 
-//无效ID
-#define InValid_ID -1
+//无效数字, 可用于id, tel等
+#define Invalid_Num -1LL
 
-//无效价格
-#define Invalid_Price -1.0
 
+//无效字段, 可用于name, title等
+#define Invalid_Str "#"
 
 
 
+//无效浮点数, 可用于书籍价格
+#define Invalid_FloatNum -1.0
 
 
 
@@ -48,6 +48,8 @@ extern char BookConditionStr[4][101];
 //密码最长长度
 #define HASHKEY_LEN 24
 
+
+
 typedef unsigned long long ull;
 typedef long long ll;
 
@@ -77,6 +79,7 @@ typedef enum {
 } BookCondition;
 
 typedef enum {
+	Invalid_BookStatus = -1,
 	ON_SALE = 0,							//在售
 	RESERVED = 1,							//已预约
 	SOLD = 2,								//已售
@@ -96,7 +99,7 @@ typedef struct UserInfo {
 	ll tel;									//用户电话
 	ll QQ;									//QQ号
 	char WeChat[WECHAR_MAX_LEN];			//微信号
-	char others[OTHERS_MAX_LEN];			//其他联系信息
+	//char others[OTHERS_MAX_LEN];			//其他联系信息
 	time_t registerTime;					//用户注册时间
 	
 	char salt[SALT_LEN];					//验证密码使用的盐
@@ -145,24 +148,20 @@ typedef struct Book {
 	BookStatus status;						//书籍状态
 
 	BookCondition condition;				//书籍新旧程度
-	char others[OTHERS_MAX_LEN];			//书籍其他介绍
+	//char others[OTHERS_MAX_LEN];			//书籍其他介绍
 
 } Book;
 
 
-//由于部分函数会使用到下面的类型, 先进行前置声明
-
-//typedef struct UserNode UserNode;
-//typedef struct UserList UserList;
-//
-//typedef struct BookNode BookNode;
-//typedef struct BookList BookList;
 
 
+/// @brief 得到空用户信息, 内部什么都没有
+/// @return 空用户信息
+extern UserInfo getEmptyUserInfo();
 
-
-
-
+/// @brief 得到空书籍信息, 内部什么都没有
+/// @return 空书籍信息
+extern Book getEmptyBook();
 
 
 /// @brief 这个用户是否符合要求

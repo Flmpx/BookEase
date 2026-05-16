@@ -1,8 +1,8 @@
-﻿#include "saveandload.h"
+#include "saveandload.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "../function/function.h"
+#include "../../function/function.h"
 
 UserList loadUserListFromFile(const char* filePath) {
 	FILE* userFile = fopen(filePath, "r");
@@ -17,16 +17,20 @@ UserList loadUserListFromFile(const char* filePath) {
 
 	UserInfo info;
 
-	while (fscanf(userFile, "%lld %s %s %s %lld %lld %s %lld\n", &(info.id),
-		info.salt,	
-		info.hashKey, 
-		info.name, 
-		&(info.tel),
-		&(info.QQ),
-		info.WeChat, 
-		&(info.registerTime)) != EOF) {
-		fgets(info.others, OTHERS_MAX_LEN-1, userFile);
+	while (true) {
 
+		int res = fscanf(userFile, "%lld %s %s %s %lld %lld %s %lld", 
+			&(info.id),
+			info.salt,	
+			info.hashKey, 
+			info.name, 
+			&(info.tel),
+			&(info.QQ),
+			info.WeChat, 
+			&(info.registerTime));
+		if (res != 8) {
+			break;
+		}
 		UserInfo* copyInfo = (UserInfo*)malloc(sizeof(UserInfo));
 		if (copyInfo == NULL) {
 			printf("内存分配失败\n");
@@ -51,15 +55,14 @@ InfoOfReturn saveUserListToFile(UserList* plist, const char* filePath) {
 	UserNode* p = plist->head;
 	while (p) {
 		UserInfo* info = p->user;
-		fprintf(userFile, "%lld %s %s %s %lld %lld %s %lld\n%s", info->id, 
+		fprintf(userFile, "%lld %s %s %s %lld %lld %s %lld\n", info->id, 
 			info->salt, 
 			info->hashKey, 
 			info->name, 
 			info->tel, 
 			info->QQ, 
 			info->WeChat, 
-			info->registerTime, 
-			info->others);
+			info->registerTime);
 		p = p->next;
 	}
 	fclose(userFile);
@@ -83,18 +86,22 @@ BookList loadBookListFromFile(const char* filePath, UserList* plist) {
 
 	Book book;
 
-	while (fscanf(bookFile, "%lld %s %s %s %lf %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", &book.id, 
-																							book.title,
-																							book.ISBN,
-																							book.author,
-																							&book.price, 
-																							&book.status,
-																							&book.condition,
-																							&book.sellerId, &book.publishTime,
-																							&book.buyerId, &book.buyTime,
-																							&book.reserverId, &book.reserveTime) != EOF) {
+	while (true) {
+		int res = fscanf(bookFile, "%lld %s %s %s %lf %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", 
+			&book.id, 
+			book.title,
+			book.ISBN,
+			book.author,
+			&book.price, 
+			&book.status,
+			&book.condition,
+			&book.sellerId, &book.publishTime,
+			&book.buyerId, &book.buyTime,
+			&book.reserverId, &book.reserveTime);
 
-		fgets(book.others, OTHERS_MAX_LEN-1, bookFile);
+		if (res != 13) {
+			break;
+		}
 		linkBookForUser(&book, plist);
 		Book* copyBook = (Book*)malloc(sizeof(Book));
 		if (copyBook == NULL) {
@@ -118,7 +125,7 @@ InfoOfReturn saveBookListToFile(BookList* plist, const char* filePath) {
 	BookNode* p = plist->head;
 	while (p) {
 		Book* book = p->book;
-		fprintf(bookFile, "%lld %s %s %s %lf %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n%s\n", book->id,
+		fprintf(bookFile, "%lld %s %s %s %lf %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", book->id,
 																							book->title,
 																							book->ISBN,
 																							book->author,
@@ -134,9 +141,7 @@ InfoOfReturn saveBookListToFile(BookList* plist, const char* filePath) {
 																							book->buyTime,
 
 																							book->reserverId, 
-																							book->reserveTime,
-
-																							book->others);
+																							book->reserveTime);
 		p = p->next;
 
 	}

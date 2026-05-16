@@ -4,58 +4,6 @@
 #include "../../Lists/BookList/booklist.h"
 #include "normalmenu.h"
 
-//普通样式
-static void style_normal() {
-	setfillcolor(RGB(191, 165, 243));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-//引导信息样式
-static void style_instruction() {
-	setfillcolor(RGB(54, 203, 190));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-
-//返回键样式
-static void style_back_start() {
-	setfillcolor(RGB(191, 165, 243));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-static void style_back_hover() {
-	setfillcolor(YELLOW);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-
-static void style_back_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-
-//选项键样式
-static void style_select_start() {
-	setfillcolor(WHITE);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 1);
-}
-static void style_select_hover() {
-	setfillcolor(YELLOW);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-static void style_select_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
 
 
 
@@ -160,12 +108,6 @@ int normalMenu(int selectW, int selectH, int selectNum, char selections[][101], 
 
 }
 
-
-int detailUserInfoMenu(int selectW, int selectH, int selectNum, char selections[][101], int backW, int backH, const char* back, int instruH, const char* instruction, int grapInbcAndInstru, const char* userInfoTips, UserInfo* Info, int grapInSeleAndInfo) {
-	
-	return 0;
-
-}
 
 
 

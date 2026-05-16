@@ -1,95 +1,8 @@
-ï»¿#include "revealmenu.h"
+#include "revealmenu.h"
 #include <easyx.h>
 #include "../../function/function.h"
 #include "../menu.h"
 
-//æ™®é€šæ ·å¼
-static void style_normal() {
-	setfillcolor(RGB(191, 165, 243));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-//å¼•å¯¼ä¿¡æ¯æ ·å¼
-static void style_instruction() {
-	setfillcolor(RGB(54, 203, 190));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-
-//è¿”å›é”®æ ·å¼
-static void style_back_start() {
-	setfillcolor(RGB(191, 165, 243));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-static void style_back_hover() {
-	setfillcolor(YELLOW);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-
-static void style_back_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-
-//é€‰é¡¹é”®æ ·å¼
-static void style_select_start() {
-	setfillcolor(WHITE);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 1);
-}
-static void style_select_hover() {
-	setfillcolor(YELLOW);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-static void style_select_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-
-//æ–¹å‘é”®æ ·å¼
-static void style_diction_start() {
-	setfillcolor(WHITE);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 1);
-}
-static void style_diction_hover() {
-	setfillcolor(YELLOW);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-static void style_diction_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
-
-//ä¹¦ç±æ ·å¼
-static void style_book_start() {
-	setfillcolor(WHITE);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 1);
-}
-static void style_book_hover() {
-	setfillcolor(RGB(5, 127, 215));
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-static void style_book_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
 
 
 
@@ -97,12 +10,12 @@ static void style_book_click() {
 Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selections[][101], int backW, int backH, const char* back, int instruH, const char* instruction, int grapInbcAndInstru, int dictionW, int dictionH, const char* booksTips, BookList* bookList, int grapInSeleAndBooks, int row, int col) {
 	
 	//t-->top, l-->left, h-->height, w-->width
-	int t, l, h, w;	//ç”¨äºç»˜åˆ¶çš„
+	int t, l, h, w;	//ÓÃÓÚ»æÖÆµÄ
 
 	//tw-->textwidth, th-->textheight
 
 	int tw, th;
-	//è·å–çª—å£å¤§å°
+	//»ñÈ¡´°¿Ú´óĞ¡
 	int screenH = getheight();
 	int screenW = getwidth();
 
@@ -121,13 +34,13 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 	int click_book_flag;
 
 	
-	//è¿”å›é”®å’Œé€‰é¡¹é”®æ‚¬æµ®æ ‡å¿—
+	//·µ»Ø¼üºÍÑ¡Ïî¼üĞü¸¡±êÖ¾
 	int hover_back_flag;
 	int hover_select_flag;
 	int hover_diction_flag;
 	int hover_book_flag;
 
-	//å¾—åˆ°æ¯æœ¬ä¹¦çš„å±•ç¤ºå®½åº¦
+	//µÃµ½Ã¿±¾ÊéµÄÕ¹Ê¾¿í¶È
 	int singleBookW = (screenW - selectW - grapInSeleAndBooks)/col;
 	int singleBookH = (screenH - startHOfBooks)/row;
 
@@ -149,7 +62,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		//peekmessage(&msg, EX_MOUSE);
 		msg = getmessage();
 
-		//è¿”å›é”®æ£€æµ‹
+		//·µ»Ø¼ü¼ì²â
 		l = 0; t = 0; w = backW; h = backH;
 		if (isInBlock(&msg, l, t, w, h)) {
 			hover_back_flag = 1;
@@ -157,7 +70,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 				click_back_flag = 1;
 			}
 		}
-		//selectionsæ£€æµ‹
+		//selections¼ì²â
 		l = 0; t = startHOfSelect; w = selectW; h = selectH*selectNum;
 		if (isInBlock(&msg, l, t, w, h)) {
 			hover_select_flag = (msg.y - startHOfSelect)/selectH;
@@ -166,7 +79,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			}
 		}
 
-		//åˆ‡æ¢é”®æ£€æµ‹
+		//ÇĞ»»¼ü¼ì²â
 		//<
 		l = 0; t = screenH - dictionH; w = dictionW; h = dictionH;
 		if (isInBlock(&msg, l, t, w, h)) {
@@ -184,12 +97,12 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			}
 		}
 
-		//booksæ£€æµ‹
+		//books¼ì²â
 		l = selectW + grapInSeleAndBooks; t = startHOfBooks; w = screenW - l; h = screenH - t;
 		if (isInBlock(&msg, l, t, w, h)) {
 			hover_book_flag = (msg.y - startHOfBooks)/singleBookH*col + (msg.x - selectW - grapInSeleAndBooks)/singleBookW;
 			if (msg.message == WM_LBUTTONDOWN) {
-				//é˜²æ­¢ç©ºé—²çš„ä½ç½®
+				//·ÀÖ¹¿ÕÏĞµÄÎ»ÖÃ
 				if (hover_book_flag + startBooksNum < bookList->size) {
 					click_book_flag = hover_book_flag;
 				}
@@ -197,13 +110,13 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			}
 		}
 
-		//å¼€å§‹ç»˜åˆ¶
+		//¿ªÊ¼»æÖÆ
 		BeginBatchDraw();
 
-		//ç»˜åˆ¶ä¹‹å‰å…ˆæ¸…å±, ä¹¦ç±çš„ä¿¡æ¯ä¼šå˜åŠ¨
+		//»æÖÆÖ®Ç°ÏÈÇåÆÁ, Êé¼®µÄĞÅÏ¢»á±ä¶¯
 		cleardevice();
 		
-		//ç»˜åˆ¶backé”®
+		//»æÖÆback¼ü
 		style_back_start();
 		if (hover_back_flag == 1) {
 			if (click_back_flag == 1) style_back_click();
@@ -214,8 +127,8 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		getRoundRectleBlock(back, l, t, w, h);
 
 
-		//ç»˜åˆ¶å¼•å¯¼ä¿¡æ¯
-		style_instruction();	//å¼•å¯¼ä¿¡æ¯æ ·å¼
+		//»æÖÆÒıµ¼ĞÅÏ¢
+		style_instruction();	//Òıµ¼ĞÅÏ¢ÑùÊ½
 
 		int instruW = selectW;
 		t = backH + grapInbcAndInstru;
@@ -224,14 +137,14 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		getRectangleBlock(instruction, l, t, w, h);
 
 
-		//ç»˜åˆ¶select
+		//»æÖÆselect
 		for (int i = 0; i < selectNum; i++) {
 			style_select_start();
 			if (i == hover_select_flag) {
 				if (click_select_flag >= 0) style_select_click();
 				else style_select_hover();
 			}
-			//å—çš„ä¸Šç•Œ
+			//¿éµÄÉÏ½ç
 			t = startHOfSelect + i*selectH;
 			l = 0; w = selectW; h = selectH;
 			
@@ -239,7 +152,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 
 		}
 
-		//ç»˜åˆ¶æ–¹å‘é”®
+		//»æÖÆ·½Ïò¼ü
 		//<
 		style_diction_start();
 		if (hover_diction_flag == 0) {
@@ -265,8 +178,8 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 		getRectangleBlock(">>>", l, t, w, h);
 
 
-		//ç»˜åˆ¶ä¹¦ç±æç¤ºä¿¡æ¯
-		style_normal();	//æ™®é€šæ ·å¼
+		//»æÖÆÊé¼®ÌáÊ¾ĞÅÏ¢
+		style_tips();	//ÆÕÍ¨ÑùÊ½
 		t = 0;
 		l = selectW + grapInSeleAndBooks;
 		h = startHOfBooks;
@@ -274,7 +187,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 
 		getRoundRectleBlock(booksTips, l, t, w, h);
 
-		//ç»˜åˆ¶ä¹¦ç±ä¿¡æ¯
+		//»æÖÆÊé¼®ĞÅÏ¢
 		BookNode* p = q;
 		for (int i = 0; i < col * row && i < bookList->size - startBooksNum; i++, p = p->next) {
 			style_book_start();
@@ -289,49 +202,52 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			printSimpleBookInfo(p->book, l, t, w, h);
 		}
 
-		//ç”±äºprintSimpleBookInfoå‡½æ•°ä¼šæ”¹å˜å­—ä½“å¤§å°, è¿™é‡Œè®¾ç½®å›æ¥
-		settextstyle(16, 0, "å®‹ä½“");
+		//ÓÉÓÚprintSimpleBookInfoº¯Êı»á¸Ä±ä×ÖÌå´óĞ¡, ÕâÀïÉèÖÃ»ØÀ´
+		//settextstyle(16, 0, "ËÎÌå");
 		EndBatchDraw();
 
 
-		//è¿›è¡Œç‚¹å‡»åçš„è¡Œä¸º
+		//½øĞĞµã»÷ºóµÄĞĞÎª
 		if (click_back_flag != -1) {
-			//è¿”å›
+			//·µ»Ø
 			*res = 0;
 			return NULL;
 		} else if (click_select_flag != -1) {
-			//é€‰é¡¹
+			//Ñ¡Ïî
 			*res = click_select_flag + 1;
 			return NULL;
 		} else if (click_book_flag != -1) {
-			//ç‚¹å‡»ä¹¦ç±
+			//µã»÷Êé¼®
 			for (int i = 0; i < click_book_flag; i++) {
 				q = q->next;
 			}
 			*res = -1;
 			return q->book;
 		} else if (click_diction_flag == 0) {
-			//ç‚¹å‡»<<<
+			//µã»÷<<<
 			if (startBooksNum - col * row >= 0) {
 				for (int i = 0; i < col * row; i++) {
 					q = q->prev;
 				}
 				startBooksNum -= col*row;
 			} else {
-				MessageBox(GetHWnd(), "å·²ç»æ˜¯å¼€å§‹é¡µäº†!!!", "æç¤º", MB_OK);
+				MessageBox(GetHWnd(), "ÒÑ¾­ÊÇ¿ªÊ¼Ò³ÁË!!!", "ÌáÊ¾", MB_OK);
 			}
 		} else if (click_diction_flag == 1) {
-			//ç‚¹å‡»>>>
+			//µã»÷>>>
 			if (startBooksNum + col * row < bookList->size) {
 				for (int i = 0; i < col * row; i++) {
 					q = q->next;
 				}
 				startBooksNum += col*row;
 			} else {
-				MessageBox(GetHWnd(), "å·²ç»æ˜¯æœ€åä¸€é¡µäº†!!!", "æç¤º", MB_OK);
+				MessageBox(GetHWnd(), "ÒÑ¾­ÊÇ×îºóÒ»Ò³ÁË!!!", "ÌáÊ¾", MB_OK);
 
 			}
 		}
+
+
+
 
 		
 	}

@@ -8,11 +8,50 @@ char BookConditionStr[4][101] = {"几乎全新", "有点破损", "还可以用",
 
 
 
+UserInfo getEmptyUserInfo() {
+	UserInfo info;
+	strcpy(info.hashKey, Invalid_Str);
+	info.id = Invalid_Num;
+	strcpy(info.name, Invalid_Str);
+	info.QQ = Invalid_Num;
+	info.registerTime = Invalid_Num;
+	strcpy(info.salt, Invalid_Str);
+	info.tel = Invalid_Num;
+	strcpy(info.WeChat, Invalid_Str);
+	return info;
+
+}
+
+Book getEmptyBook() {
+	Book book;
+	book.seller = NULL;
+	book.sellerId = Invalid_Num;
+	book.buyer = NULL;
+	book.buyerId = Invalid_Num;
+	book.reserver = NULL;
+	book.reserverId = Invalid_Num;
+	book.id = Invalid_Num;
+
+	strcpy(book.title, Invalid_Str);
+	strcpy(book.ISBN, Invalid_Str);
+	strcpy(book.author, Invalid_Str);
+
+	book.price = Invalid_FloatNum;
+
+	book.publishTime = book.buyTime = book.reserveTime = Invalid_Num;
+
+	book.status = Invalid_BookStatus;
+	book.condition = Invalid_BookCondition;
+
+	return book;
+}
+
+
 
 
 UserInfoCmpCondition getEmptyUserInfoCmpCondition() {
 	UserInfoCmpCondition empty;
-	empty.id = InValid_ID;
+	empty.id = Invalid_Num;
 	empty.name = NULL;
 	return empty;
 }
@@ -20,7 +59,7 @@ UserInfoCmpCondition getEmptyUserInfoCmpCondition() {
 
 bool isSimilarUserInfo(UserInfo* user, UserInfoCmpCondition* userCondition) {
 	//比较学号
-	if (userCondition->id != InValid_ID && user->id != userCondition->id) {
+	if (userCondition->id != Invalid_Num && user->id != userCondition->id) {
 		return false;
 	}
 	//比较名字
@@ -37,9 +76,9 @@ BookCmpCondition getEmptyBookCmpCondition() {
 	BookCmpCondition empty;
 	empty.author = empty.isbn = empty.title = NULL;
 	empty.condition = Invalid_BookCondition;
-	empty.downPrice = empty.upPrice = Invalid_Price;
-	empty.downTime = empty.upTime = InValid_Time;
-	empty.id = InValid_ID;
+	empty.downPrice = empty.upPrice = Invalid_FloatNum;
+	empty.downTime = empty.upTime = Invalid_Num;
+	empty.id = Invalid_Num;
 	empty.seller = getEmptyUserInfoCmpCondition();
 	return empty;
 }
@@ -47,7 +86,7 @@ BookCmpCondition getEmptyBookCmpCondition() {
 bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 
 	//比较书籍id
-	if (bookCondition->id != InValid_ID && book->id != bookCondition->id) {
+	if (bookCondition->id != Invalid_Num && book->id != bookCondition->id) {
 		return false;
 	}
 	//比较售卖者
@@ -82,10 +121,10 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 	
 	//比较发布时间
 	
-	if (bookCondition->downTime != InValid_Time && book->publishTime < bookCondition->downTime) {
+	if (bookCondition->downTime != Invalid_Num && book->publishTime < bookCondition->downTime) {
 		return false;
 	}
-	if (bookCondition->upTime != InValid_Time && book->publishTime > bookCondition->upTime) {
+	if (bookCondition->upTime != Invalid_Num && book->publishTime > bookCondition->upTime) {
 		return false;
 	}
 
@@ -98,3 +137,4 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 
 	return true;
 }
+

@@ -27,16 +27,13 @@
     <ClCompile Include="base.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="saveandload\saveandload.cpp">
+    <ClCompile Include="Process\saveandload\saveandload.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="function\function.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="menu\LoginMenu\loginmenu.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="copy.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="menu\RevealMenu\revealmenu.cpp">
@@ -46,6 +43,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="menu\NormalMenu\normalmenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="menu\DetailMenu\detailmenu.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\login\login.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +65,7 @@
     <ClInclude Include="Lists\UserList\userlist.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="saveandload\saveandload.h">
+    <ClInclude Include="Process\saveandload\saveandload.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="function\function.h">
@@ -80,5 +83,16 @@
     <ClInclude Include="menu\NormalMenu\normalmenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="menu\DetailMenu\detailmenu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\login\login.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Data\bookinfo.txt" />
+    <Text Include="Data\userinfo.txt" />
+    <Text Include="Data\localhistory.txt" />
   </ItemGroup>
 </Project>
