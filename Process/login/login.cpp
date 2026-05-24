@@ -83,7 +83,7 @@ UserInfo* loginFunc(UserList* users) {
 	do {
 		circle = 1;
 		if (InputBox(temp, 1000, "请输入学号", "输入用户信息", temp, 0, 0, false) && temp[0] != '\0') {
-			if (sscanf(temp, "%16lld", &id) == 1) {
+			if (sscanf(temp, "%16lld", &id) == 1 && id > 0) {
 				user = getPtrUserInfoByIdInUserList(users, id);
 				if (user) {
 					if (authenUserInfo(user)) {
@@ -150,7 +150,7 @@ int registerFunc(UserList* users) {
 	do {
 		circle = 1;
 		if (InputBox(temp, 1000, "请输入学号", "输入用户信息", temp, 0, 0, false)) {
-			if (sscanf(temp, "%16lld", &id) == 1 && temp[0] != '\0') {
+			if (sscanf(temp, "%16lld", &id) == 1 && temp[0] != '\0' && id > 0) {
 				user = getPtrUserInfoByIdInUserList(users, id);
 				if (user) {
 					res = 0;
