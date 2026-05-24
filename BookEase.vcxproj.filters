@@ -51,6 +51,9 @@
     <ClCompile Include="Process\login\login.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Process\mainpage\mainpage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -87,6 +90,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Process\login\login.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\mainpage\mainpage.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

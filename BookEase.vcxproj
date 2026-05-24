@@ -138,6 +138,7 @@
     <ClCompile Include="menu\menu.cpp" />
     <ClCompile Include="menu\RevealMenu\revealmenu.cpp" />
     <ClCompile Include="Process\login\login.cpp" />
+    <ClCompile Include="Process\mainpage\mainpage.cpp" />
     <ClCompile Include="Process\saveandload\saveandload.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +158,7 @@
     <ClInclude Include="menu\menu.h" />
     <ClInclude Include="menu\RevealMenu\revealmenu.h" />
     <ClInclude Include="Process\login\login.h" />
+    <ClInclude Include="Process\mainpage\mainpage.h" />
     <ClInclude Include="Process\saveandload\saveandload.h" />
   </ItemGroup>
   <ItemGroup>
