@@ -1,4 +1,4 @@
-ï»¿#include "function.h"
+#include "function.h"
 #include <easyx.h>
 #include <string.h>
 #include <stdio.h>
@@ -6,10 +6,10 @@
 #include <time.h>
 
 InfoOfReturn linkBookForUser(Book* book, UserList* plist) {
-	//ä¸€æœ¬ä¹¦ä¸€å®šæœ‰å”®å–è€…
+	//Ò»±¾ÊéÒ»¶¨ÓÐÊÛÂôÕß
 	UserInfo* sellerInfo = getPtrUserInfoByIdInUserList(plist, book->sellerId);
 
-	//ä¸€æœ¬ä¹¦å¯èƒ½æœ‰è´­ä¹°è€…æˆ–è€…é¢„çº¦è€…
+	//Ò»±¾Êé¿ÉÄÜÓÐ¹ºÂòÕß»òÕßÔ¤Ô¼Õß
 	UserInfo* buyerInfo = NULL;
 	if (book->buyerId != Invalid_Num) {
 		buyerInfo = getPtrUserInfoByIdInUserList(plist, book->buyerId);
@@ -32,25 +32,25 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 	fillrectangle(l, t, l + w, t + h);
 	char tempStr[1001];
 	int cnt = 0;
-	sprintf(tempStr, "ç”¨æˆ·å:%s", info->name);
+	sprintf(tempStr, "ÓÃ»§Ãû:%s", info->name);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "å­¦å·:%lld", info->id);
+	sprintf(tempStr, "Ñ§ºÅ:%lld", info->id);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 	
-	sprintf(tempStr, "ç”µè¯:%lld", info->tel);
+	sprintf(tempStr, "µç»°:%lld", info->tel);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
 	sprintf(tempStr, "QQ:%lld", info->QQ);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "å¾®ä¿¡å·:%s", info->WeChat);
+	sprintf(tempStr, "Î¢ÐÅºÅ:%s", info->WeChat);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	struct tm* time = localtime(&(info->registerTime));
+	struct tm time = *localtime(&(info->registerTime));
 
 
-	sprintf(tempStr, "æ³¨å†Œæ—¶é—´:%04då¹´%02dæœˆ%02dæ—¥", time->tm_year + 1900, time->tm_mon + 1, time->tm_mday);
+	sprintf(tempStr, "×¢²áÊ±¼ä:%04dÄê%02dÔÂ%02dÈÕ", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
 
@@ -59,24 +59,24 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	int InfoNum = 5;
 	int th = h/InfoNum;
-	//settextstyle(th, 0, "å®‹ä½“");
+	//settextstyle(th, 0, "ËÎÌå");
 	fillrectangle(l, t, l + w, t + h);
 
 	char tempStr[1001];
 	int cnt = 0;
-	sprintf(tempStr, "ä¹¦å:%s", book->title);
+	sprintf(tempStr, "ÊéÃû:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "ä½œè€…:%s", book->author);
+	sprintf(tempStr, "×÷Õß:%s", book->author);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "ISBN:%s", book->ISBN);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "ä»·æ ¼:%g", book->price);
+	sprintf(tempStr, "¼Û¸ñ:%g", book->price);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "æ–°æ—§ç¨‹åº¦:%s", BookConditionStr[book->condition]);
+	sprintf(tempStr, "ÐÂ¾É³Ì¶È:%s", BookConditionStr[book->condition]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 }
 
@@ -90,64 +90,64 @@ void printAllBookInfo(Book* book, int x, int y, int width, int height) {
 		InfoNum += 4;
 	}
 	int th = height/InfoNum;
-	//settextstyle(th, 0, "å®‹ä½“");
+	//settextstyle(th, 0, "ËÎÌå");
 	fillrectangle(x, y, x + width, y + height);
 	char tempStr[1001];
 	int cnt = 0;
-	sprintf(tempStr, "ä¹¦å:%s", book->title);
+	sprintf(tempStr, "ÊéÃû:%s", book->title);
 	outtextxy(x, y+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "ä½œè€…:%s", book->author);
+	sprintf(tempStr, "×÷Õß:%s", book->author);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "ISBN:%s", book->ISBN);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "ä»·æ ¼:%g", book->price);
+	sprintf(tempStr, "¼Û¸ñ:%g", book->price);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "æ–°æ—§ç¨‹åº¦:%s", BookConditionStr[book->condition]);
+	sprintf(tempStr, "ÐÂ¾É³Ì¶È:%s", BookConditionStr[book->condition]);
 	outtextxy(x, y+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "å–æ–¹ç”¨æˆ·å:%s", book->seller->name);
+	sprintf(tempStr, "Âô·½ÓÃ»§Ãû:%s", book->seller->name);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "å–æ–¹å­¦å·:%lld", book->seller->id);
+	sprintf(tempStr, "Âô·½Ñ§ºÅ:%lld", book->seller->id);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "å–æ–¹QQå·:%lld", book->seller->QQ);
+	sprintf(tempStr, "Âô·½QQºÅ:%lld", book->seller->QQ);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "å–æ–¹å¾®ä¿¡å·:%s", book->seller->WeChat);
+	sprintf(tempStr, "Âô·½Î¢ÐÅºÅ:%s", book->seller->WeChat);
 	outtextxy(x, y+(cnt++*th), tempStr);
 	
 
 	if (book->buyerId != Invalid_Num) {
-		sprintf(tempStr, "ä¹°æ–¹ç”¨æˆ·å:%s", book->seller->name);
+		sprintf(tempStr, "Âò·½ÓÃ»§Ãû:%s", book->seller->name);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "ä¹°æ–¹å­¦å·:%lld", book->seller->id);
+		sprintf(tempStr, "Âò·½Ñ§ºÅ:%lld", book->seller->id);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "ä¹°æ–¹QQå·:%lld", book->seller->QQ);
+		sprintf(tempStr, "Âò·½QQºÅ:%lld", book->seller->QQ);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "ä¹°æ–¹å¾®ä¿¡å·:%s", book->seller->WeChat);
+		sprintf(tempStr, "Âò·½Î¢ÐÅºÅ:%s", book->seller->WeChat);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	}
 
 
 	if (book->reserverId != Invalid_Num) {
-		sprintf(tempStr, "é¢„å®šæ–¹ç”¨æˆ·å:%s", book->seller->name);
+		sprintf(tempStr, "Ô¤¶¨·½ÓÃ»§Ãû:%s", book->seller->name);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "é¢„å®šæ–¹å­¦å·:%lld", book->seller->id);
+		sprintf(tempStr, "Ô¤¶¨·½Ñ§ºÅ:%lld", book->seller->id);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "é¢„å®šæ–¹QQå·:%lld", book->seller->QQ);
+		sprintf(tempStr, "Ô¤¶¨·½QQºÅ:%lld", book->seller->QQ);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "é¢„å®šæ–¹å¾®ä¿¡å·:%s", book->seller->WeChat);
+		sprintf(tempStr, "Ô¤¶¨·½Î¢ÐÅºÅ:%s", book->seller->WeChat);
 		outtextxy(x, y+(cnt++*th), tempStr);
 	}
 
