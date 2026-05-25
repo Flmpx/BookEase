@@ -33,7 +33,7 @@ UserList loadUserListFromFile(const char* filePath) {
 		}
 		UserInfo* copyInfo = (UserInfo*)malloc(sizeof(UserInfo));
 		if (copyInfo == NULL) {
-			printf("å†…å­˜åˆ†é…å¤±è´¥\n");
+			printf("ÄÚ´æ·ÖÅäÊ§°Ü\n");
 			return list;
 		}
 		memcpy(copyInfo, &info, sizeof(UserInfo));
@@ -49,7 +49,7 @@ UserList loadUserListFromFile(const char* filePath) {
 InfoOfReturn saveUserListToFile(UserList* plist, const char* filePath) {
 	FILE* userFile = fopen(filePath, "w");
 	if (userFile == NULL) {
-		printf("æ–‡ä»¶%såˆ›å»ºå¤±è´¥\n", filePath);
+		printf("ÎÄ¼ş%s´´½¨Ê§°Ü\n", filePath);
 		return Warning;
 	}
 	UserNode* p = plist->head;
@@ -102,11 +102,16 @@ BookList loadBookListFromFile(const char* filePath, UserList* plist) {
 		if (res != 13) {
 			break;
 		}
+		
 		linkBookForUser(&book, plist);
 		Book* copyBook = (Book*)malloc(sizeof(Book));
 		if (copyBook == NULL) {
-			printf("å†…å­˜åˆ†é…å¤±è´¥\n");
+			printf("ÄÚ´æ·ÖÅäÊ§°Ü\n");
 			return list;
+		}
+		/* ¸üĞÂ×î´óµÄÊé¼®id*/
+		if (book.id > MaxBookId) {
+			MaxBookId = book.id;
 		}
 		memcpy(copyBook, &book, sizeof(Book));
 		insertBookInBookList(&list, copyBook);
@@ -119,7 +124,7 @@ BookList loadBookListFromFile(const char* filePath, UserList* plist) {
 InfoOfReturn saveBookListToFile(BookList* plist, const char* filePath) {
 	FILE* bookFile = fopen(filePath, "w");
 	if (bookFile == NULL) {
-		printf("æ–‡ä»¶%såˆ›å»ºå¤±è´¥\n", filePath);
+		printf("ÎÄ¼ş%s´´½¨Ê§°Ü\n", filePath);
 		return Warning;
 	}
 	BookNode* p = plist->head;
