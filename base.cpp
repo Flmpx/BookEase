@@ -1,6 +1,6 @@
-ï»¿#include "base.h"
-char BookStatusStr[4][101] = {"åœ¨å”®å–", "å·²é¢„çº¦", "å·²å”®å–", "å·²ä¸‹æž¶"};
-char BookConditionStr[4][101] = {"å‡ ä¹Žå…¨æ–°", "æœ‰ç‚¹ç ´æŸ", "è¿˜å¯ä»¥ç”¨", "å¯ä»¥æŽ¥å—"};
+#include "base.h"
+char BookStatusStr[4][101] = {"ÔÚÊÛÂô", "ÒÑÔ¤Ô¼", "ÒÑÊÛÂô", "ÒÑÏÂ¼Ü"};
+char BookConditionStr[4][101] = {"¼¸ºõÈ«ÐÂ", "ÓÐµãÆÆËð", "»¹¿ÉÒÔÓÃ", "¿ÉÒÔ½ÓÊÜ"};
 
 #include "Lists/BookList/booklist.h"
 #include "Lists/UserList/userlist.h"
@@ -52,18 +52,18 @@ Book getEmptyBook() {
 UserInfoCmpCondition getEmptyUserInfoCmpCondition() {
 	UserInfoCmpCondition empty;
 	empty.id = Invalid_Num;
-	empty.name = NULL;
+	empty.name[0] = '\0';
 	return empty;
 }
 
 
 bool isSimilarUserInfo(UserInfo* user, UserInfoCmpCondition* userCondition) {
-	//æ¯”è¾ƒå­¦å·
+	//±È½ÏÑ§ºÅ
 	if (userCondition->id != Invalid_Num && user->id != userCondition->id) {
 		return false;
 	}
-	//æ¯”è¾ƒåå­—
-	if (userCondition->name != NULL && strstr(user->name, userCondition->name) == NULL) {
+	//±È½ÏÃû×Ö
+	if (userCondition->name[0] != '\0' && strstr(user->name, userCondition->name) == NULL) {
 		return false;
 	}
 
@@ -74,7 +74,9 @@ bool isSimilarUserInfo(UserInfo* user, UserInfoCmpCondition* userCondition) {
 
 BookCmpCondition getEmptyBookCmpCondition() {
 	BookCmpCondition empty;
-	empty.author = empty.isbn = empty.title = NULL;
+	empty.author[0] = '\0';
+	empty.isbn[0] = '\0';
+	empty.title[0] = '\0';
 	empty.condition = Invalid_BookCondition;
 	empty.downPrice = empty.upPrice = Invalid_FloatNum;
 	empty.downTime = empty.upTime = Invalid_Num;
@@ -85,32 +87,32 @@ BookCmpCondition getEmptyBookCmpCondition() {
 
 bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 
-	//æ¯”è¾ƒä¹¦ç±id
+	//±È½ÏÊé¼®id
 	if (bookCondition->id != Invalid_Num && book->id != bookCondition->id) {
 		return false;
 	}
-	//æ¯”è¾ƒå”®å–è€…
+	//±È½ÏÊÛÂôÕß
 	if (isSimilarUserInfo(book->seller, &(bookCondition->seller)) == false) {
 		return false;
 	}
 
-	//æ¯”è¾ƒä¹¦å
-	if (bookCondition->title != NULL && strstr(book->title, bookCondition->title) == NULL) {
+	//±È½ÏÊéÃû
+	if (bookCondition->title[0] != '\0' && strstr(book->title, bookCondition->title) == NULL) {
 		return false;
 	}
 
-	//æ¯”è¾ƒisbn
-	if (bookCondition->isbn != NULL && strstr(book->ISBN, bookCondition->isbn) == NULL) {
+	//±È½Ïisbn
+	if (bookCondition->isbn[0] != '\0' && strstr(book->ISBN, bookCondition->isbn) == NULL) {
 		return false;
 	}
 
-	//æ¯”è¾ƒä½œè€…
+	//±È½Ï×÷Õß
 
-	if (bookCondition->author != NULL && strstr(book->author, bookCondition->author) == NULL) {
+	if (bookCondition->author[0] != '\0' && strstr(book->author, bookCondition->author) == NULL) {
 		return false;
 	}
 	
-	//æ¯”è¾ƒä»·æ ¼
+	//±È½Ï¼Û¸ñ
 	if (bookCondition->downPrice > -EPS && book->price < bookCondition->downPrice - EPS) {
 		return false;
 	}
@@ -119,7 +121,7 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 	}
 
 	
-	//æ¯”è¾ƒå‘å¸ƒæ—¶é—´
+	//±È½Ï·¢²¼Ê±¼ä
 	
 	if (bookCondition->downTime != Invalid_Num && book->publishTime < bookCondition->downTime) {
 		return false;
@@ -129,7 +131,7 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 	}
 
 	
-	//æ¯”è¾ƒæ–°æ—§ç¨‹åº¦
+	//±È½ÏÐÂ¾É³Ì¶È
 
 	if (bookCondition->condition != Invalid_BookCondition && book->condition != bookCondition->condition) {
 		return false;
