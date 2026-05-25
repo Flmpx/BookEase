@@ -11,6 +11,10 @@
 
 
 
+
+
+
+
 int selectStr(char* Str, const char* selectionInfo, const char* InputBoxInfo, const char* InputBoxTip, int maxLen) {
 	int circle = 1;
 	int circle_in = 1;
@@ -338,7 +342,18 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 			sprintf(selections[4], "书籍id: %lld", searchBook.id);
 		}
 
+		if (searchBook.title[0] != '\0') {
+			sprintf(selections[5], "书名: %s", searchBook.title);
+		}
 
+		if (searchBook.isbn[0] != '\0') {
+			sprintf(selections[6], "ISBN: %s", searchBook.isbn);
+		}
+
+
+		if (searchBook.author[0] != '\0') {
+			sprintf(selections[7], "书籍作者: %s", searchBook.author);
+		}
 
 		sprintf(selections[8], "价格区间: %g - %g", searchBook.downPrice, searchBook.upPrice);
 
@@ -353,13 +368,15 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 		int input_num = normalMenu(400, 60, 10, selections, 80, 30, "退出检索", 20, "修改筛选条件", 10);
 		switch (input_num) {
 			case 0:
-				circle = 0;
+				if (MessageBox(GetHWnd(), "退出检索将会丢失所写条件, 确认退出吗?", "提示", MB_YESNO) == IDYES) {
+					circle = 0;
+				}
 			break;
-
+				
 			case 1:
 
 			break;
-
+				
 			case 2:
 
 				if (MessageBox(GetHWnd(), "确定要全部重置吗?", "提示", MB_YESNO) == IDYES) {
@@ -389,16 +406,16 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 
 			case 6:
 
-
+				selectStr(searchBook.title, "书名", "输入书名, 可以只输入一部分", "输入", BOOK_TITLE_MAX_LEN - 3);
 			break;
 
 
 			case 7:
-
+				selectStr(searchBook.isbn, "ISBN", "输入书籍的ISBN", "输入", ISBN_MAX_LEN - 3);
 			break;
 
 			case 8:
-
+				selectStr(searchBook.author, "书籍作者", "输入书籍的作者", "输入", BOOK_AUTHOR_MAX_LEN - 3);
 			break;
 
 			/* 选择价格区间*/
