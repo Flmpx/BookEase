@@ -438,7 +438,7 @@ void my_info_changeinfo(UserList* mainUserInfo, UserInfo* onlineUser) {
 		circle = 1;
 		cleardevice();
 		char selections[][101] = {"保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"};
-		int input_num = detailUserInfoMenu(200, 90, 4, selections, 90, 30, "保存并退出", 20, "选择修改的信息", 10, "你的信息", onlineUser, 10);
+		int input_num = detailUserInfoMenu(200, 90, 5, selections, 90, 30, "保存并退出", 20, "选择修改的信息", 10, "你的信息", temp_user, 10);
 		switch (input_num) {
 		case 0:
 			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO) == IDYES) {
@@ -453,20 +453,20 @@ void my_info_changeinfo(UserList* mainUserInfo, UserInfo* onlineUser) {
 			circle = 0;
 				
 			break;
-			case 2:
+		case 2:
 				InputStr(temp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入", USERNAME_MAX_LEN - 3);
 
 			break;
 
-			case 3:
+		case 3:
 				InputInter(&(temp_user->tel), "输入电话", "输入");
 			break;
 			
-			case 4:
+		case 4:
 				InputInter(&(temp_user->QQ), "输入QQ号", "输入");
 			break;
 
-			case 5:
+		case 5:
 				InputStr(temp_user->WeChat, "输入微信号", "输入", WECHAR_MAX_LEN - 1);
 
 			break;
