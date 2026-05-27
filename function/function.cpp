@@ -2,6 +2,10 @@
 #include <easyx.h>
 #include <string.h>
 #include <stdio.h>
+#include "../../Process/login/login.h"
+#include "../../menu/DetailMenu/detailmenu.h"
+#include "../../menu/NormalMenu/normalmenu.h"
+#include "../../menu/RevealMenu/revealmenu.h"
 #include "../base.h"
 #include <time.h>
 
@@ -222,7 +226,7 @@ bool InputStr(char* Str, const char* InputBoxInfo, const char* InputBoxTip, int 
 bool InputInter(ll* num, const char* InputBoxInfo, const char* InputBoxTip) {
 	bool changed = false;
 	int circle = 1;
-	ll temp_num;
+	ll temp_num = *num;
 	char temp[1001] = "";
 	do {
 		circle = 1;
@@ -248,7 +252,7 @@ bool InputInter(ll* num, const char* InputBoxInfo, const char* InputBoxTip) {
 bool InputFloat(double* num, const char* InputBoxInfo, const char* InputBoxTip) {
 	bool changed = false;
 	int circle = 1;
-	double temp_num;
+	double temp_num = *num;
 	char temp[1001] = "";
 	do {
 		circle = 1;
@@ -262,7 +266,7 @@ bool InputFloat(double* num, const char* InputBoxInfo, const char* InputBoxTip) 
 				circle = 1;
 			}
 		} else {
-			changed = true;
+			changed = false;
 			circle = 0;
 		}
 
@@ -270,3 +274,189 @@ bool InputFloat(double* num, const char* InputBoxInfo, const char* InputBoxTip) 
 
 	return changed;
 }
+
+
+bool InputDate(time_t* time, const char* InputBoxInfo, const char* InputBoxTip) {
+	
+	bool changed = false;	//默认未改动
+	int circle = 1;
+
+
+	time_t temp_time = *time;
+	/*获取时间结构体,
+	*主要是由于这里输入的时间只有年月日, 没法保证时间的精确度
+	*所以让传入的时间作为除年月日外的结构体字段*/
+	struct tm struct_time = *localtime(&temp_time);	
+
+	int year, mon, day;
+	char temp[1001] = "";
+	do {
+		circle = 1;
+		circle = 1;
+		if (InputBox(temp, 1000, InputBoxInfo, InputBoxTip, temp, 0, 0, false)) {
+			if (sscanf(temp, "%d %d %d", &year, &mon, &day) == 3 && year < 3000 && year > 1970) {
+				struct_time.tm_year = year - 1900;
+				struct_time.tm_mon = mon - 1;
+				struct_time.tm_mday = day;
+
+				*time = mktime(&struct_time);
+
+				circle = 0;
+				changed = true;
+			} else {
+				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK);
+				circle = 1;
+			}
+		} else {
+			changed = false;
+			circle = 0;
+		}
+	} while (circle);
+	return changed;
+}
+
+/*一定会被修改*/
+void changeBookCondition(BookCondition* condition) {
+
+	cleardevice();
+	int input_num = normalMenu(200, 90, 4, BookConditionStr, 100, 30, "返回", 20, "选择书籍的新旧程度", 30);
+	switch (input_num) {
+
+	case 1: *condition = NEW; break;
+
+	case 2: *condition = LIKE_NEW; break;
+
+	case 3: *condition = GOOD; break;
+
+	case 4:	*condition = ACCEPTABLE; break;
+	}
+}
+
+
+bool changeUserKey(UserInfo* onlineUser) {
+	if (!authenUserInfo(onlineUser)) {
+		return false;
+	}
+	char temp_key[1001] = "";
+	if (InputStr(temp_key, "输入新密码", "提示", 1000)) {
+		generateSalt(onlineUser->salt, 12);
+		generateHashKey(temp_key, onlineUser->salt, onlineUser->hashKey);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+
+bool changeUserInfo(UserInfo* onlineUser) {
+	UserInfo* temp_user = (UserInfo*)malloc(sizeof(UserInfo));
+	memcpy(temp_user, onlineUser, sizeof(UserInfo));
+
+	bool changed = false;
+
+	int circle = 1;
+	do {
+		circle = 1;
+		cleardevice();
+		char selections[][101] = {"保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"};
+		int input_num = detailUserInfoMenu(200, 90, 5, selections, 90, 30, "不保存退出", 20, "选择修改的信息", 10, "正在被修改的用户信息详情", temp_user, 10);
+		switch (input_num) {
+		case 0:
+			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO) == IDYES) {
+				circle = false;
+				circle = 0;
+			}
+			break;
+
+		case 1:
+			memcpy(onlineUser, temp_user, sizeof(UserInfo));
+			changed = true;
+			circle = 0;
+
+			break;
+		case 2:
+			InputStr(temp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入", USERNAME_MAX_LEN - 3);
+
+			break;
+
+		case 3:
+			InputInter(&(temp_user->tel), "输入电话", "输入");
+			break;
+
+		case 4:
+			InputInter(&(temp_user->QQ), "输入QQ号", "输入");
+			break;
+
+		case 5:
+			InputStr(temp_user->WeChat, "输入微信号", "输入", WECHAR_MAX_LEN - 1);
+
+			break;
+		}
+
+	} while(circle);
+	free(temp_user);
+
+	return changed;
+}
+
+
+
+
+
+bool changeBookInfo(Book* book) {
+	Book* temp_book = (Book*)malloc(sizeof(Book));
+	memcpy(temp_book, book, sizeof(Book));
+	bool changed = false;
+	int circle = 1;
+	do {
+		circle = 1;
+		cleardevice();
+
+		char selections[][101] = {"保存修改", "书籍名称", "ISBN", "书籍作者", "书籍状态", "书籍价格"};
+
+		int input_num = detailBookMenu(200, 90, 6, selections, 100, 30, "退出修改", 20, "选择操作", 10, "正在被修改的书籍详情", temp_book, 10);
+
+		switch (input_num) {
+		case 0:
+			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO) == IDYES) {
+				changed = false;
+				circle = 0;
+			}
+			break;
+
+		case 1:
+			memcpy(book, temp_book, sizeof(Book));
+			changed = true;
+			circle = 0;
+
+			break;
+
+		case 2:
+			InputStr(temp_book->title, "输入书籍名称", "输入", BOOK_TITLE_MAX_LEN - 3);
+			break;
+
+		case 3:
+
+			InputStr(temp_book->ISBN, "输入书籍ISBN", "输入", ISBN_MAX_LEN - 3);
+			break;
+
+		case 4:
+
+			InputStr(temp_book->author, "输入书籍作者", "输入", BOOK_AUTHOR_MAX_LEN - 3);
+			break;
+
+		case 5:
+
+			changeBookCondition(&(temp_book->condition));
+			break;
+		case 6:
+
+			InputFloat(&(temp_book->price), "输入一个小数代表书籍价格", "输入价格");
+			break;
+		}
+
+	} while (circle);
+	free(temp_book);
+	return changed;
+}
+

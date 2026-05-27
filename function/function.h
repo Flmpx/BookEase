@@ -50,4 +50,23 @@ extern bool InputInter(ll* num, const char* InputBoxInfo, const char* InputBoxTi
 
 extern bool InputFloat(double* num, const char* InputBoxInfo, const char* InputBoxTip);
 
+extern bool InputDate(time_t* time, const char* InputBoxInfo, const char* InputBoxTip);
+
+/*
+*	下面是改变一些内容的
+*
+*/
+
+
+extern void changeBookCondition(BookCondition* condition);
+
+
+extern bool changeUserKey(UserInfo* onlineUser);
+
+extern bool changeUserInfo(UserInfo* onlineUser);
+
+
+extern bool changeBookInfo(Book* book);
+
+
 #endif

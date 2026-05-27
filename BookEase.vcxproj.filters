@@ -54,9 +54,6 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Process\buy&amp;post\buypost.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Process\post\post.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Process\search\search.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Process\buy&amp;post\buypost.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Process\post\post.h">

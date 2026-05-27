@@ -24,7 +24,7 @@ void my_buy_sold_detail(BookList* mainBookList, BookList* nowBooks, Book* book) 
 		circle = 1;
 		cleardevice();
 		char selections[][101] = {"没有"};
-		int input_num = detailBookMenu(200, 90, 0, selections, 90, 30, "返回", 20, "选择操作", 10, "预定书籍详情", book, 10);
+		int input_num = detailBookMenu(200, 90, 0, selections, 90, 30, "返回", 20, "选择操作", 10, "已购书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
 
@@ -40,7 +40,7 @@ void my_buy_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition*
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已购书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_buy_sold_detail(mainBookList, &nowBooks, book);
@@ -65,7 +65,7 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 		circle = 1;
 		cleardevice();
 		char selections[][101] = {"取消预定"};
-		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "预定书籍详情", book, 10);
+		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "已预定的书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1: 
@@ -95,7 +95,7 @@ void my_buy_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已预定书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_buy_reserved_detail(mainBookList, &nowBooks, book);
@@ -185,7 +185,7 @@ void my_post_onsale(BookList* mainBookList, UserInfo* onlineUser, BookCmpConditi
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有在售的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_onsale_detail(mainBookList, &nowBooks, book, onlineUser);
@@ -244,7 +244,7 @@ void my_post_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondi
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有已被预定的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_reserved_detail(mainBookList, &nowBooks, book);
@@ -269,7 +269,7 @@ void my_post_sold_detail(BookList* mainBookList, BookList* nowBooks, Book* book)
 		circle = 1;
 		cleardevice();
 		char selections[][101] = {"仅可查看"};
-		int input_num = detailBookMenu(200, 90, 0, selections, 90, 30, "返回", 20, "不可操作", 10, "已购书籍详情", book, 10);
+		int input_num = detailBookMenu(200, 90, 0, selections, 90, 30, "返回", 20, "不可操作", 10, "已被购买的书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
 		}
@@ -284,7 +284,7 @@ void my_post_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已被购买的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_sold_detail(mainBookList, &nowBooks, book);
@@ -308,7 +308,7 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 		circle = 1;
 		cleardevice();
 		char selections[][101] = {"重新上架", "修改书籍信息"};
-		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "返回", 20, "选择操作", 10, "已下架书籍详情", book, 10);
+		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "返回", 20, "选择操作", 10, "已下架书籍的详情", book, 10);
 		switch (input_num) {
 		case 0: circle = 0; break;
 		case 1:
@@ -326,8 +326,12 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 				circle = 0;
 			}
 		break;
+
 		case 2:
-			changeBookInfo(mainBookList, book);
+			if (changeBookInfo(book)) {
+				saveBookListToFile(mainBookList, "bookinfo.txt");
+				MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
+			}
 			
 			break;
 		}
@@ -342,7 +346,7 @@ void my_post_removed(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已下架的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_removed_detail(mainBookList, &nowBooks, book);
@@ -415,66 +419,9 @@ void my_post(BookList* mainBookList, UserInfo* onlineUser) {
 
 
 
-void my_info_changekey(UserList* mainUserInfo, UserInfo* onlineUser) {
-	if (!authenUserInfo(onlineUser)) {
-		return;
-	}
-	char temp_key[1001] = "";
-	if (InputStr(temp_key, "输入新密码", "提示", 1000)) {
-		generateSalt(onlineUser->salt, 12);
-		generateHashKey(temp_key, onlineUser->salt, onlineUser->hashKey);
-		saveUserListToFile(mainUserInfo, "userinfo.txt");
-		MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK);
 
-	}
-}
 
-void my_info_changeinfo(UserList* mainUserInfo, UserInfo* onlineUser) {
-	UserInfo* temp_user = (UserInfo*)malloc(sizeof(UserInfo));
-	memcpy(temp_user, onlineUser, sizeof(UserInfo));
 
-	int circle = 1;
-	do {
-		circle = 1;
-		cleardevice();
-		char selections[][101] = {"保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"};
-		int input_num = detailUserInfoMenu(200, 90, 5, selections, 90, 30, "保存并退出", 20, "选择修改的信息", 10, "你的信息", temp_user, 10);
-		switch (input_num) {
-		case 0:
-			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO) == IDYES) {
-				circle = 0;
-			}
-			break;
-
-		case 1:
-			memcpy(onlineUser, temp_user, sizeof(UserInfo));
-			saveUserListToFile(mainUserInfo, "userinfo.txt");
-			MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
-			circle = 0;
-				
-			break;
-		case 2:
-				InputStr(temp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入", USERNAME_MAX_LEN - 3);
-
-			break;
-
-		case 3:
-				InputInter(&(temp_user->tel), "输入电话", "输入");
-			break;
-			
-		case 4:
-				InputInter(&(temp_user->QQ), "输入QQ号", "输入");
-			break;
-
-		case 5:
-				InputStr(temp_user->WeChat, "输入微信号", "输入", WECHAR_MAX_LEN - 1);
-
-			break;
-		}
-
-	} while(circle);
-	free(temp_user);
-}
 
 void my_info(UserList* mainUserInfo, UserInfo* onlineUser) {
 	int circle = 1;
@@ -488,12 +435,18 @@ void my_info(UserList* mainUserInfo, UserInfo* onlineUser) {
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1: 
-				my_info_changeinfo(mainUserInfo, onlineUser);
-				
+				if (changeUserInfo(onlineUser)) {
+					saveUserListToFile(mainUserInfo, "userinfo.txt");
+					MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
+				}
 			break;
 
 			case 2:
-				my_info_changekey(mainUserInfo, onlineUser);
+				if (changeUserKey(onlineUser)) {
+					saveUserListToFile(mainUserInfo, "userinfo.txt");
+					MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK);
+
+				}
 			break;
 		}
 		

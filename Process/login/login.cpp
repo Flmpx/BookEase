@@ -1,6 +1,7 @@
 #include "login.h"
 #include "../../base.h"
 #include "../../Lists/UserList/userlist.h"
+#include "../../function/function.h"
 #include <easyx.h>
 #include "../saveandload/saveandload.h"
 #include <string.h>
@@ -50,21 +51,17 @@ bool authenUserInfo(UserInfo* user) {
 	char temp[1001] = "";
 	do {
 		circle = 1;
-		if (InputBox(temp, 1000, "请输入登录密码", "输入用户信息", temp, 0, 0, false)) {
-			if (temp[0] != '\0') {
-				generateHashKey(temp, user->salt, tempHashKey);
-				if (strcmp(tempHashKey, user->hashKey) == 0) {
-					res = 1;
-					circle = 0;
-					MessageBox(GetHWnd(), "认证成功", "提示", MB_OK);
 
-				} else {
-					circle = 1;
-					MessageBox(GetHWnd(), "认证失败, 请重试", "提示", MB_OK);
-				}
+		if (InputStr(temp, "请输入登录密码", "输入用户信息", 1000)) {
+			generateHashKey(temp, user->salt, tempHashKey);
+			if (strcmp(tempHashKey, user->hashKey) == 0) {
+				res = 1;
+				circle = 0;
+				MessageBox(GetHWnd(), "认证成功", "提示", MB_OK);
+
 			} else {
 				circle = 1;
-				MessageBox(GetHWnd(), "输入为空", "警告", MB_OK);
+				MessageBox(GetHWnd(), "认证失败, 请重试", "提示", MB_OK);
 			}
 		} else {
 			res = 0;
@@ -82,31 +79,23 @@ UserInfo* loginFunc(UserList* users) {
 	UserInfo* user = NULL;
 	do {
 		circle = 1;
-		if (InputBox(temp, 1000, "请输入学号", "输入用户信息", temp, 0, 0, false) && temp[0] != '\0') {
-			if (sscanf(temp, "%16lld", &id) == 1 && id > 0) {
-				user = getPtrUserInfoByIdInUserList(users, id);
-				if (user) {
-					if (authenUserInfo(user)) {
-						circle = 0;
-					} else {
-						user = NULL;
-						circle = 1;
-					}
+		if (InputInter(&id, "请输入学号", "输入用户信息")) {
+			user = getPtrUserInfoByIdInUserList(users, id);
+			if (user) {
+				if (authenUserInfo(user)) {
+					circle = 0;
 				} else {
-					MessageBox(GetHWnd(), "用户不存在, 检查是否输入错误或者进行注册", "提示", MB_OK);
+					user = NULL;
 					circle = 1;
 				}
 			} else {
+				MessageBox(GetHWnd(), "用户不存在, 检查是否输入错误或者进行注册", "提示", MB_OK);
 				circle = 1;
-				MessageBox(GetHWnd(), "输入格式有误", "提示", MB_OK);
 			}
 		} else {
 			res = 0;
 			circle = 0;
-			MessageBox(GetHWnd(), "取消成功", "提示", MB_OK);
 		}
-
-		
 	} while (circle);
 	return user;
 }
@@ -116,26 +105,21 @@ static UserInfo* createUser(ll id) {
 	char temp[1001] = "";
 	int circle;
 	do {
+		
 		circle = 1;
-		if (InputBox(temp, 1000, "请输入密码", "输入用户信息", temp, 0, 0, false)) {
-			if (temp[0] != '\0') {
-				user = (UserInfo*)malloc(sizeof(UserInfo));
-				*user = getEmptyUserInfo();
-				generateSalt(user->salt, 12);
-				generateHashKey(temp, user->salt, user->hashKey);
-				user->id = id;
-				sprintf(user->name, "%lld", user->id);
-				user->registerTime = time(NULL);
-				circle = 0;
-			} else {
-				circle = 1;
-				MessageBox(GetHWnd(), "输入为空", "警告", MB_OK);
-			}
+		if (InputStr(temp, "请输入密码", "输入用户信息", 1000)) {
+			user = (UserInfo*)malloc(sizeof(UserInfo));
+			*user = getEmptyUserInfo();
+			generateSalt(user->salt, 12);
+			generateHashKey(temp, user->salt, user->hashKey);
+			user->id = id;
+			sprintf(user->name, "%lld", user->id);
+			user->registerTime = time(NULL);
+			circle = 0;
 		} else {
 			circle = 0;
 			user = NULL;
-		}
-		
+		}	
 	} while (circle);
 	return user;
 }
@@ -149,36 +133,30 @@ int registerFunc(UserList* users) {
 	UserInfo* user;
 	do {
 		circle = 1;
-		if (InputBox(temp, 1000, "请输入学号", "输入用户信息", temp, 0, 0, false)) {
-			if (sscanf(temp, "%16lld", &id) == 1 && temp[0] != '\0' && id > 0) {
-				user = getPtrUserInfoByIdInUserList(users, id);
-				if (user) {
-					res = 0;
-					circle = 0;
-					MessageBox(GetHWnd(), "当前用户已注册, 请前往登录", "提示", MB_OK);
-					
-				} else {
-					user = createUser(id);
-					if (user) {
-						insertUserInfoInUserList(users, user);
-						saveUserListToFile(users, "userinfo.txt");
-						MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK);
-						res = 1;
-						circle = 0;
-					} else {
-						circle = 1;
-					}
-				}
+		
+		if (InputInter(&id, "请输入学号", "输入用户信息")) {
+			user = getPtrUserInfoByIdInUserList(users, id);
+			if (user) {
+				res = 0;
+				circle = 0;
+				MessageBox(GetHWnd(), "当前用户已注册, 请前往登录", "提示", MB_OK);
+
 			} else {
-				circle = 1;
-				MessageBox(GetHWnd(), "输入格式有误", "提示", MB_OK);
+				user = createUser(id);
+				if (user) {
+					insertUserInfoInUserList(users, user);
+					saveUserListToFile(users, "userinfo.txt");
+					MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK);
+					res = 1;
+					circle = 0;
+				} else {
+					circle = 1;
+				}
 			}
 		} else {
 			res = 0;
 			circle = 0;
-			MessageBox(GetHWnd(), "取消成功", "提示", MB_OK);
-		}
-		
+		}		
 	} while (circle);
 	return res;
 }

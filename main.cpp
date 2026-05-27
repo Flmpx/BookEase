@@ -21,8 +21,8 @@ static void mainpage(UserList* mainUserList, BookList* mainBookList, UserInfo* o
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"买书", "卖书", "我的"};
-		int input_num = normalMenu(200, 90, 3, selections, 80, 30, "退出登录", 20, "选择操作", 30);
+		char selections[][101] = {"买书", "卖书", "我的", "关于"};
+		int input_num = normalMenu(200, 90, 4, selections, 80, 30, "退出登录", 20, "选择操作", 30);
 		switch (input_num) {
 		case 0:
 			if (MessageBox(GetHWnd(), "确认退出吗?", "提示", MB_YESNO) == IDYES) {

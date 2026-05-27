@@ -141,7 +141,6 @@
     <ClCompile Include="menu\LoginMenu\loginmenu.cpp" />
     <ClCompile Include="menu\menu.cpp" />
     <ClCompile Include="menu\RevealMenu\revealmenu.cpp" />
-    <ClCompile Include="Process\buy&amp;post\buypost.cpp" />
     <ClCompile Include="Process\login\login.cpp" />
     <ClCompile Include="Process\my\my.cpp" />
     <ClCompile Include="Process\post\post.cpp" />
@@ -164,7 +163,6 @@
     <ClInclude Include="menu\LoginMenu\loginmenu.h" />
     <ClInclude Include="menu\menu.h" />
     <ClInclude Include="menu\RevealMenu\revealmenu.h" />
-    <ClInclude Include="Process\buy&amp;post\buypost.h" />
     <ClInclude Include="Process\login\login.h" />
     <ClInclude Include="Process\my\my.h" />
     <ClInclude Include="Process\post\post.h" />

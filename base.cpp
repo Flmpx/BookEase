@@ -161,6 +161,7 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 		return false;
 	}
 
+	//±È½ÏÊé¼®×´Ì¬
 	if (bookCondition->status != Invalid_BookStatus && book->status != bookCondition->status) {
 		return false;
 	}

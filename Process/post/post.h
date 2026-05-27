@@ -3,10 +3,6 @@
 #include "../../base.h"
 #include "../../Lists/BookList/booklist.h"
 
-extern int changeBookCondition(BookCondition* condition);
-
-extern int changeBookInfo(BookList* mainBookList, Book* book);
-
 extern int post(BookList* mainBookList, UserInfo* onlineUser);
 
 #endif
