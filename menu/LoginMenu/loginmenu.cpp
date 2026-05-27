@@ -37,7 +37,7 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 	settextcolor(BLACK);
 	ExMessage msg = {0};
 	while (true) {
-		//Sleep(10);
+		Sleep(6);
 
 		bool hover_reg = false, hover_log = false;
 
