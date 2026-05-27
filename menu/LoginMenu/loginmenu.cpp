@@ -1,4 +1,4 @@
-ï»¿#include "../../base.h"
+#include "../../base.h"
 #include <easyx.h>
 #include "../menu.h"
 
@@ -25,51 +25,51 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 
 	int l, t, w, h;
 
-	//reg-->register-->æ³¨å†Œ
-	//log-->login-->ç™»å½•
+	//reg-->register-->×¢²á
+	//log-->login-->µÇÂ¼
 
-	const char* regStr = "æ³¨å†Œ";
-	const char* logStr = "ç™»å½•";
+	const char* regStr = "×¢²á";
+	const char* logStr = "µÇÂ¼";
 
-	int flagReturn = -1;	//0ä»£è¡¨è¿”å›žæ³¨å†Œ, 1ä»£è¡¨è¿”å›žç™»å½•
+	int flagReturn = -1;	//0´ú±í·µ»Ø×¢²á, 1´ú±í·µ»ØµÇÂ¼
 
 	setbkmode(TRANSPARENT);
 	settextcolor(BLACK);
 	ExMessage msg = {0};
 	while (true) {
-		Sleep(10);
+		//Sleep(10);
 
 		bool hover_reg = false, hover_log = false;
 
 		//peekmessage(&msg, EX_MOUSE);
 		msg = getmessage();
 
-		//æ£€æµ‹æ³¨å†Œ
+		//¼ì²â×¢²á
 		w = blockWidth; h = blockHeight;
 		l = screenW/2 - marginOfBlock/2 - w;
 		t = screenH/3*2 - h/2;
 		if (isInBlock(&msg, l, t, w, h)) {
 			hover_reg = true;
 			if (msg.message == WM_LBUTTONDOWN) {
-				//ç‚¹å‡»äº†æ³¨å†Œ
+				//µã»÷ÁË×¢²á
 				flagReturn = 0;
 			}
 		}
 
-		//æ£€æµ‹ç™»å½•é”®
+		//¼ì²âµÇÂ¼¼ü
 		w = blockWidth; h = blockHeight;
 		l = screenW/2 + marginOfBlock/2;
 		t = screenH/3*2 - h/2;
 		if (isInBlock(&msg, l, t, w, h)) {
 			hover_log = true;
 			if (msg.message == WM_LBUTTONDOWN) {
-				//ç‚¹å‡»äº†ç™»å½•
+				//µã»÷ÁËµÇÂ¼
 				flagReturn = 1;
 			}
 		}
 		BeginBatchDraw();
 
-		//ç»˜åˆ¶Reg
+		//»æÖÆReg
 
 		style_button_start();
 		if (hover_reg) {
@@ -84,7 +84,7 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 
 
 
-		//ç»˜åˆ¶Log
+		//»æÖÆLog
 		style_button_start();
 		if (hover_log) {
 			if (flagReturn >= 0) style_button_click();
@@ -100,7 +100,7 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 		EndBatchDraw();
 
 
-		//åˆ¤æ–­ä½Žçº§è¡Œä¸º
+		//ÅÐ¶ÏµÍ¼¶ÐÐÎª
 		if (flagReturn != -1) {
 			Sleep(200);
 			return flagReturn;

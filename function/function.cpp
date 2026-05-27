@@ -31,11 +31,15 @@ InfoOfReturn linkBookForUser(Book* book, UserList* plist) {
 
 
 void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
-	int InofNum = 6;
+	int InofNum = 7;
 	int th = h/InofNum;
 	fillrectangle(l, t, l + w, t + h);
-	char tempStr[1001];
+	char tempStr[1001] = "";
 	int cnt = 0;
+	/*距离上方占据一定空间*/
+	outtextxy(l, t+(cnt++)*th, tempStr);
+
+
 	sprintf(tempStr, "用户名:%s", info->name);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
@@ -61,13 +65,17 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 }
 
 void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 6;
+	int InfoNum = 7;
 	int th = h/InfoNum;
 	//settextstyle(th, 0, "宋体");
 	fillrectangle(l, t, l + w, t + h);
 
-	char tempStr[1001];
+	char tempStr[1001] = "";
 	int cnt = 0;
+
+	/*距离上方占据一定空间*/
+	outtextxy(l, t+(cnt++)*th, tempStr);
+
 	sprintf(tempStr, "书名:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
@@ -91,7 +99,7 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 
 
 void printAllBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 13;
+	int InfoNum = 14;
 	if (book->buyerId != Invalid_Num) {
 		InfoNum += 7;
 	}
@@ -101,8 +109,12 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 	int th = h/InfoNum;
 	//settextstyle(th, 0, "宋体");
 	fillrectangle(l, t, l + w, t + h);
-	char tempStr[1001];
+	char tempStr[1001] = "";
 	int cnt = 0;
+
+	/*距离上方占据一定空间*/
+	outtextxy(l, t+(cnt++)*th, tempStr);
+
 	sprintf(tempStr, "书名:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
@@ -194,6 +206,51 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 	}
 
 
+
+}
+
+
+void printStatistics(UserList* mainUserList, BookList* mainBookList, int l, int t, int w, int h) {
+	int InfoNum = 8;
+	int th = h/InfoNum;
+	char tempStr[1001] = "";
+
+	int cnt = 0;
+	fillrectangle(l, t, l + w, t + h);
+
+	/*距离上方占据一定空间*/
+	outtextxy(l, t+(cnt++)*th, tempStr);
+
+	time_t nowTime = time(NULL);
+	time_t diffTime = nowTime - releaseTime;
+
+	int day = diffTime/(60*60*24);
+	int hour = diffTime % (60*60*24) / (60*60);
+	int min = diffTime % (60*60) /(60);
+	int sec = diffTime % (60);
+
+	sprintf(tempStr, "BookEase已经走过了 %d 天 %d 小时 %d 分钟 %d 秒", day, hour, min, sec);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "有 %d 本书来到了这里(总上架数目)", mainBookList->size);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "有 %d 本书正在等待被发现(在售数目)", mainBookList->numOfStatus[ON_SALE]);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "有 %d 本书似乎找到了新去处(已预定数目)", mainBookList->numOfStatus[RESERVED]);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "有 %d 本书的原主人还在犹豫(已下架数目)", mainBookList->numOfStatus[REMOVED]);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "有 %d 本书找到了新去处(已售数目)", mainBookList->numOfStatus[SOLD]);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+
+
+	sprintf(tempStr, "有 %.2lf 元的资金流过此处(总交易金额)", mainBookList->amount);
+	outtextxy(l, t+(cnt++*th), tempStr);
 
 }
 
@@ -375,7 +432,7 @@ bool changeUserInfo(UserInfo* onlineUser) {
 
 			break;
 		case 2:
-			InputStr(temp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入", USERNAME_MAX_LEN - 3);
+			InputStr(temp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入", NAME_MAX_LEN - 3);
 
 			break;
 
@@ -432,7 +489,7 @@ bool changeBookInfo(Book* book) {
 			break;
 
 		case 2:
-			InputStr(temp_book->title, "输入书籍名称", "输入", BOOK_TITLE_MAX_LEN - 3);
+			InputStr(temp_book->title, "输入书籍名称", "输入", TITLE_MAX_LEN - 3);
 			break;
 
 		case 3:
@@ -442,7 +499,7 @@ bool changeBookInfo(Book* book) {
 
 		case 4:
 
-			InputStr(temp_book->author, "输入书籍作者", "输入", BOOK_AUTHOR_MAX_LEN - 3);
+			InputStr(temp_book->author, "输入书籍作者", "输入", AUTHOR_MAX_LEN - 3);
 			break;
 
 		case 5:

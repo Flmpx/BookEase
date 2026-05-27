@@ -2,6 +2,7 @@
 #define FUNCTION_H
 #include "../base.h"
 #include "../Lists/UserList/userlist.h"
+#include "../Lists/BookList/booklist.h"
 
 /// @brief 将书籍信息里面的售卖者, 购买者和预约者的信息位置建立联系
 /// @param book 书籍指针
@@ -37,6 +38,8 @@ extern void printSimpleBookInfo(Book* book, int l, int t, int w, int h);
 /// @param h 矩形高度
 extern void printAllBookInfo(Book* book, int l, int t, int w, int h);
 
+
+extern void printStatistics(UserList* mainUserList, BookList* mainBookList, int l, int t, int w, int h);
 
 /*
 * 下面三个函数是用于输入的

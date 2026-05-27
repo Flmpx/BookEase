@@ -50,15 +50,15 @@ Book getEmptyBook() {
 
 
 
-UserInfoCmpCondition getEmptyUserInfoCmpCondition() {
-	UserInfoCmpCondition empty;
+UserCmpCondition getEmptyUserInfoCmpCondition() {
+	UserCmpCondition empty;
 	empty.id = Invalid_Num;
 	empty.name[0] = '\0';
 	return empty;
 }
 
 
-bool isSimilarUserInfo(UserInfo* user, UserInfoCmpCondition* userCondition) {
+bool isSimilarUserInfo(UserInfo* user, UserCmpCondition* userCondition) {
 	//±È½ÏÑ§ºÅ
 
 	if (!user) {

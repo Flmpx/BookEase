@@ -1,29 +1,32 @@
-ï»¿#include "booklist.h"
+#include "booklist.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "../UserList/userlist.h"
 #include <string.h>
 
 void initBookList(BookList* plist) {
+	plist->amount = 0.0;
 	plist->head = plist->tail = NULL;
 	plist->size = 0;
+	memset(plist->numOfStatus, 0, 4*sizeof(int));
 }
 
 InfoOfReturn insertBookInBookList(BookList* plist, Book* book) {
 	if (book == NULL) {
-		printf("ä¼ å…¥ä¿¡æ¯æ— æ•ˆ\n");
+		printf("´«ÈëÐÅÏ¢ÎÞÐ§\n");
 		return Warning;
 	}
 	
 	BookNode* newNode = (BookNode*)malloc(sizeof(BookNode));
 
 	if (newNode == NULL) {
-		printf("å†…å­˜åˆ†é…å¤±è´¥");
+		printf("ÄÚ´æ·ÖÅäÊ§°Ü");
 		return Warning;
 	}
-	newNode->book = book;	//åªæ˜¯ä¼ æŒ‡é’ˆ
+	newNode->book = book;	//Ö»ÊÇ´«Ö¸Õë
 	newNode->prev = plist->tail;
 	newNode->next = NULL;
+	
 
 	if (plist->size) {
 		plist->tail->next = newNode;
@@ -32,6 +35,12 @@ InfoOfReturn insertBookInBookList(BookList* plist, Book* book) {
 		plist->head = plist->tail = newNode;
 	}
 
+
+
+	if (book->status == SOLD) {
+		plist->amount += book->price;
+	}
+	plist->numOfStatus[book->status]++;
 	plist->size++;
 	return Success;
 

@@ -12,6 +12,7 @@
 #include "Process/search/search.h"
 #include "Process/post/post.h"
 #include "Process/my/my.h"
+#include "Process/about/about.h"
 
 ll MaxBookId = 0;
 
@@ -40,6 +41,9 @@ static void mainpage(UserList* mainUserList, BookList* mainBookList, UserInfo* o
 			break;
 		case 3:
 			my(mainBookList, mainUserList, onlineUser);
+			break;
+		case 4:
+			about(mainUserList, mainBookList, onlineUser);
 			break;
 		}
 

@@ -2,59 +2,43 @@
 #define BASE_H
 #include <stdbool.h>
 #include <time.h>
-#define EPS 1e-9
+
+const time_t releaseTime = 1778935434;
+
 extern char BookStatusStr[4][101];
 extern char BookConditionStr[4][101];
 
+#define EPS 1e-9							//浮点数比较所用误差
 
-//无效数字, 可用于id, tel等
-#define Invalid_Num 0LL
+#define Invalid_Num 0LL						//无效数字, 可用于id, tel等
 
+#define Invalid_Str "#"						//无效字段, 可用于name, title等
 
-//无效字段, 可用于name, title等
-#define Invalid_Str "#"
-
-
-
-//无效浮点数, 可用于书籍价格
-#define Invalid_FloatNum -1.0
+#define Invalid_FloatNum -1.0				//无效浮点数, 可用于书籍价格
 
 
 
 
+#define WECHAR_MAX_LEN 48					//微信号最长长度
 
+#define ISBN_MAX_LEN 48						//ISBN最长长度
 
-//微信号最长长度
-#define WECHAR_MAX_LEN 48
+#define TITLE_MAX_LEN 64					//书籍标题最长长度
 
+#define AUTHOR_MAX_LEN 64					//书籍作者名字最长长度
 
-//ISBN最长长度
-#define ISBN_MAX_LEN 48
+#define NAME_MAX_LEN 32						//用户名最长长度
 
-//书籍标题最长长度
-#define BOOK_TITLE_MAX_LEN 64
+#define SALT_LEN 16							//盐最长长度
 
-//书籍作者名字最长长度
-#define BOOK_AUTHOR_MAX_LEN 64
-
-//用户名最长长度
-#define USERNAME_MAX_LEN 32
-
-//其他信息最长长度
-#define OTHERS_MAX_LEN 128
-
-//盐最长长度
-#define SALT_LEN 16
-
-//密码最长长度
-#define HASHKEY_LEN 24
+#define HASHKEY_LEN 24						//密码最长长度
 
 
 
 typedef unsigned long long ull;
 typedef long long ll;
 
-extern ll MaxBookId;		//所有书籍的id的最大值, 主要是新发布书籍的时候会创建一个唯一的id
+extern ll MaxBookId;						//所有书籍的id的最大值, 主要是新发布书籍的时候会创建一个唯一的id
 
 
 typedef enum {
@@ -62,8 +46,6 @@ typedef enum {
 	Same = 0,
 	Max = 1,
 } CmpResult;
-
-//typedef CmpResult (*_cmp) (const void* a, const void* b);
 
 /// @brief 操作状态返回值
 typedef enum {
@@ -81,47 +63,62 @@ typedef enum {
 } BookCondition;
 
 typedef enum {
-	Invalid_BookStatus = -1,
+	Invalid_BookStatus = -1,				//无效状态
 	ON_SALE = 0,							//在售
 	RESERVED = 1,							//已预约
 	SOLD = 2,								//已售
 	REMOVED = 3,							//已下架
 } BookStatus;
 
-typedef struct UserInfoCmpCondition {
-	char name[USERNAME_MAX_LEN];
-	ll id;
-} UserInfoCmpCondition;
+typedef struct UserCmpCondition {
+	char name[NAME_MAX_LEN];				//用户名的比较条件
+	ll id;									//比较用户id
+} UserCmpCondition;
 
 typedef struct UserInfo {
-	char name[USERNAME_MAX_LEN];			//用户名
+	char name[NAME_MAX_LEN];				//用户名
 
-	//用户学号为唯一身份认证
-	ll id;									//用户id
+	ll id;									//用户id, 用户学号为唯一身份认证
+
 	ll tel;									//用户电话
+
 	ll QQ;									//QQ号
+
 	char WeChat[WECHAR_MAX_LEN];			//微信号
-	//char others[OTHERS_MAX_LEN];			//其他联系信息
+
 	time_t registerTime;					//用户注册时间
 	
 	char salt[SALT_LEN];					//验证密码使用的盐
-	char hashKey[HASHKEY_LEN];				//密码
+
+	char hashKey[HASHKEY_LEN];				//hash后的密码
 } UserInfo;
 
 typedef struct BookCmpCondition {
-	UserInfoCmpCondition seller;
-	UserInfoCmpCondition reserver;
-	UserInfoCmpCondition buyer;
-	ll id;
-	char title[BOOK_TITLE_MAX_LEN];
-	char isbn[ISBN_MAX_LEN];
-	char author[BOOK_AUTHOR_MAX_LEN];
-	double downPrice;
-	double upPrice;
-	time_t downTime;
-	time_t upTime;
-	BookCondition condition;
-	BookStatus status;
+	UserCmpCondition seller;				//售卖者的比较条件
+	
+	UserCmpCondition reserver;				//预定者的比较条件
+	
+	UserCmpCondition buyer;					//购买者的比较条件
+	
+	ll id;									//比较书籍id
+	
+	char title[TITLE_MAX_LEN];				//比较书名
+	
+	char isbn[ISBN_MAX_LEN];				//比较isbn
+	
+	char author[AUTHOR_MAX_LEN];			//比较书籍作者
+	
+	double downPrice;						//比较最低价
+	
+	double upPrice;							//比较最高价
+	
+	time_t downTime;						//比较发布时间下限
+	
+	time_t upTime;							//比较发布时间上限
+	
+	BookCondition condition;				//比较书籍新旧程度
+	
+	BookStatus status;						//比较书籍状态
 } BookCmpCondition;
 
 typedef struct Book {
@@ -137,11 +134,11 @@ typedef struct Book {
 
 	ll id;									//书籍唯一id(会自增)
 
-	char title[BOOK_TITLE_MAX_LEN];			//书籍标题
+	char title[TITLE_MAX_LEN];				//书籍标题
 
 	char ISBN[ISBN_MAX_LEN];				//书籍ISBN
 
-	char author[BOOK_AUTHOR_MAX_LEN];		//书籍作者
+	char author[AUTHOR_MAX_LEN];			//书籍作者
 
 	double price;							//书籍价格
 
@@ -153,8 +150,6 @@ typedef struct Book {
 	BookStatus status;						//书籍状态
 
 	BookCondition condition;				//书籍新旧程度
-	//char others[OTHERS_MAX_LEN];			//书籍其他介绍
-
 } Book;
 
 
@@ -173,7 +168,7 @@ extern Book getEmptyBook();
 /// @param user 用户
 /// @param userCondition 用户要求 
 /// @return 比较结果
-extern bool isSimilarUserInfo(UserInfo* user, UserInfoCmpCondition* userCondition);
+extern bool isSimilarUserInfo(UserInfo* user, UserCmpCondition* userCondition);
 
 /// @brief 这本书是否符合要求
 /// @param book 书籍 
@@ -183,7 +178,7 @@ extern bool isSimilarBook(Book* book, BookCmpCondition* bookCondition);
 
 /// @brief 得到无要求的用户要求条件, 可以更更改部分条件后进行比较
 /// @return 用户要求条件
-extern UserInfoCmpCondition getEmptyUserInfoCmpCondition();
+extern UserCmpCondition getEmptyUserInfoCmpCondition();
 
 /// @brief 得到无要求的书籍要求条件, 可以更更改部分条件后进行比较
 /// @return 书籍要求条件

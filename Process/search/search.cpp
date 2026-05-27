@@ -439,7 +439,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 
 
 			case 3:
-				selectStr(searchBook.seller.name, "卖家用户名", "输入卖家用户名", "输入", USERNAME_MAX_LEN - 3);
+				selectStr(searchBook.seller.name, "卖家用户名", "输入卖家用户名", "输入", NAME_MAX_LEN - 3);
 
 			break;
 
@@ -456,7 +456,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 
 			case 6:
 
-				selectStr(searchBook.title, "书名", "输入书名, 可以只输入一部分", "输入", BOOK_TITLE_MAX_LEN - 3);
+				selectStr(searchBook.title, "书名", "输入书名, 可以只输入一部分", "输入", TITLE_MAX_LEN - 3);
 			break;
 
 
@@ -465,7 +465,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 			break;
 
 			case 8:
-				selectStr(searchBook.author, "书籍作者", "输入书籍的作者", "输入", BOOK_AUTHOR_MAX_LEN - 3);
+				selectStr(searchBook.author, "书籍作者", "输入书籍的作者", "输入", AUTHOR_MAX_LEN - 3);
 			break;
 
 

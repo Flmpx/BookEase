@@ -60,6 +60,9 @@
     <ClCompile Include="Process\my\my.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Process\about\about.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
@@ -105,6 +108,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Process\my\my.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\about\about.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
