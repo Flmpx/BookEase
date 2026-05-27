@@ -2,6 +2,10 @@
 #include "../../Lists/BookList/booklist.h"
 #include "../../Lists/UserList/userlist.h"
 #include "../../menu/NormalMenu/normalmenu.h"
+#include "../../function/function.h"
+#include "../../menu/RevealMenu/revealmenu.h"
+#include "../../menu/DetailMenu/detailmenu.h"
+#include "../../Process/saveandload/saveandload.h"
 #include "search.h"
 #include <easyx.h>
 
@@ -10,6 +14,75 @@
 #include <stdio.h>
 
 
+
+int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* onlineUser) {
+	int circle = 1;
+	do {
+		cleardevice();
+		circle = 1;
+		char selections[][101] = {"预定"};
+		//int input_num = normalMenu(200, 90, 1, selections, 90, 30, "退出查看", 20, "选择是否预定", 10);
+		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "退出查看", 20, "选择是否预定", 10, "书籍详情", book, 10);
+		switch (input_num) {
+			case 0: circle = 0; break;
+			case 1:
+				if (book->sellerId != onlineUser->id) {
+					if (MessageBox(GetHWnd(), "确定要预定吗?", "提示", MB_YESNO) == IDYES) {
+						book->reserverId = onlineUser->id;
+						book->reserveTime = time(NULL);
+						book->reserver = onlineUser;
+						book->status = RESERVED;
+						/*由于检索页只会展示在售书籍, 故要将已订书籍从链表中删除*/
+
+						delNodeByIdInBookList(nowBooks, book->id);
+
+						saveBookListToFile(mainBookList, "bookinfo.txt");
+					
+						MessageBox(GetHWnd(), "预定成功!\n你可在我的页查看已订详情\n尝试与卖者联系\n", "提示", MB_OK);
+
+						circle = 0;
+
+					}
+				} else {
+					/*防止自己预定自己的书籍*/
+					MessageBox(GetHWnd(), "不可以自己预定自己的书哦", "提示", MB_OK);
+					circle = 1;
+				}
+
+			break;
+		}
+		
+	} while (circle);
+	return 1;
+}
+
+
+
+int revealSearchDetail(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition* bookCmpcond) {
+	int circle = 1;
+
+	BookList nowBooks = getSimilarBookListInAllBookList(mainBookList, bookCmpcond);
+	do {
+		circle = 1;
+		int input_num;
+		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有书籍", &nowBooks, 10, 3, 2);
+		switch (input_num) {
+			case -1:
+				buy(mainBookList, &nowBooks, book, onlineUser);
+			break;
+
+			case 0:
+				circle = 0;
+			break;
+
+
+		}
+
+	} while (circle);
+
+	freeBookList(&nowBooks);
+	return 1;
+}
 
 
 
@@ -44,24 +117,9 @@ int selectStr(char* Str, const char* selectionInfo, const char* InputBoxInfo, co
 			break;
 
 		case 2:
-			do {
-				circle_in = 1;
-				if (InputBox(temp, maxLen, InputBoxInfo, InputBoxTip, temp, 0, 0, false)) {
-					if (temp[0] != '\0') {
-						strcpy(Str, temp);
-						circle_in = 0;
-					} else {
-						MessageBox(GetHWnd(), "输入不能为空", "提示", MB_OK);
-						circle_in = 1;
-					}
-				} else {
-					circle_in = 0;
-				}
-
-			} while (circle_in);
+			InputStr(Str, InputBoxInfo, InputBoxInfo, maxLen);
 
 			break;
-
 
 		}
 
@@ -101,22 +159,7 @@ int selectId(ll* id, const char* selectionInfo, const char* InputBoxInfo, const 
 			break;
 
 			case 2:
-				do {
-					circle_in = 1;
-					if (InputBox(temp, 1000, InputBoxInfo, InputBoxTip, temp, 0, 0, false)) {
-						if (sscanf(temp, "%lld", &temp_id) == 1 && temp_id > Invalid_Num) {
-							*id = temp_id;
-							circle_in = 0;
-						} else {
-							MessageBox(GetHWnd(), "输入有误", "提示", MB_OK);
-							circle_in = 1;
-						}
-					} else {
-						circle_in = 0;
-					}
-
-				} while (circle_in);
-
+				InputInter(id, InputBoxInfo, InputBoxTip);
 			break;
 
 
@@ -164,24 +207,18 @@ int selectPrice(BookCmpCondition* searchBook) {
 			
 
 			case 2:
-
-				circle_in = 1;
+				
 				do {
-					circle_in = 1;
-					if (InputBox(temp, 1000, "输入一个代表价格的小数", "输入价格上限", temp, 0, 0, false)) {
-						if (sscanf(temp, "%lf", &price) == 1 && price > -EPS) {
-							if (price < searchBook->downPrice - EPS) {
-								MessageBox(GetHWnd(), "价格上限不能小于价格下限", "提示", MB_OK);
-								circle_in = 1;
-							} else {
-								searchBook->upPrice = price;
-								circle_in = 0;
-							}
-						} else {
-							MessageBox(GetHWnd(), "价格输入有误", "提示", MB_OK);
-							circle_in = 1;
-						}
+					circle_in = 0;
+					price = searchBook->upPrice;
+
+					InputFloat(&price, "输入一个代表价格的小数", "输入价格上限");
+
+					if (price < searchBook->downPrice - EPS) {
+						MessageBox(GetHWnd(), "价格上限不能小于价格下限", "提示", MB_OK);
+						circle_in = 1;
 					} else {
+						searchBook->upPrice = price;
 						circle_in = 0;
 					}
 				} while (circle_in);
@@ -190,23 +227,17 @@ int selectPrice(BookCmpCondition* searchBook) {
 			
 			
 			case 3:
-				circle_in = 1;
 				do {
-					circle_in = 1;
-					if (InputBox(temp, 1000, "输入一个代表价格的小数", "输入价格下限", temp, 0, 0, false)) {
-						if (sscanf(temp, "%lf", &price) == 1 && price > -EPS) {
-							if (price > searchBook->upPrice + EPS) {
-								MessageBox(GetHWnd(), "价格下限不能小于价格上限", "提示", MB_OK);
-								circle_in = 1;
-							} else {
-								searchBook->downPrice = price;
-								circle_in = 0;
-							}
-						} else {
-							MessageBox(GetHWnd(), "价格输入有误", "提示", MB_OK);
-							circle_in = 1;
-						}
+					circle_in = 0;
+					price = searchBook->downPrice;
+
+					InputFloat(&price, "输入一个代表价格的小数", "输入价格下限");
+
+					if (price > searchBook->upPrice + EPS) {
+						MessageBox(GetHWnd(), "价格下限不能小于价格上限", "提示", MB_OK);
+						circle_in = 1;
 					} else {
+						searchBook->downPrice = price;
 						circle_in = 0;
 					}
 				} while (circle_in);
@@ -321,6 +352,7 @@ int selectTime(BookCmpCondition* searchBook) {
 int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser) {
 	int circle = 1;
 	BookCmpCondition searchBook = getEmptyBookCmpCondition();
+	searchBook.status = ON_SALE;	//默认检索在售书籍
 
 	do {
 		circle = 1;
@@ -330,7 +362,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 
 		/* 如果有条件, 则打印出条件, 下同理*/
 		if (searchBook.seller.name[0] != '\0') {
-			sprintf(selections[2], "卖者学号: %s", searchBook.seller.name);
+			sprintf(selections[2], "卖者用户名: %s", searchBook.seller.name);
 		}
 
 		if (searchBook.seller.id != Invalid_Num) {
@@ -374,7 +406,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 			break;
 				
 			case 1:
-
+				revealSearchDetail(mainUserList, mainBookList, onlineUser, &searchBook);
 			break;
 				
 			case 2:

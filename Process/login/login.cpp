@@ -13,7 +13,7 @@ static ll mod = 100000000009;
 static ll base = 131;
 
 
-static void generateSalt(char* salt, int n) {
+void generateSalt(char* salt, int n) {
 	srand(time(NULL));
 	const char* flag = "ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()<>{}|";
 	int len = strlen(flag);
@@ -25,7 +25,7 @@ static void generateSalt(char* salt, int n) {
 }
 
 
-static ll hash(const char* str) {
+ll hash(const char* str) {
 	int len = strlen(str);
 	ll res = 0;
 	for (int i = 0; i < len; i++) {
@@ -34,7 +34,7 @@ static ll hash(const char* str) {
 	return res;
 }
 
-static void generateHashKey(const char* key, const char* salt, char* hashKey) {
+void generateHashKey(const char* key, const char* salt, char* hashKey) {
 	char temp[1001];
 	sprintf(temp, "%s%s", key, salt);
 	ll hashNum = hash(temp);
@@ -50,7 +50,7 @@ bool authenUserInfo(UserInfo* user) {
 	char temp[1001] = "";
 	do {
 		circle = 1;
-		if (InputBox(temp, 1000, "请输入密码", "输入用户信息", temp, 0, 0, false)) {
+		if (InputBox(temp, 1000, "请输入登录密码", "输入用户信息", temp, 0, 0, false)) {
 			if (temp[0] != '\0') {
 				generateHashKey(temp, user->salt, tempHashKey);
 				if (strcmp(tempHashKey, user->hashKey) == 0) {
@@ -161,7 +161,7 @@ int registerFunc(UserList* users) {
 					user = createUser(id);
 					if (user) {
 						insertUserInfoInUserList(users, user);
-						saveUserListToFile(users, "Data/userinfo.txt");
+						saveUserListToFile(users, "userinfo.txt");
 						MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK);
 						res = 1;
 						circle = 0;

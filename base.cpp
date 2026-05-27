@@ -40,8 +40,9 @@ Book getEmptyBook() {
 
 	book.publishTime = book.buyTime = book.reserveTime = Invalid_Num;
 
-	book.status = Invalid_BookStatus;
-	book.condition = Invalid_BookCondition;
+	/*由于这个函数主要在发布书籍的时候使用, 故默认为这些值*/
+	book.status = ON_SALE;
+	book.condition = NEW;
 
 	return book;
 }
@@ -59,6 +60,16 @@ UserInfoCmpCondition getEmptyUserInfoCmpCondition() {
 
 bool isSimilarUserInfo(UserInfo* user, UserInfoCmpCondition* userCondition) {
 	//比较学号
+
+	if (!user) {
+		if (userCondition->id == Invalid_Num) {
+			//如果用户不存在, 且筛选的内容无需筛选这个类型的用户(售卖方, 购买方, 预定方
+			return true;
+		} else {
+			//如果用户不存在, 且筛选条件包括这个, 那说明不是
+			return false;
+		}
+	}
 	if (userCondition->id != Invalid_Num && user->id != userCondition->id) {
 		return false;
 	}
@@ -81,7 +92,10 @@ BookCmpCondition getEmptyBookCmpCondition() {
 	empty.downPrice = empty.upPrice = Invalid_FloatNum;
 	empty.downTime = empty.upTime = Invalid_Num;
 	empty.id = Invalid_Num;
+	empty.status = Invalid_BookStatus;
 	empty.seller = getEmptyUserInfoCmpCondition();
+	empty.reserver = getEmptyUserInfoCmpCondition();
+	empty.buyer = getEmptyUserInfoCmpCondition();
 	return empty;
 }
 
@@ -93,6 +107,16 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 	}
 	//比较售卖者
 	if (isSimilarUserInfo(book->seller, &(bookCondition->seller)) == false) {
+		return false;
+	}
+
+	//比较预定者
+	if (isSimilarUserInfo(book->reserver, &(bookCondition->reserver)) == false) {
+		return false;
+	}
+
+	//比较购买者
+	if (isSimilarUserInfo(book->buyer, &(bookCondition->buyer)) == false) {
 		return false;
 	}
 
@@ -134,6 +158,10 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 	//比较新旧程度
 
 	if (bookCondition->condition != Invalid_BookCondition && book->condition != bookCondition->condition) {
+		return false;
+	}
+
+	if (bookCondition->status != Invalid_BookStatus && book->status != bookCondition->status) {
 		return false;
 	}
 

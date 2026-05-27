@@ -6,6 +6,7 @@
 extern char BookStatusStr[4][101];
 extern char BookConditionStr[4][101];
 
+
 //无效数字, 可用于id, tel等
 #define Invalid_Num 0LL
 
@@ -24,20 +25,20 @@ extern char BookConditionStr[4][101];
 
 
 //微信号最长长度
-#define WECHAR_MAX_LEN 24
+#define WECHAR_MAX_LEN 48
 
 
 //ISBN最长长度
-#define ISBN_MAX_LEN 24
+#define ISBN_MAX_LEN 48
 
 //书籍标题最长长度
 #define BOOK_TITLE_MAX_LEN 64
 
 //书籍作者名字最长长度
-#define BOOK_AUTHOR_MAX_LEN 16
+#define BOOK_AUTHOR_MAX_LEN 64
 
 //用户名最长长度
-#define USERNAME_MAX_LEN 16
+#define USERNAME_MAX_LEN 32
 
 //其他信息最长长度
 #define OTHERS_MAX_LEN 128
@@ -53,6 +54,7 @@ extern char BookConditionStr[4][101];
 typedef unsigned long long ull;
 typedef long long ll;
 
+extern ll MaxBookId;		//所有书籍的id的最大值, 主要是新发布书籍的时候会创建一个唯一的id
 
 
 typedef enum {
@@ -75,7 +77,7 @@ typedef enum {
 	NEW = 0,								//几乎全新
 	LIKE_NEW = 1,							//有点破损或书上笔记有点多
 	GOOD = 2,								//还能用
-	ACCEPTABLE = 4							//可接受
+	ACCEPTABLE = 3							//可接受
 } BookCondition;
 
 typedef enum {
@@ -108,6 +110,8 @@ typedef struct UserInfo {
 
 typedef struct BookCmpCondition {
 	UserInfoCmpCondition seller;
+	UserInfoCmpCondition reserver;
+	UserInfoCmpCondition buyer;
 	ll id;
 	char title[BOOK_TITLE_MAX_LEN];
 	char isbn[ISBN_MAX_LEN];
@@ -117,6 +121,7 @@ typedef struct BookCmpCondition {
 	time_t downTime;
 	time_t upTime;
 	BookCondition condition;
+	BookStatus status;
 } BookCmpCondition;
 
 typedef struct Book {

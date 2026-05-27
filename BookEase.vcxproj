@@ -50,7 +50,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -106,7 +106,7 @@
       <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)easyx\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>EasyXa.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -120,10 +120,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)easyx\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)easyx\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>EasyXa.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -137,9 +141,12 @@
     <ClCompile Include="menu\LoginMenu\loginmenu.cpp" />
     <ClCompile Include="menu\menu.cpp" />
     <ClCompile Include="menu\RevealMenu\revealmenu.cpp" />
+    <ClCompile Include="Process\buy&amp;post\buypost.cpp" />
     <ClCompile Include="Process\login\login.cpp" />
-    <ClCompile Include="Process\mainpage\mainpage.cpp" />
+    <ClCompile Include="Process\my\my.cpp" />
+    <ClCompile Include="Process\post\post.cpp" />
     <ClCompile Include="Process\saveandload\saveandload.cpp" />
+    <ClCompile Include="Process\search\search.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -157,14 +164,17 @@
     <ClInclude Include="menu\LoginMenu\loginmenu.h" />
     <ClInclude Include="menu\menu.h" />
     <ClInclude Include="menu\RevealMenu\revealmenu.h" />
+    <ClInclude Include="Process\buy&amp;post\buypost.h" />
     <ClInclude Include="Process\login\login.h" />
-    <ClInclude Include="Process\mainpage\mainpage.h" />
+    <ClInclude Include="Process\my\my.h" />
+    <ClInclude Include="Process\post\post.h" />
     <ClInclude Include="Process\saveandload\saveandload.h" />
+    <ClInclude Include="Process\search\search.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Data\bookinfo.txt" />
-    <Text Include="Data\localhistory.txt" />
-    <Text Include="Data\userinfo.txt" />
+    <Text Include="bookinfo.txt" />
+    <Text Include="localhistory.txt" />
+    <Text Include="userinfo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

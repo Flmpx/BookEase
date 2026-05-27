@@ -130,7 +130,7 @@ InfoOfReturn saveBookListToFile(BookList* plist, const char* filePath) {
 	BookNode* p = plist->head;
 	while (p) {
 		Book* book = p->book;
-		fprintf(bookFile, "%lld %s %s %s %lf %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", book->id,
+		fprintf(bookFile, "%lld %s %s %s %g %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", book->id,
 																							book->title,
 																							book->ISBN,
 																							book->author,

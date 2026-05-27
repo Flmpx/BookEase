@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Lists\BookList\booklist.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -51,7 +48,19 @@
     <ClCompile Include="Process\login\login.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Process\mainpage\mainpage.cpp">
+    <ClCompile Include="Process\search\search.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\buy&amp;post\buypost.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\post\post.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Process\my\my.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,13 +101,22 @@
     <ClInclude Include="Process\login\login.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Process\mainpage\mainpage.h">
+    <ClInclude Include="Process\search\search.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\buy&amp;post\buypost.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\post\post.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Process\my\my.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Data\bookinfo.txt" />
-    <Text Include="Data\userinfo.txt" />
-    <Text Include="Data\localhistory.txt" />
+    <Text Include="bookinfo.txt" />
+    <Text Include="userinfo.txt" />
+    <Text Include="localhistory.txt" />
   </ItemGroup>
 </Project>

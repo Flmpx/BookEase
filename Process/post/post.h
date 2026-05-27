@@ -4,6 +4,9 @@
 #include "../../Lists/BookList/booklist.h"
 
 
-int post(BookList* mainBookList, UserInfo* onlineUser);
+
+extern int changeBookInfo(BookList* mainBookList, Book* book);
+
+extern int post(BookList* mainBookList, UserInfo* onlineUser);
 
 #endif
