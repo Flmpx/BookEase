@@ -413,6 +413,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 
 				if (MessageBox(GetHWnd(), "确定要全部重置吗?", "提示", MB_YESNO) == IDYES) {
 					searchBook = getEmptyBookCmpCondition();
+					searchBook.status = ON_SALE;	//默认检索在售书籍
 				}
 
 
