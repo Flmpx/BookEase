@@ -6,6 +6,7 @@
 #include "../../menu/RevealMenu/revealmenu.h"
 #include "../../menu/DetailMenu/detailmenu.h"
 #include "../../Process/saveandload/saveandload.h"
+#include "../post/post.h"
 #include "search.h"
 #include <easyx.h>
 
@@ -85,7 +86,37 @@ int revealSearchDetail(UserList* mainUserList, BookList* mainBookList, UserInfo*
 }
 
 
+int selectCondtions(BookCondition* condition) {
+	int circle = 1;
+	do {
+		circle = 1;
+		cleardevice();
+		char selections[][101] = {"重置筛选信息", "书籍新旧程度"};
+		if (*condition != Invalid_BookCondition) {
+			sprintf(selections[1], "书籍新旧程度: %s", BookConditionStr[*condition]);
+		}
+		int input_num = normalMenu(200, 90, 2, selections, 100, 30, "保存并退出", 20, "选择操作", 30);
 
+		switch (input_num) {
+			case 0: 
+				circle = 0;
+
+			break;
+
+			case 1:
+				
+				*condition = Invalid_BookCondition;
+			break;
+
+			case 2:
+
+				changeBookCondition(condition);
+			break;
+		}
+
+	} while (circle);
+	return 1;
+}
 
 
 int selectStr(char* Str, const char* selectionInfo, const char* InputBoxInfo, const char* InputBoxTip, int maxLen) {
@@ -357,7 +388,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"开始检索", "重置所有条件", "卖者用户名", "卖者学号", "书籍id", "书名", "ISBN", "书籍作者", "价格区间", "时间区间"};
+		char selections[][101] = {"开始检索", "重置所有条件", "卖者用户名", "卖者学号", "书籍id", "书名", "ISBN", "书籍作者", "书籍新旧程度", "价格区间", "时间区间"};
 		
 
 		/* 如果有条件, 则打印出条件, 下同理*/
@@ -387,17 +418,21 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 			sprintf(selections[7], "书籍作者: %s", searchBook.author);
 		}
 
-		sprintf(selections[8], "价格区间: %g - %g", searchBook.downPrice, searchBook.upPrice);
+		if (searchBook.condition != Invalid_BookCondition) {
+			sprintf(selections[8], "书籍新旧程度: %s", BookConditionStr[searchBook.condition]);
+		}
+
+		sprintf(selections[9], "价格区间: %g - %g", searchBook.downPrice, searchBook.upPrice);
 
 
 
 		struct tm upTime = *localtime(&(searchBook.upTime));
 		struct tm downTime = *localtime(&(searchBook.downTime));
-		sprintf(selections[9], "时间区间: %04d年%02d月%02d日 - %04d年%02d月%02d日",	downTime.tm_year + 1900, downTime.tm_mon + 1, downTime.tm_mday,
+		sprintf(selections[10], "时间区间: %04d年%02d月%02d日 - %04d年%02d月%02d日",	downTime.tm_year + 1900, downTime.tm_mon + 1, downTime.tm_mday,
 																					upTime.tm_year + 1900, upTime.tm_mon + 1, upTime.tm_mday);
 		
 
-		int input_num = normalMenu(400, 60, 10, selections, 80, 30, "退出检索", 20, "修改筛选条件", 10);
+		int input_num = normalMenu(450, 55, 11, selections, 80, 30, "退出检索", 20, "修改筛选条件", 10);
 		switch (input_num) {
 			case 0:
 				if (MessageBox(GetHWnd(), "退出检索将会丢失所写条件, 确认退出吗?", "提示", MB_YESNO) == IDYES) {
@@ -451,15 +486,21 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 				selectStr(searchBook.author, "书籍作者", "输入书籍的作者", "输入", BOOK_AUTHOR_MAX_LEN - 3);
 			break;
 
-			/* 选择价格区间*/
+
 			case 9:
+				selectCondtions(&(searchBook.condition));
+			
+			break;
+
+			/* 选择价格区间*/
+			case 10:
 
 				selectPrice(&searchBook); 
 
 			break;
 
 			/* 选择发布时间区间*/
-			case 10:
+			case 11:
 				selectTime(&searchBook);
 			break;
 

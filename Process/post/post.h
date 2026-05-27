@@ -3,7 +3,7 @@
 #include "../../base.h"
 #include "../../Lists/BookList/booklist.h"
 
-
+extern int changeBookCondition(BookCondition* condition);
 
 extern int changeBookInfo(BookList* mainBookList, Book* book);
 

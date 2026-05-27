@@ -5,19 +5,19 @@
 #include "../../Process/saveandload/saveandload.h"
 #include "../../function/function.h"
 
-int changeBookCondition(Book* book) {
+int changeBookCondition(BookCondition* condition) {
 	
 		cleardevice();
 		int input_num = normalMenu(200, 90, 4, BookConditionStr, 100, 30, "返回", 20, "选择书籍的新旧程度", 30);
 		switch (input_num) {
 			
-			case 1: book->condition = NEW; break;
+			case 1: *condition = NEW; break;
 
-			case 2: book->condition = LIKE_NEW; break;
+			case 2: *condition = LIKE_NEW; break;
 
-			case 3: book->condition = GOOD; break;
+			case 3: *condition = GOOD; break;
 			
-			case 4:	book->condition = ACCEPTABLE; break;
+			case 4:	*condition = ACCEPTABLE; break;
 		}
 
 		return 1;
@@ -69,7 +69,7 @@ int changeBookInfo(BookList* mainBookList, Book* book) {
 			
 			case 5:
 
-				changeBookCondition(temp_book);
+				changeBookCondition(&(temp_book->condition));
 			break;
 			case 6:
 
