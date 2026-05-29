@@ -8,15 +8,17 @@
 
 
 
-
-
-
 int post(BookList* mainBookList, UserInfo* onlineUser) {
 	int circle = 1;
 	Book* book = (Book*)malloc(sizeof(Book));
 	*book = getEmptyBook();
+	
 
-	/*更新当前登录用户信息*/
+	/*
+	*待发布书籍的默认信息
+	*/
+	book->status = ON_SALE;
+	book->condition = NEW;
 	book->seller = onlineUser;
 	book->sellerId = onlineUser->id;
 	book->id = MaxBookId + 1;

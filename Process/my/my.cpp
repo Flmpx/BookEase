@@ -2,6 +2,7 @@
 #include "../../menu/NormalMenu/normalmenu.h"
 #include "../../menu/DetailMenu/detailmenu.h"
 #include "../../menu/RevealMenu/revealmenu.h"
+#include "../../sort/sort.h"
 #include "../post/post.h"
 #include "../../Process/saveandload/saveandload.h"
 #include "../../function/function.h"
@@ -23,11 +24,13 @@ void my_buy_sold_detail(BookList* mainBookList, BookList* nowBooks, Book* book) 
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"没有"};
-		int input_num = detailBookMenu(200, 90, 0, selections, 90, 30, "返回", 20, "选择操作", 10, "已购书籍详情", book, 10);
+		char selections[][101] = {"保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "已购书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
-
+			case 1:
+				printBookInfoToFile(book, "soldbookinfo");
+			break;
 		}
 
 	} while (circle);
@@ -40,7 +43,8 @@ void my_buy_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition*
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已购书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序", "按购买时间升序", "按购买时间降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已购书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_buy_sold_detail(mainBookList, &nowBooks, book);
@@ -49,7 +53,21 @@ void my_buy_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition*
 		case 0:
 			circle = 0;
 			break;
+		case 1:
+			sortBookList(&nowBooks, sort_price_up);
+			break;
 
+		case 2:
+			sortBookList(&nowBooks, sort_price_down);
+			break;
+
+		case 3:
+			sortBookList(&nowBooks, sort_sold_date_up);
+			break;
+
+		case 4:
+			sortBookList(&nowBooks, sort_sold_date_down);
+			break;
 
 		}
 
@@ -64,8 +82,8 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"取消预定"};
-		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "已预定的书籍详情", book, 10);
+		char selections[][101] = {"取消预定", "保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "返回", 20, "选择操作", 10, "已预定的书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1: 
@@ -74,6 +92,12 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 					book->reserver = NULL;
 					book->reserverId = Invalid_Num;
 					book->reserveTime = Invalid_Num;
+
+					/*同步更新主书籍链表的内容*/
+					mainBookList->numOfStatus[RESERVED]--;
+					mainBookList->numOfStatus[ON_SALE]++;
+
+
 					delNodeByIdInBookList(nowBooks, book->id);
 
 					saveBookListToFile(mainBookList, "bookinfo.txt");
@@ -82,6 +106,10 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 					circle = 0;
 				}
 			break;
+			case 2:
+				printBookInfoToFile(book, "reservedbookinfo");
+			break;
+
 		}
 
 	} while (circle);
@@ -95,7 +123,8 @@ void my_buy_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已预定书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序", "按预定时间升序", "按预定时间降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已预定书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_buy_reserved_detail(mainBookList, &nowBooks, book);
@@ -103,6 +132,21 @@ void my_buy_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 
 		case 0:
 			circle = 0;
+			break;
+		case 1:
+			sortBookList(&nowBooks, sort_price_up);
+			break;
+
+		case 2:
+			sortBookList(&nowBooks, sort_price_down);
+			break;
+
+		case 3:
+			sortBookList(&nowBooks, sort_reserved_date_up);
+			break;
+
+		case 4:
+			sortBookList(&nowBooks, sort_reserved_date_up);
 			break;
 
 
@@ -150,19 +194,25 @@ void my_buy(BookList* mainBookList, UserInfo* onlineUser) {
 }
 
 
+
+
 void my_post_onsale_detail(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* onlineUser) {
 	int circle = 1;
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"下架书籍"};
-		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "在售书籍详情", book, 10);
+		char selections[][101] = {"下架书籍", "保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "返回", 20, "选择操作", 10, "在售书籍详情", book, 10);
 		switch (input_num) {
 		case 0: circle = 0; break;
 		case 1: 
 			if (MessageBox(GetHWnd(), "确定要下架书籍吗?", "提示", MB_YESNO) == IDYES && authenUserInfo(onlineUser)) {
 				book->status = REMOVED;
 				book->publishTime = Invalid_Num;
+
+
+				mainBookList->numOfStatus[ON_SALE]--;
+				mainBookList->numOfStatus[REMOVED]++;
 
 				delNodeByIdInBookList(nowBooks, book->id);
 
@@ -172,6 +222,10 @@ void my_post_onsale_detail(BookList* mainBookList, BookList* nowBooks, Book* boo
 				circle = 0;
 			}
 			break;
+
+		case 2:
+			printBookInfoToFile(book, "onsalebookinfo");
+		break;
 		}
 
 	} while (circle);
@@ -185,7 +239,8 @@ void my_post_onsale(BookList* mainBookList, UserInfo* onlineUser, BookCmpConditi
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有在售的书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序", "按发布时间升序", "按发布时间降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有在售的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_onsale_detail(mainBookList, &nowBooks, book, onlineUser);
@@ -195,6 +250,21 @@ void my_post_onsale(BookList* mainBookList, UserInfo* onlineUser, BookCmpConditi
 			circle = 0;
 			break;
 
+		case 1:
+			sortBookList(&nowBooks, sort_price_up);
+			break;
+
+		case 2:
+			sortBookList(&nowBooks, sort_price_down);
+			break;
+
+		case 3:
+			sortBookList(&nowBooks, sort_publish_date_up);
+			break;
+
+		case 4:
+			sortBookList(&nowBooks, sort_publish_date_down);
+			break;
 
 		}
 
@@ -209,8 +279,8 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"转为已售"};
-		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "已被预定书籍详情", book, 10);
+		char selections[][101] = {"转为已售", "保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "返回", 20, "选择操作", 10, "已被预定书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1:
@@ -221,6 +291,9 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 					book->buyerId = book->reserverId;
 					book->buyTime = time(NULL);
 
+					mainBookList->numOfStatus[RESERVED]--;
+					mainBookList->numOfStatus[SOLD]++;
+
 					delNodeByIdInBookList(nowBooks, book->id);
 
 					saveBookListToFile(mainBookList, "bookinfo.txt");
@@ -230,6 +303,10 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 				}
 
 
+			break;
+
+			case 2:
+				printBookInfoToFile(book, "reservedbookinfo");
 			break;
 		}
 
@@ -244,7 +321,8 @@ void my_post_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondi
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有已被预定的书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序", "按已预定时间升序", "按已预定时间降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有已被预定的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_reserved_detail(mainBookList, &nowBooks, book);
@@ -252,6 +330,21 @@ void my_post_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondi
 
 		case 0:
 			circle = 0;
+			break;
+		case 1:
+			sortBookList(&nowBooks, sort_price_up);
+			break;
+
+		case 2:
+			sortBookList(&nowBooks, sort_price_down);
+			break;
+
+		case 3:
+			sortBookList(&nowBooks, sort_reserved_date_up);
+			break;
+
+		case 4:
+			sortBookList(&nowBooks, sort_reserved_date_up);
 			break;
 
 
@@ -263,19 +356,28 @@ void my_post_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondi
 }
 
 
+
+
 void my_post_sold_detail(BookList* mainBookList, BookList* nowBooks, Book* book) {
 	int circle = 1;
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"仅可查看"};
-		int input_num = detailBookMenu(200, 90, 0, selections, 90, 30, "返回", 20, "不可操作", 10, "已被购买的书籍详情", book, 10);
+		char selections[][101] = {"保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择操作", 10, "已被购买的书籍详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
+			case 1:
+				printBookInfoToFile(book, "soldbookinfo");
+			break;
 		}
 
 	} while (circle);
 }
+
+
+
+
 
 void my_post_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition* bookCond) {
 	int circle = 1;
@@ -284,7 +386,8 @@ void my_post_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已被购买的书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序", "按已购时间升序", "按已购时间降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已被购买的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_sold_detail(mainBookList, &nowBooks, book);
@@ -294,6 +397,21 @@ void my_post_sold(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondition
 			circle = 0;
 			break;
 
+		case 1:
+			sortBookList(&nowBooks, sort_price_up);
+			break;
+
+		case 2:
+			sortBookList(&nowBooks, sort_price_down);
+			break;
+
+		case 3:
+			sortBookList(&nowBooks, sort_sold_date_up);
+			break;
+
+		case 4:
+			sortBookList(&nowBooks, sort_sold_date_up);
+			break;
 
 		}
 
@@ -307,8 +425,8 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"重新上架", "修改书籍信息"};
-		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "返回", 20, "选择操作", 10, "已下架书籍的详情", book, 10);
+		char selections[][101] = {"重新上架", "修改书籍信息", "保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 3, selections, 90, 30, "返回", 20, "选择操作", 10, "已下架书籍的详情", book, 10);
 		switch (input_num) {
 		case 0: circle = 0; break;
 		case 1:
@@ -317,6 +435,10 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 
 				
 				book->publishTime = time(NULL);
+
+
+				mainBookList->numOfStatus[REMOVED]--;
+				mainBookList->numOfStatus[ON_SALE]++;
 
 				delNodeByIdInBookList(nowBooks, book->id);
 
@@ -334,6 +456,9 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 			}
 			
 			break;
+		case 3:
+			printBookInfoToFile(book, "removedbookinfo");
+		break;
 		}
 
 	} while (circle);
@@ -346,7 +471,8 @@ void my_post_removed(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已下架的书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已下架的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_removed_detail(mainBookList, &nowBooks, book);
@@ -355,7 +481,13 @@ void my_post_removed(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 		case 0:
 			circle = 0;
 			break;
+		case 1:
+			sortBookList(&nowBooks, sort_price_up);
+			break;
 
+		case 2:
+			sortBookList(&nowBooks, sort_price_down);
+			break;
 
 		}
 

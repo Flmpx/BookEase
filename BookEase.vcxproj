@@ -147,6 +147,7 @@
     <ClCompile Include="Process\post\post.cpp" />
     <ClCompile Include="Process\saveandload\saveandload.cpp" />
     <ClCompile Include="Process\search\search.cpp" />
+    <ClCompile Include="sort\sort.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md">
@@ -170,6 +171,7 @@
     <ClInclude Include="Process\post\post.h" />
     <ClInclude Include="Process\saveandload\saveandload.h" />
     <ClInclude Include="Process\search\search.h" />
+    <ClInclude Include="sort\sort.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="bookinfo.txt" />

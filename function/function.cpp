@@ -547,7 +547,7 @@ void printBookInfoToFile(Book* book, const char* fileHeadName) {
 	tm structTime = *localtime(&nowTime);
 	char fileName[1001];
 	/*文件名格式*/
-	sprintf(fileName, "%s_%lld_%d%d%d_%d%d%d.txt", fileHeadName, book->id, 
+	sprintf(fileName, "%s_%lld_%04d02%d02%d_%02d%02d%02d.txt", fileHeadName, book->id, 
 											structTime.tm_year + 1900, 
 											structTime.tm_mon + 1,
 											structTime.tm_mday, 

@@ -7,6 +7,7 @@
 #include "../../menu/DetailMenu/detailmenu.h"
 #include "../../Process/saveandload/saveandload.h"
 #include "../post/post.h"
+#include "../../sort/sort.h"
 #include "search.h"
 #include <easyx.h>
 
@@ -21,9 +22,8 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 	do {
 		cleardevice();
 		circle = 1;
-		char selections[][101] = {"预定"};
-		//int input_num = normalMenu(200, 90, 1, selections, 90, 30, "退出查看", 20, "选择是否预定", 10);
-		int input_num = detailBookMenu(200, 90, 1, selections, 90, 30, "退出查看", 20, "选择是否预定", 10, "选中书籍的详情", book, 10);
+		char selections[][101] = {"预定", "保存详细书籍信息到文件"};
+		int input_num = detailBookMenu(200, 90, 2, selections, 90, 30, "退出查看", 20, "选择是否预定", 10, "选中书籍的详情", book, 10);
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1:
@@ -33,9 +33,16 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 						book->reserveTime = time(NULL);
 						book->reserver = onlineUser;
 						book->status = RESERVED;
+						
+
+						/*同步更新主书籍链表*/
+						mainBookList->numOfStatus[ON_SALE]--;
+						mainBookList->numOfStatus[RESERVED]++;
+						
 						/*由于检索页只会展示在售书籍, 故要将已订书籍从链表中删除*/
 
 						delNodeByIdInBookList(nowBooks, book->id);
+
 
 						saveBookListToFile(mainBookList, "bookinfo.txt");
 					
@@ -50,6 +57,9 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 					circle = 1;
 				}
 
+			break;
+			case 2:
+				printBookInfoToFile(book, "searchbookinfo");
 			break;
 		}
 		
@@ -66,7 +76,8 @@ int revealSearchDetail(UserList* mainUserList, BookList* mainBookList, UserInfo*
 	do {
 		circle = 1;
 		int input_num;
-		Book* book = revealMenu(&input_num, 200, 90, 0, NULL, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前检索到的所有书籍", &nowBooks, 10, 3, 2);
+		char selections[][101] = {"按价格升序", "按价格降序", "按发布时间升序", "按发布时间降序"};
+		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前检索到的所有书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 			case -1:
 				buy(mainBookList, &nowBooks, book, onlineUser);
@@ -74,6 +85,22 @@ int revealSearchDetail(UserList* mainUserList, BookList* mainBookList, UserInfo*
 
 			case 0:
 				circle = 0;
+			break;
+
+			case 1:
+				sortBookList(&nowBooks, sort_price_up);
+			break;
+
+			case 2:
+				sortBookList(&nowBooks, sort_price_down);
+			break;
+			
+			case 3:
+				sortBookList(&nowBooks, sort_publish_date_up);
+			break;
+			
+			case 4:
+				sortBookList(&nowBooks, sort_publish_date_down);
 			break;
 
 
