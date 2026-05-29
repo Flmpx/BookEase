@@ -472,7 +472,7 @@ void my_post_removed(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 		circle = 1;
 		int input_num;
 		char selections[][101] = {"按价格升序", "按价格降序"};
-		Book* book = revealMenu(&input_num, 200, 90, 4, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已下架的书籍", &nowBooks, 10, 3, 2);
+		Book* book = revealMenu(&input_num, 200, 90, 2, selections, 90, 30, "返回", 20, "选择排序方式", 10, 40, 40, "当前找到的所有的已下架的书籍", &nowBooks, 10, 3, 2);
 		switch (input_num) {
 		case -1:
 			my_post_removed_detail(mainBookList, &nowBooks, book);
