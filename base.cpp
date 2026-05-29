@@ -40,10 +40,9 @@ Book getEmptyBook() {
 
 	book.publishTime = book.buyTime = book.reserveTime = Invalid_Num;
 
-	/*由于这个函数主要在发布书籍的时候使用, 故默认为这些值*/
-	book.status = ON_SALE;
-	book.condition = NEW;
-
+	
+	book.status = Invalid_BookStatus;
+	book.condition = Invalid_BookCondition;
 	return book;
 }
 

@@ -201,9 +201,6 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 			h = singleBookH; w = singleBookW;
 			printSimpleBookInfo(p->book, l, t, w, h);
 		}
-
-		//由于printSimpleBookInfo函数会改变字体大小, 这里设置回来
-		//settextstyle(16, 0, "宋体");
 		EndBatchDraw();
 
 

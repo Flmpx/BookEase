@@ -155,6 +155,32 @@ typedef struct Book {
 
 
 
+
+
+
+
+typedef int (*cmpBook)(Book* book_a, Book* book_b);		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /// @brief 得到空用户信息, 内部什么都没有
 /// @return 空用户信息
 extern UserInfo getEmptyUserInfo();

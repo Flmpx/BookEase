@@ -13,7 +13,6 @@ void initBookList(BookList* plist) {
 
 InfoOfReturn insertBookInBookList(BookList* plist, Book* book) {
 	if (book == NULL) {
-		printf("传入信息无效\n");
 		return Warning;
 	}
 	
@@ -170,3 +169,95 @@ void deepFreeBookList(BookList* plist) {
 	initBookList(plist);
 }
 
+
+
+
+BookNode* getMid(BookNode* head) {
+	if (!head || !(head->next)) {
+		return head;
+	}
+
+
+	/*快慢指针法得到中间节点*/
+
+	BookNode* fast = head->next;
+	BookNode* slow = head;
+
+	while (fast && fast->next) {
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+
+	return slow;
+
+}
+
+BookNode* mergeTwoLists(BookNode* l1, BookNode* l2, cmpBook cmp) {
+	BookNode dummy = {NULL, NULL, NULL};
+
+	BookNode* tail = &dummy;
+
+	while (l1 && l2) {
+		int res = cmp(l1->book, l2->book);
+		if (res <= 0) {
+			tail->next = l1;
+			l1->prev = tail;
+			l1 = l1->next;
+		} else {
+			tail->next = l2;
+			l2->prev = tail;
+			l2 = l2->next;
+		}
+		tail = tail->next;
+	}
+	
+	if (l1) {
+		tail->next = l1;
+		l1->prev = tail;
+	} else {
+		tail->next = l2;
+		l2->prev = tail;
+	}
+	
+	return dummy.next;
+
+}
+
+
+
+BookNode* sortBookNode(BookNode* head, cmpBook cmp) {
+
+	if (!head || !head->next) {
+		return head;
+	}
+
+	BookNode* mid = getMid(head);
+	BookNode* r = mid->next;
+	BookNode* l = head;
+	mid->next = r->prev = NULL;
+
+	r = sortBookNode(r, cmp);
+	l = sortBookNode(l, cmp);
+
+	BookNode* res = mergeTwoLists(l, r, cmp);
+	res->prev = NULL;
+
+	return res;
+}
+
+BookNode* getTail(BookNode* head) {
+	if (!head) {
+		return head;
+	}
+
+	while (head->next) {
+		head = head->next;
+	}
+
+	return head;
+}
+
+void sortBookList(BookList* plist, cmpBook cmp) {
+	plist->head = sortBookNode(plist->head, cmp);
+	plist->tail = getTail(plist->head);
+}

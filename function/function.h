@@ -72,4 +72,8 @@ extern bool changeUserInfo(UserInfo* onlineUser);
 extern bool changeBookInfo(Book* book);
 
 
+
+
+extern void printBookInfoToFile(Book* book, const char* fileHeadName);
+
 #endif

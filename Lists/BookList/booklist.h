@@ -70,4 +70,10 @@ extern void deepFreeBookList(BookList* plist);
 /// @return 符合要求的的书籍链表, 使用完请使用freeBookList函数释放
 extern BookList getSimilarBookListInAllBookList(BookList* allBookList, BookCmpCondition* bookCondition);
 
+
+/// @brief 对书籍链表进行排序
+/// @param plist 链表指针
+/// @param cmp 比较函数
+extern void sortBookList(BookList* plist, cmpBook cmp);
+
 #endif

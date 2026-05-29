@@ -40,25 +40,25 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
 
-	sprintf(tempStr, "用户名:%s", info->name);
+	sprintf(tempStr, "     用户名:%s", info->name);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "学号:%lld", info->id);
+	sprintf(tempStr, "     学号:%lld", info->id);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 	
-	sprintf(tempStr, "电话:%lld", info->tel);
+	sprintf(tempStr, "     电话:%lld", info->tel);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "QQ:%lld", info->QQ);
+	sprintf(tempStr, "     QQ:%lld", info->QQ);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "微信号:%s", info->WeChat);
+	sprintf(tempStr, "     微信号:%s", info->WeChat);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
 	struct tm time = *localtime(&(info->registerTime));
 
 
-	sprintf(tempStr, "注册时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
+	sprintf(tempStr, "     注册时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
 
@@ -67,7 +67,7 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	int InfoNum = 7;
 	int th = h/InfoNum;
-	//settextstyle(th, 0, "宋体");
+	//settextstyle(th, 0, "     宋体");
 	fillrectangle(l, t, l + w, t + h);
 
 	char tempStr[1001] = "";
@@ -76,23 +76,23 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	/*距离上方占据一定空间*/
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "书名:%s", book->title);
+	sprintf(tempStr, "     书名:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "作者:%s", book->author);
+	sprintf(tempStr, "     作者:%s", book->author);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "ISBN:%s", book->ISBN);
+	sprintf(tempStr, "     ISBN:%s", book->ISBN);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "价格:%g", book->price);
+	sprintf(tempStr, "     价格:%g", book->price);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "新旧程度:%s", BookConditionStr[book->condition]);
+	sprintf(tempStr, "     新旧程度:%s", BookConditionStr[book->condition]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 	struct tm time = *localtime(&(book->publishTime));
-	sprintf(tempStr, "上架时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
+	sprintf(tempStr, "     上架时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
 }
@@ -107,7 +107,7 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 		InfoNum += 7;
 	}
 	int th = h/InfoNum;
-	//settextstyle(th, 0, "宋体");
+	//settextstyle(th, 0, "     宋体");
 	fillrectangle(l, t, l + w, t + h);
 	char tempStr[1001] = "";
 	int cnt = 0;
@@ -115,65 +115,65 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 	/*距离上方占据一定空间*/
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
-	sprintf(tempStr, "书名:%s", book->title);
+	sprintf(tempStr, "     书名:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "作者:%s", book->author);
+	sprintf(tempStr, "     作者:%s", book->author);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "ISBN:%s", book->ISBN);
+	sprintf(tempStr, "     ISBN:%s", book->ISBN);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "价格:%g", book->price);
+	sprintf(tempStr, "     价格:%g", book->price);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "新旧程度:%s", BookConditionStr[book->condition]);
+	sprintf(tempStr, "     新旧程度:%s", BookConditionStr[book->condition]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 	line(l, t + (cnt*th), l + w, t + (cnt*th));
 	cnt++;
 
-	sprintf(tempStr, "卖方用户名:%s", book->seller->name);
+	sprintf(tempStr, "     卖方用户名:%s", book->seller->name);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "卖方学号:%lld", book->seller->id);
+	sprintf(tempStr, "     卖方学号:%lld", book->seller->id);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "卖方电话:%lld", book->seller->tel);
+	sprintf(tempStr, "     卖方电话:%lld", book->seller->tel);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
 
-	sprintf(tempStr, "卖方QQ号:%lld", book->seller->QQ);
+	sprintf(tempStr, "     卖方QQ号:%lld", book->seller->QQ);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
-	sprintf(tempStr, "卖方微信号:%s", book->seller->WeChat);
+	sprintf(tempStr, "     卖方微信号:%s", book->seller->WeChat);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 	struct tm time = *localtime(&(book->publishTime));
-	sprintf(tempStr, "发布时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
+	sprintf(tempStr, "     发布时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 	outtextxy(l, t+(cnt++)*th, tempStr);
 	
 	line(l, t + (cnt*th), l + w, t + (cnt*th));
 	cnt++;
 
 	if (book->reserverId != Invalid_Num) {
-		sprintf(tempStr, "预定方用户名:%s", book->reserver->name);
+		sprintf(tempStr, "     预定方用户名:%s", book->reserver->name);
 		outtextxy(l, t+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "预定方学号:%lld", book->reserver->id);
+		sprintf(tempStr, "     预定方学号:%lld", book->reserver->id);
 		outtextxy(l, t+(cnt++*th), tempStr);
 		
-		sprintf(tempStr, "预定方电话:%lld", book->reserver->tel);
+		sprintf(tempStr, "     预定方电话:%lld", book->reserver->tel);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
-		sprintf(tempStr, "预定方QQ号:%lld", book->reserver->QQ);
+		sprintf(tempStr, "     预定方QQ号:%lld", book->reserver->QQ);
 		outtextxy(l, t+(cnt++*th), tempStr);
 	
-		sprintf(tempStr, "预定方微信号:%s", book->reserver->WeChat);
+		sprintf(tempStr, "     预定方微信号:%s", book->reserver->WeChat);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
 		time = *localtime(&(book->reserveTime));
-		sprintf(tempStr, "预定时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
+		sprintf(tempStr, "     预定时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 		outtextxy(l, t+(cnt++)*th, tempStr);
 
 		line(l, t + (cnt*th), l + w, t + (cnt*th));
@@ -182,23 +182,23 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 
 
 	if (book->buyerId != Invalid_Num) {
-		sprintf(tempStr, "买方用户名:%s", book->buyer->name);
+		sprintf(tempStr, "     买方用户名:%s", book->buyer->name);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
-		sprintf(tempStr, "买方学号:%lld", book->buyer->id);
+		sprintf(tempStr, "     买方学号:%lld", book->buyer->id);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
-		sprintf(tempStr, "买方电话:%lld", book->buyer->tel);
+		sprintf(tempStr, "     买方电话:%lld", book->buyer->tel);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
-		sprintf(tempStr, "买方QQ号:%lld", book->buyer->QQ);
+		sprintf(tempStr, "     买方QQ号:%lld", book->buyer->QQ);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
-		sprintf(tempStr, "买方微信号:%s", book->buyer->WeChat);
+		sprintf(tempStr, "     买方微信号:%s", book->buyer->WeChat);
 		outtextxy(l, t+(cnt++*th), tempStr);
 
 		time = *localtime(&(book->buyTime));
-		sprintf(tempStr, "购买时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
+		sprintf(tempStr, "     购买时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 		outtextxy(l, t+(cnt++)*th, tempStr);
 
 		line(l, t + (cnt*th), l + w, t + (cnt*th));
@@ -229,27 +229,27 @@ void printStatistics(UserList* mainUserList, BookList* mainBookList, int l, int 
 	int min = diffTime % (60*60) /(60);
 	int sec = diffTime % (60);
 
-	sprintf(tempStr, "BookEase已经走过了 %d 天 %d 小时 %d 分钟 %d 秒", day, hour, min, sec);
+	sprintf(tempStr, "     BookEase已经走过了 %d 天 %d 小时 %d 分钟 %d 秒", day, hour, min, sec);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "有 %d 本书来到了这里(总上架数目)", mainBookList->size);
+	sprintf(tempStr, "     有 %d 本书来到了这里(总上架数目)", mainBookList->size);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "有 %d 本书正在等待被发现(在售数目)", mainBookList->numOfStatus[ON_SALE]);
+	sprintf(tempStr, "     有 %d 本书正在等待被发现(在售数目)", mainBookList->numOfStatus[ON_SALE]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "有 %d 本书似乎找到了新去处(已预定数目)", mainBookList->numOfStatus[RESERVED]);
+	sprintf(tempStr, "     有 %d 本书似乎找到了新去处(已预定数目)", mainBookList->numOfStatus[RESERVED]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "有 %d 本书的原主人还在犹豫(已下架数目)", mainBookList->numOfStatus[REMOVED]);
+	sprintf(tempStr, "     有 %d 本书的原主人还在犹豫(已下架数目)", mainBookList->numOfStatus[REMOVED]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "有 %d 本书找到了新去处(已售数目)", mainBookList->numOfStatus[SOLD]);
+	sprintf(tempStr, "     有 %d 本书找到了新去处(已售数目)", mainBookList->numOfStatus[SOLD]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 
 
-	sprintf(tempStr, "有 %.2lf 元的资金流过此处(总交易金额)", mainBookList->amount);
+	sprintf(tempStr, "     有 %.2lf 元的资金流过此处(总交易金额)", mainBookList->amount);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 }
@@ -517,3 +517,73 @@ bool changeBookInfo(Book* book) {
 	return changed;
 }
 
+
+void printUserInfoToFile(FILE* file, UserInfo* user) {
+	if (user) {
+		fprintf(file, "用户名: %s\n", user->name);
+		fprintf(file, "学号: %lld\n", user->id);
+		fprintf(file, "电话: %lld\n", user->tel);
+		fprintf(file, "QQ: %lld\n", user->QQ);
+		fprintf(file, "微信号: %s\n", user->WeChat);
+	} else {
+		fprintf(file, "无\n");
+	}
+}
+
+
+void printTimeToFile(FILE* file, time_t time, const char* info) {
+	tm structTime = *localtime(&time);
+	int year = structTime.tm_year + 1900;
+	int mon = structTime.tm_mon + 1;
+	int day = structTime.tm_mday;
+	int h = structTime.tm_hour;
+	int m = structTime.tm_min;
+	int s = structTime.tm_sec;
+	fprintf(file, "%s: %d 年 %d 月 %d 日 %d 时 %d 分 %d 秒\n", info, year, mon, day, h, m, s);
+}
+
+void printBookInfoToFile(Book* book, const char* fileHeadName) {
+	time_t nowTime = time(NULL);
+	tm structTime = *localtime(&nowTime);
+	char fileName[1001];
+	/*文件名格式*/
+	sprintf(fileName, "%s_%lld_%d%d%d_%d%d%d.txt", fileHeadName, book->id, 
+											structTime.tm_year + 1900, 
+											structTime.tm_mon + 1,
+											structTime.tm_mday, 
+											structTime.tm_hour,
+											structTime.tm_min,
+											structTime.tm_sec);
+	FILE* file = fopen(fileName, "w");
+	fprintf(file, "书名: %s\n", book->title);
+	fprintf(file, "ISBN: %s\n", book->ISBN);
+	fprintf(file, "作者: %s\n", book->author);
+	fprintf(file, "价格: %.2lf 元\n", book->price);
+	fprintf(file, "书籍状态: %s\n", BookStatusStr[book->status]);
+	fprintf(file, "书籍新旧程度: %s\n", BookConditionStr[book->condition]);
+
+	fprintf(file, "\n书籍发布者信息:\n");
+	printUserInfoToFile(file, book->seller);
+	printTimeToFile(file, book->publishTime, "书籍发布时间");
+
+	fprintf(file, "\n书籍预定者信息:\n");
+	printUserInfoToFile(file, book->reserver);
+	if (book->reserver) {
+		printTimeToFile(file, book->reserveTime, "书籍预定时间");
+	}
+
+
+	fprintf(file, "\n书籍购买者信息:\n");
+	printUserInfoToFile(file, book->buyer);
+	if (book->buyer) {
+		printTimeToFile(file, book->buyTime, "书籍购买时间");
+	}
+
+
+
+	fprintf(file, "BookEase@Flmpx");
+	fclose(file);
+	MessageBox(GetHWnd(), fileName, "文件以保存至:", MB_OK);
+
+
+}
