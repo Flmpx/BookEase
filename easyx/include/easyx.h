@@ -169,6 +169,7 @@ void setbkcolor(COLORREF color);	// Set background color
 int  getbkmode();					// Get background mode
 void setbkmode(int mode);			// Set background mode
 
+
 // Color model transformation related functions
 COLORREF RGBtoGRAY(COLORREF rgb);
 void RGBtoHSL(COLORREF rgb, float *H, float *S, float *L);

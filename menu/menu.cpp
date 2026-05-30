@@ -1,4 +1,4 @@
-ï»¿#include "menu.h"
+#include "menu.h"
 #include <easyx.h>
 
 
@@ -9,14 +9,14 @@ void style_normal() {
 	
 }
 
-//æ™®é€šæ ·å¼
+//ÆÕÍ¨ÑùÊ½
 void style_tips() {
 	setfillcolor(RGB(191, 165, 243));
 	setlinecolor(BLACK);
 	setlinestyle(PS_SOLID, 2);
 }
 
-//å¼•å¯¼ä¿¡æ¯æ ·å¼
+//Òıµ¼ĞÅÏ¢ÑùÊ½
 void style_instruction() {
 	setfillcolor(RGB(54, 203, 190));
 	setlinecolor(BLACK);
@@ -24,7 +24,7 @@ void style_instruction() {
 }
 
 
-//è¿”å›é”®æ ·å¼
+//·µ»Ø¼üÑùÊ½
 void style_back_start() {
 	setfillcolor(RGB(191, 165, 243));
 	setlinecolor(BLACK);
@@ -44,7 +44,7 @@ void style_back_click() {
 }
 
 
-//é€‰é¡¹é”®æ ·å¼
+//Ñ¡Ïî¼üÑùÊ½
 void style_select_start() {
 	setfillcolor(WHITE);
 	setlinecolor(BLACK);
@@ -62,7 +62,7 @@ void style_select_click() {
 }
 
 
-//æ–¹å‘é”®æ ·å¼
+//·½Ïò¼üÑùÊ½
 void style_diction_start() {
 	setfillcolor(WHITE);
 	setlinecolor(BLACK);
@@ -80,7 +80,7 @@ void style_diction_click() {
 }
 
 
-//ä¹¦ç±æ ·å¼
+//Êé¼®ÑùÊ½
 void style_book_start() {
 	setfillcolor(WHITE);
 	setlinecolor(BLACK);

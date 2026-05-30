@@ -7,6 +7,7 @@
  *		The functions and constants declared in this file are only for compatibility and are not recommended.
  ******************************************************/
 
+
 #pragma once
 
 #include <easyx.h>

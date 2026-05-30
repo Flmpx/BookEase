@@ -1,11 +1,11 @@
-ï»¿#ifndef LOGINMENU_H
+#ifndef LOGINMENU_H
 #define LOGINMENU_H
 
-/// @brief èµ·å§‹èœå•/ç™»å½•èœå•
-/// @param blockWidth å—å®½
-/// @param blockHeight å—é«˜
-/// @param marginOfBlock å—é—´è·
-/// @return 0-->ç‚¹å‡»æ³¨å†Œ  1-->ç‚¹å‡»ç™»å½•
+/// @brief ÆðÊ¼²Ëµ¥/µÇÂ¼²Ëµ¥
+/// @param blockWidth ¿é¿í
+/// @param blockHeight ¿é¸ß
+/// @param marginOfBlock ¿é¼ä¾à
+/// @return 0-->µã»÷×¢²á  1-->µã»÷µÇÂ¼
 extern int loginMenu(int blockWidth, int blockHeight, int marginOfBlock);
 
 #endif
