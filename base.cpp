@@ -1,6 +1,8 @@
 #include "base.h"
 char BookStatusStr[4][101] = {"在售卖", "已预约", "已售卖", "已下架"};
 char BookConditionStr[4][101] = {"几乎全新", "有点破损", "还可以用", "可以接受"};
+char BookCategoryStr[5][101] = {"教材", "小说", "学术类", "考试辅导类", "其他"};
+
 
 #include "Lists/BookList/booklist.h"
 #include "Lists/UserList/userlist.h"
@@ -38,11 +40,15 @@ Book getEmptyBook() {
 
 	book.price = Invalid_FloatNum;
 
+
+
 	book.publishTime = book.buyTime = book.reserveTime = Invalid_Num;
 
 	
 	book.status = Invalid_BookStatus;
 	book.condition = Invalid_BookCondition;
+	book.category = Invalid_BookCategory;
+
 	return book;
 }
 
@@ -87,11 +93,15 @@ BookCmpCondition getEmptyBookCmpCondition() {
 	empty.author[0] = '\0';
 	empty.isbn[0] = '\0';
 	empty.title[0] = '\0';
-	empty.condition = Invalid_BookCondition;
+
 	empty.downPrice = empty.upPrice = Invalid_FloatNum;
 	empty.downTime = empty.upTime = Invalid_Num;
 	empty.id = Invalid_Num;
+
+	empty.condition = Invalid_BookCondition;
 	empty.status = Invalid_BookStatus;
+	empty.category = Invalid_BookCategory;
+
 	empty.seller = getEmptyUserInfoCmpCondition();
 	empty.reserver = getEmptyUserInfoCmpCondition();
 	empty.buyer = getEmptyUserInfoCmpCondition();
@@ -162,6 +172,10 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 
 	//比较书籍状态
 	if (bookCondition->status != Invalid_BookStatus && book->status != bookCondition->status) {
+		return false;
+	}
+
+	if (bookCondition->category != Invalid_BookCategory && book->category != bookCondition->category) {
 		return false;
 	}
 

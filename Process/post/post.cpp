@@ -19,9 +19,13 @@ int post(BookList* mainBookList, UserInfo* onlineUser) {
 	*/
 	book->status = ON_SALE;
 	book->condition = NEW;
+	book->category = OTHER;
 	book->seller = onlineUser;
 	book->sellerId = onlineUser->id;
 	book->id = MaxBookId + 1;
+
+
+
 
 	do {
 		circle = 1;

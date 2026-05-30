@@ -35,11 +35,14 @@ ll hash(const char* str) {
 	return res;
 }
 
+
+
 void generateHashKey(const char* key, const char* salt, char* hashKey) {
 	char temp[1001];
 	sprintf(temp, "%s%s", key, salt);
 	ll hashNum = hash(temp);
 	sprintf(hashKey, "%llx", hashNum);
+
 
 }
 
@@ -58,6 +61,7 @@ bool authenUserInfo(UserInfo* user) {
 				res = 1;
 				circle = 0;
 				MessageBox(GetHWnd(), "认证成功", "提示", MB_OK);
+
 
 			} else {
 				circle = 1;
@@ -96,6 +100,7 @@ UserInfo* loginFunc(UserList* users) {
 			res = 0;
 			circle = 0;
 		}
+
 	} while (circle);
 	return user;
 }

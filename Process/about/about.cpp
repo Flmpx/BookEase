@@ -31,6 +31,8 @@ void about(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 		cleardevice();
 		char selections[][101] = {"统计信息"};
 
+
+
 		int input_num = normalMenu(200, 90, 1, selections, 90, 30, "返回", 20, "选择内容", 10);
 		switch (input_num) {
 			case 0: circle = 0; break;

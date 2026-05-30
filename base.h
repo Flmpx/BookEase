@@ -7,6 +7,7 @@ const time_t releaseTime = 1778935434;
 
 extern char BookStatusStr[4][101];
 extern char BookConditionStr[4][101];
+extern char BookCategoryStr[5][101];
 
 #define EPS 1e-9							//浮点数比较所用误差
 
@@ -18,6 +19,8 @@ extern char BookConditionStr[4][101];
 
 
 
+
+#define PRESS_MAX_LEN 64					//出版社名字最长长度
 
 #define WECHAR_MAX_LEN 48					//微信号最长长度
 
@@ -53,6 +56,16 @@ typedef enum {
 	None = 0,								//操作无效
 	Success = 1,							//操作成功
 } InfoOfReturn;
+
+typedef enum {
+	Invalid_BookCategory = -1,				//无效书籍类别
+	TEXTBOOK,								//教材
+	FICTION,								//小说与文学
+	ACADEMIC,								//学术类
+	EXAM,									//考试类
+	OTHER									//其他
+} BookCategory;
+
 
 typedef enum {
 	Invalid_BookCondition = -1,				//无效的书籍新旧条件
@@ -119,6 +132,9 @@ typedef struct BookCmpCondition {
 	BookCondition condition;				//比较书籍新旧程度
 	
 	BookStatus status;						//比较书籍状态
+
+	BookCategory category;					//比较书籍类别
+
 } BookCmpCondition;
 
 typedef struct Book {
@@ -140,6 +156,8 @@ typedef struct Book {
 
 	char author[AUTHOR_MAX_LEN];			//书籍作者
 
+	char press[PRESS_MAX_LEN];				//出版社
+
 	double price;							//书籍价格
 
 	time_t publishTime;						//发布时间
@@ -150,6 +168,8 @@ typedef struct Book {
 	BookStatus status;						//书籍状态
 
 	BookCondition condition;				//书籍新旧程度
+
+	BookCategory category;					//书籍类别
 } Book;
 
 
@@ -160,6 +180,8 @@ typedef struct Book {
 
 
 typedef int (*cmpBook)(Book* book_a, Book* book_b);		
+
+
 
 
 
@@ -209,5 +231,7 @@ extern UserCmpCondition getEmptyUserInfoCmpCondition();
 /// @brief 得到无要求的书籍要求条件, 可以更更改部分条件后进行比较
 /// @return 书籍要求条件
 extern BookCmpCondition getEmptyBookCmpCondition();
+
+
 
 #endif

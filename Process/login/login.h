@@ -10,6 +10,8 @@ extern ll hash(const char* str);
 
 extern void generateHashKey(const char* key, const char* salt, char* hashKey);
 
+
+
 /// @brief 验证用户信息
 /// @param user 用户信息指针
 /// @return 如果验证成功返回true, 如果退出验证返回false

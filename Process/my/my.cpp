@@ -159,6 +159,8 @@ void my_buy_reserved(BookList* mainBookList, UserInfo* onlineUser, BookCmpCondit
 
 
 
+
+
 void my_buy(BookList* mainBookList, UserInfo* onlineUser) {
 	int circle = 1;
 	BookCmpCondition bookCond = getEmptyBookCmpCondition();
@@ -506,6 +508,7 @@ void my_post(BookList* mainBookList, UserInfo* onlineUser) {
 		char selections[][101] = {"在售卖", "已被预定", "已被购买", "已下架"};
 		int input_num = normalMenu(200, 90, 4, selections, 90, 30, "返回", 20, "选择要查看的内容", 10);
 		switch (input_num) {
+
 		case 0: circle = 0; break;
 		case 1:
 			//写入条件
