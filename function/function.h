@@ -60,6 +60,7 @@ extern bool InputDate(time_t* time, const char* InputBoxInfo, const char* InputB
 *
 */
 
+extern void changeBookCategory(BookCategory* category);
 
 extern void changeBookCondition(BookCondition* condition);
 
@@ -70,6 +71,8 @@ extern bool changeUserInfo(UserInfo* onlineUser);
 
 
 extern bool changeBookInfo(Book* book);
+
+
 
 
 

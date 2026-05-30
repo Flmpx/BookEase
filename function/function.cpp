@@ -65,7 +65,7 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 }
 
 void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 7;
+	int InfoNum = 8;
 	int th = h/InfoNum;
 	//settextstyle(th, 0, "     宋体");
 	fillrectangle(l, t, l + w, t + h);
@@ -91,6 +91,9 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	sprintf(tempStr, "     新旧程度:%s", BookConditionStr[book->condition]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
+	sprintf(tempStr, "     书籍类别:%s", BookCategoryStr[book->category]);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
 	struct tm time = *localtime(&(book->publishTime));
 	sprintf(tempStr, "     上架时间:%04d年%02d月%02d日", time.tm_year + 1900, time.tm_mon + 1, time.tm_mday);
 	outtextxy(l, t+(cnt++)*th, tempStr);
@@ -99,7 +102,7 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 
 
 void printAllBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 14;
+	int InfoNum = 15;
 	if (book->buyerId != Invalid_Num) {
 		InfoNum += 7;
 	}
@@ -128,6 +131,9 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "     新旧程度:%s", BookConditionStr[book->condition]);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "     书籍类别:%s", BookCategoryStr[book->category]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 	line(l, t + (cnt*th), l + w, t + (cnt*th));
@@ -349,6 +355,7 @@ bool InputDate(time_t* time, const char* InputBoxInfo, const char* InputBoxTip) 
 	char temp[1001] = "";
 	do {
 		circle = 1;
+
 		circle = 1;
 		if (InputBox(temp, 1000, InputBoxInfo, InputBoxTip, temp, 0, 0, false)) {
 			if (sscanf(temp, "%d %d %d", &year, &mon, &day) == 3 && year < 3000 && year > 1970) {
@@ -386,6 +393,23 @@ void changeBookCondition(BookCondition* condition) {
 	case 3: *condition = GOOD; break;
 
 	case 4:	*condition = ACCEPTABLE; break;
+	}
+}
+
+void changeBookCategory(BookCategory* category) {
+	cleardevice();
+	int input_num = normalMenu(200, 90, 5, BookCategoryStr, 100, 30, "返回", 20, "选择书籍类别", 30);
+	switch (input_num) {
+		case 1 : *category = TEXTBOOK; break;
+		
+		case 2 : *category = FICTION; break;
+
+		case 3 : *category = ACADEMIC; break;
+		
+		case 4 : *category = EXAM; break;
+		
+		case 5 : *category = OTHER; break;
+
 	}
 }
 
@@ -469,9 +493,9 @@ bool changeBookInfo(Book* book) {
 		circle = 1;
 		cleardevice();
 
-		char selections[][101] = {"保存修改", "书籍名称", "ISBN", "书籍作者", "书籍状态", "书籍价格"};
+		char selections[][101] = {"保存修改", "书籍名称", "ISBN", "书籍作者", "书籍状态", "书籍类别", "书籍价格"};
 
-		int input_num = detailBookMenu(200, 90, 6, selections, 100, 30, "退出修改", 20, "选择操作", 10, "正在被修改的书籍详情", temp_book, 10);
+		int input_num = detailBookMenu(200, 90, 7, selections, 100, 30, "退出修改", 20, "选择操作", 10, "正在被修改的书籍详情", temp_book, 10);
 
 		switch (input_num) {
 		case 0:
@@ -506,7 +530,11 @@ bool changeBookInfo(Book* book) {
 
 			changeBookCondition(&(temp_book->condition));
 			break;
+
 		case 6:
+			changeBookCategory(&(temp_book->category));
+			break;
+		case 7:
 
 			InputFloat(&(temp_book->price), "输入一个小数代表书籍价格", "输入价格");
 			break;
@@ -547,7 +575,7 @@ void printBookInfoToFile(Book* book, const char* fileHeadName) {
 	tm structTime = *localtime(&nowTime);
 	char fileName[1001];
 	/*文件名格式*/
-	sprintf(fileName, "%s_%lld_%04d02%d02%d_%02d%02d%02d.txt", fileHeadName, book->id, 
+	sprintf(fileName, "%s_%lld_%04d%02d%02d_%02d%02d%02d.txt", fileHeadName, book->id, 
 											structTime.tm_year + 1900, 
 											structTime.tm_mon + 1,
 											structTime.tm_mday, 
@@ -561,6 +589,7 @@ void printBookInfoToFile(Book* book, const char* fileHeadName) {
 	fprintf(file, "价格: %.2lf 元\n", book->price);
 	fprintf(file, "书籍状态: %s\n", BookStatusStr[book->status]);
 	fprintf(file, "书籍新旧程度: %s\n", BookConditionStr[book->condition]);
+	fprintf(file, "书籍类别: %s\n", BookCategoryStr[book->category]);
 
 	fprintf(file, "\n书籍发布者信息:\n");
 	printUserInfoToFile(file, book->seller);
