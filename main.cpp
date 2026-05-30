@@ -53,7 +53,7 @@ static void mainpage(UserList* mainUserList, BookList* mainBookList, UserInfo* o
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
 	/*创建窗口*/
-	initgraph(1250, 680);
+	initgraph(1250, 720);
 	setbkcolor(RGB(34, 166, 242));
 	cleardevice();
 	settextstyle(16, 0, "宋体");
@@ -67,6 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 	UserInfo* onlineUser = NULL;
+
 
 
 
@@ -104,3 +105,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	return 0;
 }
+
+
