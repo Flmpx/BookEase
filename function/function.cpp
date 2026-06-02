@@ -260,6 +260,17 @@ void printStatistics(UserList* mainUserList, BookList* mainBookList, int l, int 
 
 }
 
+// 删除字符串的空格等无效字符
+static void delSpaceOfStr(char* str) {
+	int l = strlen(str);
+	int diff = 0;
+	for (int i = 0; i <= l; i++) {
+		str[i - diff] = str[i];
+		if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\r') {
+			diff++;
+		}
+	}
+}
 
 
 bool InputStr(char* Str, const char* InputBoxInfo, const char* InputBoxTip, int maxLen) {
@@ -270,6 +281,7 @@ bool InputStr(char* Str, const char* InputBoxInfo, const char* InputBoxTip, int 
 		circle = 1;
 		if (InputBox(temp, maxLen, InputBoxInfo, InputBoxTip, temp, 0, 0, false)) {
 			if (temp[0] != '\0') {
+				delSpaceOfStr(temp);
 				strcpy(Str, temp);
 				changed = true;
 				circle = 0;
