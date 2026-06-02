@@ -612,7 +612,7 @@ void printBookInfoToFile(Book* book, const char* fileHeadName) {
 
 	fprintf(file, "BookEase@Flmpx");
 	fclose(file);
-	MessageBox(GetHWnd(), fileName, "文件以保存至:", MB_OK);
+	MessageBox(GetHWnd(), fileName, "文件已保存至程序所在目录下的:", MB_OK);
 
 
 }

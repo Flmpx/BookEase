@@ -176,9 +176,7 @@
     <ClInclude Include="sort\sort.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="bookinfo.txt" />
-    <Text Include="localhistory.txt" />
-    <Text Include="userinfo.txt" />
+    <Text Include="Data\bookinfo.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

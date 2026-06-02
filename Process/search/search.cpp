@@ -45,7 +45,7 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 						delNodeByIdInBookList(nowBooks, book->id);
 
 
-						saveBookListToFile(mainBookList, "bookinfo.txt");
+						saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 					
 						MessageBox(GetHWnd(), "预定成功!\n你可在我的页查看已订详情\n尝试与卖者联系\n", "提示", MB_OK);
 
@@ -335,7 +335,7 @@ int selectPrice(BookCmpCondition* searchBook) {
 							circle_in = 0;
 						}
 					} else {
-						circle = 0;
+						circle_in = 0;
 					}
 
 				} while (circle_in);

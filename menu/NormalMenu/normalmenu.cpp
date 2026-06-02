@@ -29,7 +29,7 @@ int normalMenu(int selectW, int selectH, int selectNum, char selections[][101], 
 	int hover_select_flag;
 
 	while (true) {
-		Sleep(6);
+		//Sleep(6);
 		click_back_flag = -1;
 		click_select_flag = -1;
 

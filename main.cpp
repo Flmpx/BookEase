@@ -53,17 +53,17 @@ static void mainpage(UserList* mainUserList, BookList* mainBookList, UserInfo* o
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 
 	/*创建窗口*/
-	initgraph(1250, 720);
-	setbkcolor(RGB(34, 166, 242));
+	initgraph(1280, 720);
+	setbkcolor(RGB(253, 254, 249));
 	cleardevice();
 	settextstyle(16, 0, "宋体");
 
 	UserList mainUserList;
 
-	mainUserList = loadUserListFromFile("userinfo.txt");
+	mainUserList = loadUserListFromFile("Data/userinfo.txt");
 
 	BookList mainBookList;
-	mainBookList = loadBookListFromFile("bookinfo.txt", &mainUserList);
+	mainBookList = loadBookListFromFile("Data/bookinfo.txt", &mainUserList);
 
 
 	UserInfo* onlineUser = NULL;
@@ -95,8 +95,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
-	saveBookListToFile(&mainBookList, "bookinfo.txt");
-	saveUserListToFile(&mainUserList, "userinfo.txt");
+	saveBookListToFile(&mainBookList, "Data/bookinfo.txt");
+	saveUserListToFile(&mainUserList, "Data/userinfo.txt");
 
 
 	deepFreeBookList(&mainBookList);

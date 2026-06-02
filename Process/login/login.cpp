@@ -150,7 +150,7 @@ int registerFunc(UserList* users) {
 				user = createUser(id);
 				if (user) {
 					insertUserInfoInUserList(users, user);
-					saveUserListToFile(users, "userinfo.txt");
+					saveUserListToFile(users, "Data/userinfo.txt");
 					MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK);
 					res = 1;
 					circle = 0;

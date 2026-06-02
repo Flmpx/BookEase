@@ -100,7 +100,7 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 
 					delNodeByIdInBookList(nowBooks, book->id);
 
-					saveBookListToFile(mainBookList, "bookinfo.txt");
+					saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
 					MessageBox(GetHWnd(), "已取消预定", "提示", MB_OK);
 					circle = 0;
@@ -218,7 +218,7 @@ void my_post_onsale_detail(BookList* mainBookList, BookList* nowBooks, Book* boo
 
 				delNodeByIdInBookList(nowBooks, book->id);
 
-				saveBookListToFile(mainBookList, "bookinfo.txt");
+				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
 				MessageBox(GetHWnd(), "已下架书籍\n可以在下架页找到当前书籍", "提示", MB_OK);
 				circle = 0;
@@ -298,7 +298,7 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 
 					delNodeByIdInBookList(nowBooks, book->id);
 
-					saveBookListToFile(mainBookList, "bookinfo.txt");
+					saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
 					MessageBox(GetHWnd(), "书籍已找到新的落脚点", "提示", MB_OK);
 					circle = 0;
@@ -444,7 +444,7 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 
 				delNodeByIdInBookList(nowBooks, book->id);
 
-				saveBookListToFile(mainBookList, "bookinfo.txt");
+				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
 				MessageBox(GetHWnd(), "重新上架成功", "提示", MB_OK);
 				circle = 0;
@@ -453,7 +453,7 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 
 		case 2:
 			if (changeBookInfo(book)) {
-				saveBookListToFile(mainBookList, "bookinfo.txt");
+				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 				MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
 			}
 			
@@ -571,14 +571,14 @@ void my_info(UserList* mainUserInfo, UserInfo* onlineUser) {
 			case 0: circle = 0; break;
 			case 1: 
 				if (changeUserInfo(onlineUser)) {
-					saveUserListToFile(mainUserInfo, "userinfo.txt");
+					saveUserListToFile(mainUserInfo, "Data/userinfo.txt");
 					MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
 				}
 			break;
 
 			case 2:
 				if (changeUserKey(onlineUser)) {
-					saveUserListToFile(mainUserInfo, "userinfo.txt");
+					saveUserListToFile(mainUserInfo, "Data/userinfo.txt");
 					MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK);
 
 				}

@@ -50,7 +50,7 @@ int post(BookList* mainBookList, UserInfo* onlineUser) {
 			case 1:
 				book->publishTime = time(NULL);
 				insertBookInBookList(mainBookList, book);
-				saveBookListToFile(mainBookList, "bookinfo.txt");
+				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 				MaxBookId++;
 				MessageBox(GetHWnd(), "发布成功", "提示", MB_OK);
 				circle = 0;

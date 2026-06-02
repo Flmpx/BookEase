@@ -178,7 +178,9 @@ typedef struct Book {
 
 
 
-
+/**
+ * 定义书籍比较函数类型指针.
+ */
 typedef int (*cmpBook)(Book* book_a, Book* book_b);		
 
 

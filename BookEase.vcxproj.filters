@@ -121,8 +121,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="bookinfo.txt" />
-    <Text Include="userinfo.txt" />
-    <Text Include="localhistory.txt" />
+    <Text Include="Data\bookinfo.txt" />
   </ItemGroup>
 </Project>

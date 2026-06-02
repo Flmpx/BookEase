@@ -48,7 +48,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 	BookNode* q = bookList->head;
 	
 	while (true) {
-		Sleep(6);
+		//Sleep(6);
 		click_back_flag = -1;
 		click_select_flag = -1;
 		click_diction_flag = -1;

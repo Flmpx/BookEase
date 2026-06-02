@@ -2,22 +2,6 @@
 #include <easyx.h>
 #include "../menu.h"
 
-static void style_button_start() {
-	setfillcolor(WHITE);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 1);
-}
-static void style_button_hover() {
-	setfillcolor(YELLOW);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 3);
-}
-static void style_button_click() {
-	setfillcolor(RED);
-	setlinecolor(BLACK);
-	setlinestyle(PS_SOLID, 2);
-}
-
 
 int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 	int screenW = getwidth();	
@@ -31,14 +15,21 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 	const char* regStr = "×¢²á";
 	const char* logStr = "µÇÂ¼";
 
+
 	int flagReturn = -1;	//0´ú±í·µ»Ø×¢²á, 1´ú±í·µ»ØµÇÂ¼
 
 	setbkmode(TRANSPARENT);
 	settextcolor(BLACK);
 	ExMessage msg = {0};
-	while (true) {
-		Sleep(6);
 
+
+	//Ê×Ò³Í¼Æ¬
+
+	IMAGE picture;
+	loadimage(&picture, "res/main.png");
+	while (true) {
+		//Sleep(6);
+		
 		bool hover_reg = false, hover_log = false;
 
 		//peekmessage(&msg, EX_MOUSE);
@@ -69,12 +60,18 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 		}
 		BeginBatchDraw();
 
+		//»æÖÆÍ¼Æ¬
+		putimage(0, 0, &picture);
+		
+		
+		
 		//»æÖÆReg
 
-		style_button_start();
+
+		style_select_start();
 		if (hover_reg) {
-			if (flagReturn >= 0) style_button_click();
-			else style_button_hover();
+			if (flagReturn >= 0) style_select_click();
+			else style_select_hover();
 		}
 		w = blockWidth; h = blockHeight;
 		l = screenW/2 - marginOfBlock/2 - w;
@@ -85,10 +82,10 @@ int loginMenu(int blockWidth, int blockHeight, int marginOfBlock) {
 
 
 		//»æÖÆLog
-		style_button_start();
+		style_select_start();
 		if (hover_log) {
-			if (flagReturn >= 0) style_button_click();
-			else style_button_hover();
+			if (flagReturn >= 0) style_select_click();
+			else style_select_hover();
 		}
 
 		w = blockWidth; h = blockHeight;
