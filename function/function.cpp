@@ -65,7 +65,7 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 }
 
 void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 8;
+	int InfoNum = 9;
 	int th = h/InfoNum;
 	//settextstyle(th, 0, "     宋体");
 	fillrectangle(l, t, l + w, t + h);
@@ -76,6 +76,9 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	/*距离上方占据一定空间*/
 	outtextxy(l, t+(cnt++)*th, tempStr);
 
+	sprintf(tempStr, "     ID:%lld", book->id);
+	outtextxy(l, t+(cnt++*th), tempStr);
+	
 	sprintf(tempStr, "     书名:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
@@ -102,7 +105,7 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 
 
 void printAllBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 15;
+	int InfoNum = 16;
 	if (book->buyerId != Invalid_Num) {
 		InfoNum += 7;
 	}
@@ -117,6 +120,10 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 
 	/*距离上方占据一定空间*/
 	outtextxy(l, t+(cnt++)*th, tempStr);
+
+
+	sprintf(tempStr, "     ID:%lld", book->id);
+	outtextxy(l, t+(cnt++*th), tempStr);
 
 	sprintf(tempStr, "     书名:%s", book->title);
 	outtextxy(l, t+(cnt++*th), tempStr);
