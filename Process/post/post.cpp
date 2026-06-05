@@ -38,7 +38,7 @@ int post(BookList* mainBookList, UserInfo* onlineUser) {
 		switch (input_num) {
 			case 0:
 
-				if (MessageBox(GetHWnd(), "确定要取消发布吗?", "提示", MB_YESNO) == IDYES) {
+				if (MessageBox(GetHWnd(), "确定要取消发布吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 					free(book);
 					circle = 0;
 				}
@@ -52,14 +52,14 @@ int post(BookList* mainBookList, UserInfo* onlineUser) {
 				insertBookInBookList(mainBookList, book);
 				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 				MaxBookId++;
-				MessageBox(GetHWnd(), "发布成功", "提示", MB_OK);
+				MessageBox(GetHWnd(), "发布成功", "提示", MB_OK | MB_ICONINFORMATION);
 				circle = 0;
 			break;
 
 
 			case 2:
 				if (changeBookInfo(book)) {
-					MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
+					MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
 				}
 			break;
 

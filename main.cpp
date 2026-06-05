@@ -27,7 +27,7 @@ static void mainpage(UserList* mainUserList, BookList* mainBookList, UserInfo* o
 		int input_num = normalMenu(200, 90, 4, selections, 80, 30, "退出登录", 20, "选择操作", 30);
 		switch (input_num) {
 		case 0:	//退出登录
-			if (MessageBox(GetHWnd(), "确认退出吗?", "提示", MB_YESNO) == IDYES) {
+			if (MessageBox(GetHWnd(), "确认退出吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 				//确认退出登录
 				circle = 0;
 			}

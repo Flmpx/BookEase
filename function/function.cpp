@@ -293,7 +293,7 @@ bool InputStr(char* Str, const char* InputBoxInfo, const char* InputBoxTip, int 
 				changed = true;
 				circle = 0;
 			} else {
-				MessageBox(GetHWnd(), "输入不能为空", "提示", MB_OK);
+				MessageBox(GetHWnd(), "输入不能为空", "提示", MB_OK | MB_ICONWARNING);
 				circle = 1;
 			}
 		} else {
@@ -318,7 +318,7 @@ bool InputInter(ll* num, const char* InputBoxInfo, const char* InputBoxTip) {
 				circle = 0;
 				changed = true;
 			} else {
-				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK);
+				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK | MB_ICONWARNING);
 				circle = 1;
 			}
 		} else {
@@ -344,7 +344,7 @@ bool InputFloat(double* num, const char* InputBoxInfo, const char* InputBoxTip) 
 				circle = 0;
 				changed = true;
 			} else {
-				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK);
+				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK | MB_ICONWARNING);
 				circle = 1;
 			}
 		} else {
@@ -387,7 +387,7 @@ bool InputDate(time_t* time, const char* InputBoxInfo, const char* InputBoxTip) 
 				circle = 0;
 				changed = true;
 			} else {
-				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK);
+				MessageBox(GetHWnd(), "输入有误", "提示", MB_OK | MB_ICONWARNING);
 				circle = 1;
 			}
 		} else {
@@ -462,7 +462,7 @@ bool changeUserInfo(UserInfo* onlineUser) {
 		int input_num = detailUserInfoMenu(200, 90, 5, selections, 90, 30, "不保存退出", 20, "选择修改的信息", 10, "正在被修改的用户信息详情", temp_user, 10);
 		switch (input_num) {
 		case 0:
-			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO) == IDYES) {
+			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 				circle = false;
 				circle = 0;
 			}
@@ -518,7 +518,7 @@ bool changeBookInfo(Book* book) {
 
 		switch (input_num) {
 		case 0:
-			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO) == IDYES) {
+			if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 				changed = false;
 				circle = 0;
 			}
@@ -631,7 +631,7 @@ void printBookInfoToFile(Book* book, const char* fileHeadName) {
 
 	fprintf(file, "BookEase@Flmpx");
 	fclose(file);
-	MessageBox(GetHWnd(), fileName, "文件已保存至程序所在目录下的:", MB_OK);
+	MessageBox(GetHWnd(), fileName, "文件已保存至程序所在目录下的:", MB_OK | MB_ICONINFORMATION);
 
 
 }

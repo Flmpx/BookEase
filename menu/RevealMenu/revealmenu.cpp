@@ -228,7 +228,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 				}
 				startBooksNum -= col*row;
 			} else {
-				MessageBox(GetHWnd(), "已经是开始页了!!!", "提示", MB_OK);
+				MessageBox(GetHWnd(), "已经是开始页了!!!", "提示", MB_OK | MB_ICONINFORMATION);
 			}
 		} else if (click_diction_flag == 1) {
 			//点击>>>
@@ -238,7 +238,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 				}
 				startBooksNum += col*row;
 			} else {
-				MessageBox(GetHWnd(), "已经是最后一页了!!!", "提示", MB_OK);
+				MessageBox(GetHWnd(), "已经是最后一页了!!!", "提示", MB_OK | MB_ICONINFORMATION);
 
 			}
 		}

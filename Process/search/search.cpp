@@ -28,7 +28,7 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 			case 0: circle = 0; break;
 			case 1:
 				if (book->sellerId != onlineUser->id) {
-					if (MessageBox(GetHWnd(), "确定要预定吗?", "提示", MB_YESNO) == IDYES) {
+					if (MessageBox(GetHWnd(), "确定要预定吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 						book->reserverId = onlineUser->id;
 						book->reserveTime = time(NULL);
 						book->reserver = onlineUser;
@@ -47,14 +47,14 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 
 						saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 					
-						MessageBox(GetHWnd(), "预定成功!\n你可在我的页查看已订详情\n尝试与卖者联系\n", "提示", MB_OK);
+						MessageBox(GetHWnd(), "预定成功!\n你可在我的页查看已订详情\n尝试与卖者联系\n", "提示", MB_OK | MB_ICONINFORMATION);
 
 						circle = 0;
 
 					}
 				} else {
 					/*防止自己预定自己的书籍*/
-					MessageBox(GetHWnd(), "不可以自己预定自己的书哦", "提示", MB_OK);
+					MessageBox(GetHWnd(), "不可以自己预定自己的书哦", "提示", MB_OK | MB_ICONSTOP);
 					circle = 1;
 				}
 
@@ -305,7 +305,7 @@ int selectPrice(BookCmpCondition* searchBook) {
 					if (InputFloat(&price, "输入一个代表价格的小数", "输入价格上限")) {
 
 						if (price < searchBook->downPrice - EPS) {
-							MessageBox(GetHWnd(), "价格上限不能小于价格下限", "提示", MB_OK);
+							MessageBox(GetHWnd(), "价格上限不能小于价格下限", "提示", MB_OK | MB_ICONWARNING);
 							circle_in = 1;
 						} else {
 							searchBook->upPrice = price;
@@ -327,7 +327,7 @@ int selectPrice(BookCmpCondition* searchBook) {
 					if (InputFloat(&price, "输入一个代表价格的小数", "输入价格下限")) {
 
 						if (price > searchBook->upPrice + EPS) {
-							MessageBox(GetHWnd(), "价格下限不能小于价格上限", "提示", MB_OK);
+							MessageBox(GetHWnd(), "价格下限不能小于价格上限", "提示", MB_OK | MB_ICONWARNING);
 							circle_in = 1;
 						} else {
 							searchBook->downPrice = price;
@@ -385,7 +385,7 @@ int selectTime(BookCmpCondition* searchBook) {
 
 					if (InputDate(&time, "按照\"年 月 日\"的格式输入\n例如: 2026 5 25", "输入发布时间上限")) {
 						if (time < searchBook->downTime) {
-							MessageBox(GetHWnd(), "时间上限不能小于时间下限", "提示", MB_OK);
+							MessageBox(GetHWnd(), "时间上限不能小于时间下限", "提示", MB_OK | MB_ICONWARNING);
 							circle_in = 1;
 						} else {
 							searchBook->upTime = time;
@@ -404,7 +404,7 @@ int selectTime(BookCmpCondition* searchBook) {
 
 					if (InputDate(&time, "按照\"年 月 日\"的格式输入\n例如: 2026 5 20", "输入发布时间下限")) {
 						if (time < searchBook->downTime) {
-							MessageBox(GetHWnd(), "时间下限不能大于时间上限", "提示", MB_OK);
+							MessageBox(GetHWnd(), "时间下限不能大于时间上限", "提示", MB_OK | MB_ICONWARNING);
 							circle_in = 1;
 						} else {
 							searchBook->downTime = time;
@@ -480,7 +480,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 		int input_num = normalMenu(450, 50, 12, selections, 80, 30, "退出检索", 20, "修改筛选条件", 10);
 		switch (input_num) {
 			case 0:
-				if (MessageBox(GetHWnd(), "退出检索将会丢失所写条件, 确认退出吗?", "提示", MB_YESNO) == IDYES) {
+				if (MessageBox(GetHWnd(), "退出检索将会丢失所写条件, 确认退出吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 					circle = 0;
 				}
 			break;
@@ -491,7 +491,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 				
 			case 2:
 
-				if (MessageBox(GetHWnd(), "确定要全部重置吗?", "提示", MB_YESNO) == IDYES) {
+				if (MessageBox(GetHWnd(), "确定要全部重置吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 					searchBook = getEmptyBookCmpCondition();
 					searchBook.status = ON_SALE;	//默认检索在售书籍
 				}

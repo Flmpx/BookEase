@@ -87,7 +87,7 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1: 
-				if (MessageBox(GetHWnd(), "确定要取消预定", "提示", MB_YESNO) == IDYES) {
+				if (MessageBox(GetHWnd(), "确定要取消预定", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 					book->status = ON_SALE;
 					book->reserver = NULL;
 					book->reserverId = Invalid_Num;
@@ -102,7 +102,7 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 
 					saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
-					MessageBox(GetHWnd(), "已取消预定", "提示", MB_OK);
+					MessageBox(GetHWnd(), "已取消预定", "提示", MB_OK | MB_ICONINFORMATION);
 					circle = 0;
 				}
 			break;
@@ -208,7 +208,7 @@ void my_post_onsale_detail(BookList* mainBookList, BookList* nowBooks, Book* boo
 		switch (input_num) {
 		case 0: circle = 0; break;
 		case 1: 
-			if (MessageBox(GetHWnd(), "确定要下架书籍吗?", "提示", MB_YESNO) == IDYES && authenUserInfo(onlineUser)) {
+			if (MessageBox(GetHWnd(), "确定要下架书籍吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES && authenUserInfo(onlineUser)) {
 				book->status = REMOVED;
 				book->publishTime = Invalid_Num;
 
@@ -220,7 +220,7 @@ void my_post_onsale_detail(BookList* mainBookList, BookList* nowBooks, Book* boo
 
 				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
-				MessageBox(GetHWnd(), "已下架书籍\n可以在下架页找到当前书籍", "提示", MB_OK);
+				MessageBox(GetHWnd(), "已下架书籍\n可以在下架页找到当前书籍", "提示", MB_OK | MB_ICONINFORMATION);
 				circle = 0;
 			}
 			break;
@@ -286,7 +286,7 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 		switch (input_num) {
 			case 0: circle = 0; break;
 			case 1:
-				if (MessageBox(GetHWnd(), "确定预定方已收到你那本陪伴你诸多岁月的书了吗?", "提示", MB_YESNO) == IDYES) {
+				if (MessageBox(GetHWnd(), "确定预定方已收到你那本陪伴你诸多岁月的书了吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 					book->status = SOLD;
 
 					book->buyer = book->reserver;
@@ -300,7 +300,7 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 
 					saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
-					MessageBox(GetHWnd(), "书籍已找到新的落脚点", "提示", MB_OK);
+					MessageBox(GetHWnd(), "书籍已找到新的落脚点", "提示", MB_OK | MB_ICONINFORMATION);
 					circle = 0;
 				}
 
@@ -432,7 +432,7 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 		switch (input_num) {
 		case 0: circle = 0; break;
 		case 1:
-			if (MessageBox(GetHWnd(), "确定要要重新上架吗?", "提示", MB_YESNO) == IDYES) {
+			if (MessageBox(GetHWnd(), "确定要要重新上架吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
 				book->status = ON_SALE;
 
 				
@@ -446,7 +446,7 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 
 				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
 
-				MessageBox(GetHWnd(), "重新上架成功", "提示", MB_OK);
+				MessageBox(GetHWnd(), "重新上架成功", "提示", MB_OK | MB_ICONINFORMATION);
 				circle = 0;
 			}
 		break;
@@ -454,7 +454,7 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 		case 2:
 			if (changeBookInfo(book)) {
 				saveBookListToFile(mainBookList, "Data/bookinfo.txt");
-				MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
+				MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
 			}
 			
 			break;
@@ -572,14 +572,14 @@ void my_info(UserList* mainUserInfo, UserInfo* onlineUser) {
 			case 1: 
 				if (changeUserInfo(onlineUser)) {
 					saveUserListToFile(mainUserInfo, "Data/userinfo.txt");
-					MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK);
+					MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
 				}
 			break;
 
 			case 2:
 				if (changeUserKey(onlineUser)) {
 					saveUserListToFile(mainUserInfo, "Data/userinfo.txt");
-					MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK);
+					MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK | MB_ICONINFORMATION);
 
 				}
 			break;

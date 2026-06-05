@@ -60,12 +60,12 @@ bool authenUserInfo(UserInfo* user) {
 			if (strcmp(tempHashKey, user->hashKey) == 0) {
 				res = 1;
 				circle = 0;
-				MessageBox(GetHWnd(), "认证成功", "提示", MB_OK);
+				MessageBox(GetHWnd(), "认证成功", "提示", MB_OK | MB_ICONINFORMATION);
 
 
 			} else {
 				circle = 1;
-				MessageBox(GetHWnd(), "认证失败, 请重试", "提示", MB_OK);
+				MessageBox(GetHWnd(), "认证失败, 请重试", "提示", MB_OK | MB_ICONWARNING);
 			}
 		} else {
 			res = 0;
@@ -96,7 +96,7 @@ UserInfo* loginFunc(UserList* users) {
 				}
 			} else {
 				//如果输入有误或用户不存在, 弹出提示
-				MessageBox(GetHWnd(), "用户不存在, 检查是否输入错误或者进行注册", "提示", MB_OK);
+				MessageBox(GetHWnd(), "用户不存在, 检查是否输入错误或者进行注册", "提示", MB_OK | MB_ICONWARNING);
 				circle = 1;
 			}
 		} else {
@@ -149,14 +149,14 @@ int registerFunc(UserList* users) {
 			if (user) {
 				res = 0;
 				circle = 0;
-				MessageBox(GetHWnd(), "当前用户已注册, 请前往登录", "提示", MB_OK);
+				MessageBox(GetHWnd(), "当前用户已注册, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
 
 			} else {
 				user = createUser(id);
 				if (user) {
 					insertUserInfoInUserList(users, user);
 					saveUserListToFile(users, "Data/userinfo.txt");
-					MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK);
+					MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
 					res = 1;
 					circle = 0;
 				} else {
