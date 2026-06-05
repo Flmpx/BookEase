@@ -525,7 +525,7 @@ bool changeBookInfo(Book* book) {
 			break;
 
 		case 1:
-			memcpy(book, temp_book, sizeof(Book));
+			memcpy(book, temp_book, sizeof(Book));		//把临时书籍信息复制回原来的书籍
 			changed = true;
 			circle = 0;
 

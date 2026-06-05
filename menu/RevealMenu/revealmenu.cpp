@@ -246,7 +246,7 @@ Book* revealMenu(int* res, int selectW, int selectH, int selectNum,char selectio
 
 
 
-		
+
 	}
 }
 

@@ -22,27 +22,32 @@ static void mainpage(UserList* mainUserList, BookList* mainBookList, UserInfo* o
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"买书", "卖书", "我的", "关于"};
+		char selections[][101] = {"买书", "卖书", "我的", "关于"};	
+		//调用普通菜单
 		int input_num = normalMenu(200, 90, 4, selections, 80, 30, "退出登录", 20, "选择操作", 30);
 		switch (input_num) {
-		case 0:
+		case 0:	//退出登录
 			if (MessageBox(GetHWnd(), "确认退出吗?", "提示", MB_YESNO) == IDYES) {
+				//确认退出登录
 				circle = 0;
 			}
 
 			break;
-
 		case 1:
+			// 买书(直接进入检索功能)
 			search(mainUserList, mainBookList, onlineUser);
 			break;
 		case 2:
+			// 卖书
 			post(mainBookList, onlineUser);
 
 			break;
 		case 3:
+			// 我的
 			my(mainBookList, mainUserList, onlineUser);
 			break;
 		case 4:
+			// 关于
 			about(mainUserList, mainBookList, onlineUser);
 			break;
 		}
@@ -75,15 +80,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	do {
 		circle = 1;
 		cleardevice();
-		int input_num = loginMenu(200, 90, 400);
+		int input_num = loginMenu(200, 90, 400);	//调用登录菜单
 		switch (input_num) {
 		case 0:
-			registerFunc(&mainUserList);
+			registerFunc(&mainUserList);	//注册功能函数
 			break;
 
 		case 1:
-			onlineUser = loginFunc(&mainUserList);
+			onlineUser = loginFunc(&mainUserList);	//登录功能函数
 			if (onlineUser) {
+				//登录成功会返回登录用户指针
 				mainpage(&mainUserList, &mainBookList, onlineUser);
 			}
 			break;

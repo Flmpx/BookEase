@@ -76,7 +76,6 @@ bool authenUserInfo(UserInfo* user) {
 }
 
 UserInfo* loginFunc(UserList* users) {
-	char temp[1001] = "";
 	ll id;
 	int res;
 	int circle;
@@ -84,24 +83,30 @@ UserInfo* loginFunc(UserList* users) {
 	do {
 		circle = 1;
 		if (InputInter(&id, "请输入学号", "输入用户信息")) {
-			user = getPtrUserInfoByIdInUserList(users, id);
+			user = getPtrUserInfoByIdInUserList(users, id);	//通过用户链表获得当前用户的信息
 			if (user) {
+				//用户存在
 				if (authenUserInfo(user)) {
+					//验证成功就退出循环
 					circle = 0;
 				} else {
+					//验证失败就把user重设为NULL, 循环继续
 					user = NULL;
 					circle = 1;
 				}
 			} else {
+				//如果输入有误或用户不存在, 弹出提示
 				MessageBox(GetHWnd(), "用户不存在, 检查是否输入错误或者进行注册", "提示", MB_OK);
 				circle = 1;
 			}
 		} else {
+			//取消输入
 			res = 0;
 			circle = 0;
 		}
 
 	} while (circle);
+	//返回登录用户, 如果登录不成功返回NULL
 	return user;
 }
 

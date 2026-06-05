@@ -222,7 +222,6 @@ int selectStr(char* Str, const char* selectionInfo, const char* InputBoxInfo, co
 
 int selectId(ll* id, const char* selectionInfo, const char* InputBoxInfo, const char* InputBoxTip) {
 	int circle = 1;
-	int circle_in = 1;
 	char temp[1001] = "";
 	ll temp_id;
 
