@@ -4,6 +4,10 @@
 git clone https://github.com/Flmpx/BookEase.git
 ```
 - 点击编译运行即可  
+
+[功能介绍](https://github.com/Flmpx/BookEase/blob/master/docs/README.md)  
+
+
 Problem:  
 
 1. 命令无效  
