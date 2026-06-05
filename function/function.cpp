@@ -7,6 +7,7 @@
 #include "../../menu/NormalMenu/normalmenu.h"
 #include "../../menu/RevealMenu/revealmenu.h"
 #include "../base.h"
+#include "../Lists/BookList/booklist.h"
 #include <time.h>
 
 InfoOfReturn linkBookForUser(Book* book, UserList* plist) {
@@ -245,24 +246,38 @@ void printStatistics(UserList* mainUserList, BookList* mainBookList, int l, int 
 	sprintf(tempStr, "     BookEase已经走过了 %d 天 %d 小时 %d 分钟 %d 秒", day, hour, min, sec);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
+	IterBookList iter;
+	initIterBookList(&iter, mainBookList);
+	double amount = 0;
+	int numOfStatus[4] = {0};
+
+	while (iterBookListHasNext(&iter)) {
+		Book* book = iterBookListNext(&iter);
+		BookStatus flag = book->status;
+		numOfStatus[flag]++;
+		if (flag == SOLD) {
+			amount += book->price;
+		}
+	}
+
 	sprintf(tempStr, "     有 %d 本书来到了这里(总上架数目)", mainBookList->size);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "     有 %d 本书正在等待被发现(在售数目)", mainBookList->numOfStatus[ON_SALE]);
+	sprintf(tempStr, "     有 %d 本书正在等待被发现(在售数目)", numOfStatus[ON_SALE]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "     有 %d 本书似乎找到了新去处(已预定数目)", mainBookList->numOfStatus[RESERVED]);
+	sprintf(tempStr, "     有 %d 本书似乎找到了新去处(已预定数目)", numOfStatus[RESERVED]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "     有 %d 本书的原主人还在犹豫(已下架数目)", mainBookList->numOfStatus[REMOVED]);
+	sprintf(tempStr, "     有 %d 本书的原主人还在犹豫(已下架数目)", numOfStatus[REMOVED]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
-	sprintf(tempStr, "     有 %d 本书找到了新去处(已售数目)", mainBookList->numOfStatus[SOLD]);
+	sprintf(tempStr, "     有 %d 本书找到了新去处(已售数目)", numOfStatus[SOLD]);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 
 
-	sprintf(tempStr, "     有 %.2lf 元的资金流过此处(总交易金额)", mainBookList->amount);
+	sprintf(tempStr, "     有 %.2lf 元的资金流过此处(总交易金额)", amount);
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 }

@@ -35,10 +35,6 @@ int buy(BookList* mainBookList, BookList* nowBooks, Book* book, UserInfo* online
 						book->status = RESERVED;
 						
 
-
-						/*同步更新主书籍链表*/
-						mainBookList->numOfStatus[ON_SALE]--;
-						mainBookList->numOfStatus[RESERVED]++;
 						
 						/*由于检索页只会展示在售书籍, 故要将已订书籍从链表中删除*/
 

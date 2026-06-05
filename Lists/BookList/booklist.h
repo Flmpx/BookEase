@@ -4,22 +4,23 @@
 
 
 /// @brief 书籍信息节点
-struct BookNode {
+typedef struct BookNode {
 	BookNode* prev;
 	BookNode* next;
 	Book* book;
-};
+} BookNode;
 
 
 /// @brief 书籍链表
-struct BookList {
+typedef struct BookList {
 	BookNode* head;
 	BookNode* tail;
 	int size;
-	int numOfStatus[4];
+} BookList;
 
-	double amount;
-};
+typedef struct IterBookList {
+	BookNode* next;
+} IterBookList;
 
 /// @brief 初始化书籍链表
 /// @param plist 链表指针
@@ -75,5 +76,22 @@ extern BookList getSimilarBookListInAllBookList(BookList* allBookList, BookCmpCo
 /// @param plist 链表指针
 /// @param cmp 比较函数
 extern void sortBookList(BookList* plist, cmpBook cmp);
+
+
+/// @brief 初始化书籍迭代器
+/// @param iter 迭代器指针
+/// @param list 书籍链表指针 
+void initIterBookList(IterBookList* iter, BookList* list);
+
+/// @brief 判断迭代器是否还有下一个
+/// @param iter 迭代器指针
+/// @return 有就返回true, 否则false
+extern bool iterBookListHasNext(IterBookList* iter);
+
+/// @brief 返回书籍迭代器的下一个
+/// @param iter 迭代器指针
+/// @return 书籍指针
+extern Book* iterBookListNext(IterBookList* iter);
+
 
 #endif

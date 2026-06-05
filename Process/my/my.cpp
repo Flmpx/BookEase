@@ -93,10 +93,6 @@ void my_buy_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 					book->reserverId = Invalid_Num;
 					book->reserveTime = Invalid_Num;
 
-					/*同步更新主书籍链表的内容*/
-					mainBookList->numOfStatus[RESERVED]--;
-					mainBookList->numOfStatus[ON_SALE]++;
-
 
 					delNodeByIdInBookList(nowBooks, book->id);
 
@@ -213,8 +209,7 @@ void my_post_onsale_detail(BookList* mainBookList, BookList* nowBooks, Book* boo
 				book->publishTime = Invalid_Num;
 
 
-				mainBookList->numOfStatus[ON_SALE]--;
-				mainBookList->numOfStatus[REMOVED]++;
+
 
 				delNodeByIdInBookList(nowBooks, book->id);
 
@@ -293,8 +288,7 @@ void my_post_reserved_detail(BookList* mainBookList, BookList* nowBooks, Book* b
 					book->buyerId = book->reserverId;
 					book->buyTime = time(NULL);
 
-					mainBookList->numOfStatus[RESERVED]--;
-					mainBookList->numOfStatus[SOLD]++;
+
 
 					delNodeByIdInBookList(nowBooks, book->id);
 
@@ -439,8 +433,6 @@ void my_post_removed_detail(BookList* mainBookList, BookList* nowBooks, Book* bo
 				book->publishTime = time(NULL);
 
 
-				mainBookList->numOfStatus[REMOVED]--;
-				mainBookList->numOfStatus[ON_SALE]++;
 
 				delNodeByIdInBookList(nowBooks, book->id);
 

@@ -5,10 +5,8 @@
 #include <string.h>
 
 void initBookList(BookList* plist) {
-	plist->amount = 0.0;
 	plist->head = plist->tail = NULL;
 	plist->size = 0;
-	memset(plist->numOfStatus, 0, 4*sizeof(int));
 }
 
 InfoOfReturn insertBookInBookList(BookList* plist, Book* book) {
@@ -34,12 +32,6 @@ InfoOfReturn insertBookInBookList(BookList* plist, Book* book) {
 		plist->head = plist->tail = newNode;
 	}
 
-
-
-	if (book->status == SOLD) {
-		plist->amount += book->price;
-	}
-	plist->numOfStatus[book->status]++;
 	plist->size++;
 	return Success;
 
@@ -260,4 +252,24 @@ BookNode* getTail(BookNode* head) {
 void sortBookList(BookList* plist, cmpBook cmp) {
 	plist->head = sortBookNode(plist->head, cmp);
 	plist->tail = getTail(plist->head);
+}
+
+
+
+void initIterBookList(IterBookList* iter, BookList* list) {
+	iter->next = list->head;
+}
+
+
+bool iterBookListHasNext(IterBookList* iter) {
+	return iter->next != NULL;
+}
+
+Book* iterBookListNext(IterBookList* iter) {
+	if (iter->next == NULL) {
+		return NULL;
+	}
+	Book* ptrBook = iter->next->book;
+	iter->next = iter->next->next;
+	return ptrBook;
 }
