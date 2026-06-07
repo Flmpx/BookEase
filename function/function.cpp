@@ -66,7 +66,7 @@ void printUserInfo(UserInfo* info, int l, int t, int w, int h) {
 }
 
 void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
-	int InfoNum = 9;
+	int InfoNum = 10;
 	int th = h/InfoNum;
 	//settextstyle(th, 0, "     宋体");
 	fillrectangle(l, t, l + w, t + h);
@@ -84,6 +84,9 @@ void printSimpleBookInfo(Book* book, int l, int t, int w, int h) {
 	outtextxy(l, t+(cnt++*th), tempStr);
 
 	sprintf(tempStr, "     作者:%s", book->author);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
+	sprintf(tempStr, "     出版社:%s", book->press);
 	outtextxy(l, t+(cnt++*th), tempStr);
 	
 	sprintf(tempStr, "     ISBN:%s", book->ISBN);
@@ -131,6 +134,11 @@ void printAllBookInfo(Book* book, int l, int t, int w, int h) {
 
 	sprintf(tempStr, "     作者:%s", book->author);
 	outtextxy(l, t+(cnt++*th), tempStr);
+
+	
+	sprintf(tempStr, "     出版社:%s", book->press);
+	outtextxy(l, t+(cnt++*th), tempStr);
+
 	
 	sprintf(tempStr, "     ISBN:%s", book->ISBN);
 	outtextxy(l, t+(cnt++*th), tempStr);
@@ -527,9 +535,9 @@ bool changeBookInfo(Book* book) {
 		circle = 1;
 		cleardevice();
 
-		char selections[][101] = {"保存修改", "书籍名称", "ISBN", "书籍作者", "书籍状态", "书籍类别", "书籍价格"};
+		char selections[][101] = {"保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍状态", "书籍类别", "书籍价格"};
 
-		int input_num = detailBookMenu(200, 90, 7, selections, 100, 30, "退出修改", 20, "选择操作", 10, "正在被修改的书籍详情", temp_book, 10);
+		int input_num = detailBookMenu(200, 80, 8, selections, 100, 30, "退出修改", 20, "选择操作", 10, "正在被修改的书籍详情", temp_book, 10);
 
 		switch (input_num) {
 		case 0:
@@ -561,14 +569,19 @@ bool changeBookInfo(Book* book) {
 			break;
 
 		case 5:
+			
+			InputStr(temp_book->press, "输入书籍出版社", "输入", PRESS_MAX_LEN - 3);
+
+			break;
+		case 6:
 
 			changeBookCondition(&(temp_book->condition));
 			break;
 
-		case 6:
+		case 7:
 			changeBookCategory(&(temp_book->category));
 			break;
-		case 7:
+		case 8:
 
 			InputFloat(&(temp_book->price), "输入一个小数代表书籍价格", "输入价格");
 			break;
@@ -620,6 +633,7 @@ void printBookInfoToFile(Book* book, const char* fileHeadName) {
 	fprintf(file, "书名: %s\n", book->title);
 	fprintf(file, "ISBN: %s\n", book->ISBN);
 	fprintf(file, "作者: %s\n", book->author);
+	fprintf(file, "出版社: %s\n", book->press);
 	fprintf(file, "价格: %.2lf 元\n", book->price);
 	fprintf(file, "书籍状态: %s\n", BookStatusStr[book->status]);
 	fprintf(file, "书籍新旧程度: %s\n", BookConditionStr[book->condition]);

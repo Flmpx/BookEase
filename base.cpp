@@ -37,6 +37,7 @@ Book getEmptyBook() {
 	strcpy(book.title, Invalid_Str);
 	strcpy(book.ISBN, Invalid_Str);
 	strcpy(book.author, Invalid_Str);
+	strcpy(book.press, Invalid_Str);
 
 	book.price = Invalid_FloatNum;
 
@@ -93,6 +94,7 @@ BookCmpCondition getEmptyBookCmpCondition() {
 	empty.author[0] = '\0';
 	empty.isbn[0] = '\0';
 	empty.title[0] = '\0';
+	empty.press[0] = '\0';
 
 	empty.downPrice = empty.upPrice = Invalid_FloatNum;
 	empty.downTime = empty.upTime = Invalid_Num;
@@ -144,6 +146,13 @@ bool isSimilarBook(Book* book, BookCmpCondition* bookCondition) {
 	if (bookCondition->author[0] != '\0' && strstr(book->author, bookCondition->author) == NULL) {
 		return false;
 	}
+
+	//比较出版社
+
+	if (bookCondition->press[0] != '\0' && strstr(book->press, bookCondition->press) == NULL) {
+		return false;
+	}
+
 	
 	//比较价格
 	if (bookCondition->downPrice > -EPS && book->price < bookCondition->downPrice - EPS) {

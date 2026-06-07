@@ -20,7 +20,7 @@ extern char BookCategoryStr[5][101];
 
 
 
-//#define PRESS_MAX_LEN 64					//出版社名字最长长度
+#define PRESS_MAX_LEN 64					//出版社名字最长长度
 
 #define WECHAR_MAX_LEN 48					//微信号最长长度
 
@@ -120,6 +120,8 @@ typedef struct BookCmpCondition {
 	char isbn[ISBN_MAX_LEN];				//比较isbn
 	
 	char author[AUTHOR_MAX_LEN];			//比较书籍作者
+
+	char press[PRESS_MAX_LEN];				//比较书籍出版社
 	
 	double downPrice;						//比较最低价
 	
@@ -156,7 +158,7 @@ typedef struct Book {
 
 	char author[AUTHOR_MAX_LEN];			//书籍作者
 
-	//char press[PRESS_MAX_LEN];				//出版社
+	char press[PRESS_MAX_LEN];				//出版社
 
 	double price;							//书籍价格
 

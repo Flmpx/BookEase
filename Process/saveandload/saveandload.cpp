@@ -114,11 +114,12 @@ BookList loadBookListFromFile(const char* filePath, UserList* plist) {
 		* 购买者id, 购买时间
 		* 预定者时间, 预定时间
 		*/
-		int res = fscanf(bookFile, "%lld %s %s %s %lf %d %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", 
+		int res = fscanf(bookFile, "%lld %s %s %s %s %lf %d %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", 
 			&book.id, 
 			book.title,
 			book.ISBN,
 			book.author,
+			book.press,
 			&book.price, 
 			&book.status,
 			&book.condition,
@@ -127,7 +128,7 @@ BookList loadBookListFromFile(const char* filePath, UserList* plist) {
 			&book.buyerId, &book.buyTime,
 			&book.reserverId, &book.reserveTime);
 
-		if (res != 14) {
+		if (res != 15) {
 			/* 如果读取数目不足, 说明读到文档末尾或者文件有问题*/
 			break;
 		}
@@ -171,10 +172,11 @@ InfoOfReturn saveBookListToFile(BookList* plist, const char* filePath) {
 		* 购买者id, 购买时间
 		* 预定者时间, 预定时间
 		*/
-		fprintf(bookFile, "%lld %s %s %s %lf %d %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", book->id,
+		fprintf(bookFile, "%lld %s %s %s %s %lf %d %d %d\n%lld %lld\n%lld %lld\n%lld %lld\n", book->id,
 																							book->title,
 																							book->ISBN,
 																							book->author,
+																							book->press,
 																							book->price,
 
 																							book->status,

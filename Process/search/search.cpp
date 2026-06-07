@@ -205,7 +205,7 @@ int selectStr(char* Str, const char* selectionInfo, const char* InputBoxInfo, co
 			break;
 
 		case 2:
-			InputStr(Str, InputBoxInfo, InputBoxInfo, maxLen);
+			InputStr(Str, InputBoxInfo, InputBoxTip, maxLen);
 
 			break;
 
@@ -426,7 +426,7 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 	do {
 		circle = 1;
 		cleardevice();
-		char selections[][101] = {"开始检索", "重置所有条件", "卖者用户名", "卖者学号", "书籍id", "书名", "ISBN", "书籍作者", "书籍新旧程度", "书籍类别", "价格区间", "时间区间"};
+		char selections[][101] = {"开始检索", "重置所有条件", "卖者用户名", "卖者学号", "书籍id", "书名", "ISBN", "书籍作者", "出版社", "书籍新旧程度", "书籍类别", "价格区间", "时间区间"};
 		
 
 		/* 如果有条件, 则打印出条件, 下同理*/
@@ -456,24 +456,28 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 			sprintf(selections[7], "书籍作者: %s", searchBook.author);
 		}
 
-		if (searchBook.condition != Invalid_BookCondition) {
-			sprintf(selections[8], "书籍新旧程度: %s", BookConditionStr[searchBook.condition]);
-		}
-		if (searchBook.category != Invalid_BookCategory) {
-			sprintf(selections[9], "书籍类别: %s", BookCategoryStr[searchBook.category]);
+		if (searchBook.press[0] != '\0') {
+			sprintf(selections[8], "出版社: %s", searchBook.press);
 		}
 
-		sprintf(selections[10], "价格区间: %g - %g", searchBook.downPrice, searchBook.upPrice);
+		if (searchBook.condition != Invalid_BookCondition) {
+			sprintf(selections[9], "书籍新旧程度: %s", BookConditionStr[searchBook.condition]);
+		}
+		if (searchBook.category != Invalid_BookCategory) {
+			sprintf(selections[10], "书籍类别: %s", BookCategoryStr[searchBook.category]);
+		}
+
+		sprintf(selections[11], "价格区间: %g - %g", searchBook.downPrice, searchBook.upPrice);
 
 
 
 		struct tm upTime = *localtime(&(searchBook.upTime));
 		struct tm downTime = *localtime(&(searchBook.downTime));
-		sprintf(selections[11], "时间区间: %04d年%02d月%02d日 - %04d年%02d月%02d日",	downTime.tm_year + 1900, downTime.tm_mon + 1, downTime.tm_mday,
+		sprintf(selections[12], "时间区间: %04d年%02d月%02d日 - %04d年%02d月%02d日",	downTime.tm_year + 1900, downTime.tm_mon + 1, downTime.tm_mday,
 																					upTime.tm_year + 1900, upTime.tm_mon + 1, upTime.tm_mday);
 		
 
-		int input_num = normalMenu(450, 50, 12, selections, 80, 30, "退出检索", 20, "修改筛选条件", 10);
+		int input_num = normalMenu(450, 50, 13, selections, 80, 30, "退出检索", 20, "修改筛选条件", 10);
 		switch (input_num) {
 			case 0:
 				if (MessageBox(GetHWnd(), "退出检索将会丢失所写条件, 确认退出吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
@@ -527,26 +531,30 @@ int search(UserList* mainUserList, BookList* mainBookList, UserInfo* onlineUser)
 				selectStr(searchBook.author, "书籍作者", "输入书籍的作者", "输入", AUTHOR_MAX_LEN - 3);
 			break;
 
-
 			case 9:
+
+				selectStr(searchBook.press, "出版社", "输入书籍的出版社", "输入", PRESS_MAX_LEN - 3);
+			break;
+
+			case 10:
 				selectCondtions(&(searchBook.condition));
 			
 			break;
 
-			case 10:
+			case 11:
 
 				selectCategory(&(searchBook.category));
 			break;
 
 			/* 选择价格区间*/
-			case 11:
+			case 12:
 
 				selectPrice(&searchBook); 
 
 			break;
 
 			/* 选择发布时间区间*/
-			case 12:
+			case 13:
 				selectTime(&searchBook);
 			break;
 
