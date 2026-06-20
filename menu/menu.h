@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef MENU_H
 #define MENU_H
 #include <easyx.h>

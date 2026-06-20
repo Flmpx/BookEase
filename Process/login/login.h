@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef LOGIN_H
 #define LOGIN_H
 #include "../../base.h"

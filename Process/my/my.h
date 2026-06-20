@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef MY_H
 #define MY_H
 #include "../../base.h"

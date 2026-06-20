@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #include "../../base.h"
 #include <easyx.h>
 #include "../menu.h"

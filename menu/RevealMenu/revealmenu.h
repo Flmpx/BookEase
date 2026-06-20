@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef REVEALMENU_H
 #define REVEALMENU_H
 #include "../../base.h"

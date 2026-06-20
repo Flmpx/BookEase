@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef SEARCH_H
 #define SEARCH_H
 #include "../../base.h"

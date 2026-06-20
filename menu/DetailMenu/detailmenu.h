@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef DETAILMENU_H
 #define DETAILMENU_H
 #include "../../base.h"

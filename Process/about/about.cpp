@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #include "../../base.h"
 #include "../../menu/DetailMenu/detailmenu.h"
 #include "../../menu/NormalMenu/normalmenu.h"

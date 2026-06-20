@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #include "login.h"
 #include "../../base.h"
 #include "../../Lists/UserList/userlist.h"

@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #include "revealmenu.h"
 #include <easyx.h>
 #include "../../function/function.h"

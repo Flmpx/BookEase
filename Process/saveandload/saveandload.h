@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef SAVEANDLOAD_H
 #define SAVEANDLOAD_H
 #include "../../base.h"

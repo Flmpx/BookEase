@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef BOOKLIST_H
 #define BOOKLIST_H
 #include "../../base.h"

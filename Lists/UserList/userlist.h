@@ -1,3 +1,7 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
 #ifndef USERLIST_H
 #define USERLIST_H
 #include "../../base.h"
