@@ -1,5 +1,6 @@
 - 当前整个项目是通过Visual Studio 2022 构建的  
 - 如果需要获得可以直接使用git clone 命令  
+- 使用了EasyX图形库
 ```shell
 git clone https://github.com/Flmpx/BookEase.git
 ```
