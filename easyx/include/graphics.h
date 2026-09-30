@@ -1,12 +1,11 @@
 /******************************************************
- * EasyX Library for C++ (Ver:26.1.1)
+ * EasyX Library for C++ (Ver:25.9.10)
  * https://easyx.cn
  *
  * graphics.h
  *		Based on easyx.h and retaining several old APIs.
  *		The functions and constants declared in this file are only for compatibility and are not recommended.
  ******************************************************/
-
 
 #pragma once
 

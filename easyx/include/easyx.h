@@ -1,5 +1,5 @@
 /******************************************************
- * EasyX Library for C++ (Ver:26.1.1)
+ * EasyX Library for C++ (Ver:25.9.10)
  * https://easyx.cn
  *
  * EasyX.h
@@ -168,7 +168,6 @@ COLORREF getbkcolor();				// Get background color
 void setbkcolor(COLORREF color);	// Set background color
 int  getbkmode();					// Get background mode
 void setbkmode(int mode);			// Set background mode
-
 
 // Color model transformation related functions
 COLORREF RGBtoGRAY(COLORREF rgb);
