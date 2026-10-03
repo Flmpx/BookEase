@@ -1,0 +1,277 @@
+#include "base.hpp"
+#include <limits>
+#include <sstream>
+
+
+namespace BK {
+    
+    int_t Book::book_num {0};
+
+    /**
+     * @brief 返回书籍的售卖者
+     * 
+     * @param users 用户链表
+     * @return 返回用户指针, 如果不存在该用户, 返回nullptr
+     */
+    auto Book::seller(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User> {
+        for (auto& it : users) {
+            if (seller_id == it->id) {
+                return it;
+            }
+        }
+        
+        return nullptr;
+    }
+
+    /**
+     * @brief 返回书籍的购买者
+     * 
+     * @param users 用户链表
+     * @return 返回用户指针, 如果不存在该用户, 返回nullptr
+     */
+    auto Book::buyer(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User> {
+        for (auto& it : users) {
+            if (buyer_id == it->id) {
+                return it;
+            }
+        }
+
+        return nullptr;
+    }
+
+    /**
+     * @brief 返回书籍的预定者
+     * 
+     * @param users 用户链表
+     * @return 返回用户指针, 如果不存在该用户, 返回nullptr
+     */
+    auto Book::reserver(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User> {
+        for (auto& it : users) {
+            if (reserver_id == it->id) {
+                return it;
+            }
+        }
+
+        return nullptr;
+    }
+
+    /**
+     * @brief 比较书籍是否符合要求
+     * 
+     * @param cmp_condition 书籍比较结构体
+     */
+    auto Book::operator==(const BookCmpCondition& cmp_condition) const -> bool {
+
+        /* 比较书籍ID */
+        if (cmp_condition.id != invalid::id && cmp_condition.id != id) {
+            return false;
+        }
+
+        /* 比较书籍标题 */
+        if (title.find(cmp_condition.title) == std::string::npos) {
+            return false;
+        }
+
+        /* 比较ISBN */
+        if (isbn.find(cmp_condition.isbn) == std::string::npos) {
+            return false;
+        }
+
+        /* 比较作者 */
+        if (author.find(cmp_condition.author) == std::string::npos) {
+            return false;
+        }
+
+        /* 比较出版社 */
+        if (press.find(cmp_condition.press) == std::string::npos) {
+            return false;
+        }
+
+        /* 比较价格 */
+        if (!cmp_condition.price_range.include(price)) {
+            return false;
+        }
+
+        /* 比较书籍完整度 */
+        if (!cmp_condition.integrity_range.include(integrity)) {
+            return false;
+        }
+        
+        /* 比较发布时间 */
+        if (!cmp_condition.publish_time_range.include(publish_time)) {
+            return false;
+        }
+        
+        /* 比较购买时间 */
+        if (!cmp_condition.buy_time_range.include(buy_time)) {
+            return false;
+        }
+        
+        /* 比较预定时间 */
+        if (!cmp_condition.reserve_time_range.include(reserve_time)) {
+            return false;
+        }
+        
+        /* 比较类别 */
+        if (cmp_condition.category != invalid::category && cmp_condition.category & category) {
+            return false;
+        }
+
+        /* 比较状态 */
+        if (cmp_condition.status != invalid::status && cmp_condition.status & status) {
+            return false;
+        }
+
+        return true;
+        
+    }
+}
+
+namespace BK {
+
+
+    /**
+     * @brief 对字符串进行hash操作
+     * 
+     * @param str 输入字符串
+     * @return 返回无符号整数
+     */
+    auto Key::hash(const std::string& str) const -> uint_t {
+        uint_t res {0};
+        for (auto it : str) {
+            res = ((res << 5) + res) + it;
+        }
+
+        return res;
+    }
+
+    /**
+     * @brief 生成盐并存储在内部的salt_变量中
+     * 
+     */
+    auto Key::generateSalt() -> void {
+        srand(time(nullptr));
+        std::stringstream out {};
+        const std::string flag("ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()<>{}|");
+        
+        for (int i = 0; i < len_; i++) {
+            out << flag[rand() % flag.size()];
+        }
+
+        salt_ = out.str();
+    }
+
+    /**
+     * @brief 构建一个密钥, 新用户创建时使用
+     * 
+     * @param password 密钥(账号+密码)
+     */
+    Key::Key(const std::string& password) {
+        generateSalt();
+        uint_t res {hash(password + salt_)};
+        std::stringstream out {};
+        out << std::hex << res;
+
+        hash_key_ = out.str();
+    }
+
+    /**
+     * @brief 构建一个密钥, 已存在用户使用
+     * 
+     * @param salt 盐
+     * @param hash_key Hash后的密钥 
+     */
+    Key::Key(const std::string& salt, const std::string& hash_key) {
+        salt_ = salt;
+        hash_key_ = hash_key;
+    }
+
+    /**
+     * @brief 验证密码是否正确
+     * 
+     * @param password 密码
+     */
+    auto Key::verify(const std::string& password) const -> bool {
+        uint_t res {hash(password + salt_)};
+        std::stringstream out {};
+        out << std::hex << res;
+
+        if (out.str() == hash_key_) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @brief 修改密码
+     * 
+     * @param new_password 新密码
+     */
+    auto Key::change(const std::string& new_password) -> void {
+        generateSalt();
+        uint_t res {hash(new_password + salt_)};
+        std::stringstream out {};
+        out << std::hex << res;
+
+        hash_key_ = out.str();
+    }
+}
+
+namespace BK {
+
+    /**
+     * @brief 构造一个新用户
+     * 
+     * @param password 密钥(用户名+密码)
+     */
+    User::User(const std::string& password) : key(password) {}
+
+    /**
+     * @brief 构建一个已经存在的用户
+     * 
+     * @param salt 盐
+     * @param hash_key Hash后的密钥
+     */
+    User::User(const std::string salt, const std::string hash_key) : key(salt, hash_key) {}
+
+    /**
+     * @brief 比较用户是否符合要求
+     * 
+     * @param cmp_condition 用户比较条件
+     */
+    auto User::operator==(const UserCmpCondition& cmp_condition) const -> bool {
+        
+        /* 比较用户名 */
+        if (name.find(cmp_condition.name) == std::string::npos) {
+            return false;
+        }
+
+        /* 比较ID */
+        if (cmp_condition.id != invalid::id && cmp_condition.id != id) {
+            return false;
+        }
+        
+
+        return true;
+    }
+
+    /**
+     * @brief 按条件获取用户的书籍
+     * 
+     * @param books 书籍指针链表
+     * @param status 书籍状态(默认全部)
+     * @param category 书籍类别(默认全部)
+     * @return 筛选后的书籍指针链表
+     */
+    auto User::books(std::list<std::shared_ptr<Book>>& books, BookStatus status, BookCategory category) const -> std::list<std::shared_ptr<Book>> {
+        std::list<std::shared_ptr<Book>> ret {};
+        for (auto& it : books) {
+            if ((static_cast<int_t>(status) & it->status) && (static_cast<int_t>(category) & it->category) && (it->seller_id == id || it->reserver_id == id || it->buyer_id == id)) {
+                ret.push_back(it);
+            }
+        }
+
+        return ret;
+    }
+}
