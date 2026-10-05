@@ -46,6 +46,17 @@ namespace BK {
         return static_cast<BookCategory>(static_cast<int_t>(c1) | static_cast<int_t>(c2));
     }
 
+    inline auto getBookCategoryString(BookCategory c) -> std::string {
+        switch (c) {
+            case BookCategory::textbook:    return "教材"; 
+            case BookCategory::fiction:     return "小说"; 
+            case BookCategory::academic:    return "学术类"; 
+            case BookCategory::exam:        return "考试类"; 
+            case BookCategory::other:       return "其他"; 
+            default:                        return "None";
+        }
+    }
+
     enum class BookStatus {
         on_sale     = 0x1 << 0,                         // 在售 
         reserved    = 0x1 << 1,                         // 以预约
@@ -56,6 +67,16 @@ namespace BK {
 
     inline auto operator|(BookStatus s1, BookStatus s2) -> BookStatus {
         return static_cast<BookStatus>(static_cast<int_t>(s1) | static_cast<int_t>(s2));
+    }
+
+    inline auto getBookStatusString(BookStatus s) -> std::string {
+        switch (s) {
+            case BookStatus::on_sale:   return "在售";
+            case BookStatus::reserved:  return "已预约";
+            case BookStatus::sold:      return "已售";
+            case BookStatus::removed:   return "已下架";
+            default:                    return "None";
+        }
     }
 }
 
