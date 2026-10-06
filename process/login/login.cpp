@@ -1,0 +1,143 @@
+#include "login.hpp"
+#include "../../tools/tools.hpp"
+#include <easyx.h>
+#include <ctime>
+#include "../saveandload/saveandload.hpp"
+
+namespace BK {
+
+    namespace {
+        auto find(std::list<std::shared_ptr<User>>& users, int_t id) -> std::shared_ptr<User> {
+            for (auto& it : users) {
+                if (it->id == id) {
+                    return it;
+                }
+            }
+
+            return nullptr;
+        }
+
+        auto createUser(int_t id) -> std::shared_ptr<User> {
+            std::string password {};
+            int circle {1};
+            std::shared_ptr<User> user {nullptr};
+            do {
+                circle = 1;
+                if (Input::string(password, "请输入密码", "输入用户信息")) {
+                    user.reset(new User(password));
+                    user->id = id;
+                    user->register_time = std::time(nullptr);
+                    circle = 0;
+                } else {
+                    circle = 0;
+                    user = nullptr;
+                }
+            } while (circle);
+
+            return user;
+        }
+    }
+
+    /**
+     * @brief 验证用户密码
+     * 
+     * @param user 用户
+     */
+    auto authenUser(std::shared_ptr<User>& user) -> bool {
+        int circle {0};
+        std::string password {};
+        bool res {false};
+        do {
+            circle = 1;
+            if (Input::string(password, "请输入登录密码", "输入用户信息")) {
+                if (user->key.verify(password)) {
+                    circle = 0;
+                    res = true;
+                    MessageBox(GetHWnd(), "认证成功", "提示", MB_OK | MB_ICONINFORMATION);
+                } else {
+                    circle = 1;
+                    MessageBox(GetHWnd(), "认证失败, 请重试", "提示", MB_OK | MB_ICONWARNING);
+                }
+
+            } else {
+                circle = 0;
+                res = false;
+            }
+        } while (circle);
+
+        return res;
+    }
+
+    /**
+     * @brief 登录
+     * 
+     * @param users 用户链表
+     * @return 若登录成功, 返回用户, 否则 nullptr
+     */
+    auto login(std::list<std::shared_ptr<User>>& users) -> std::shared_ptr<User> {
+        int_t id {invalid::id};
+        int circle {1};
+        std::shared_ptr<User> user {nullptr};
+        do {
+            circle = 1;
+            if (Input::integer(id, "请输入学号", "请输入用户信息")) {   // 输入学号
+                user = find(users, id);
+                if (user != nullptr) {
+                    std::string password {};
+                    if (authenUser(user)) {
+                        circle = 0;
+                    } else {
+                        circle = 1;
+                        user = nullptr;
+                    }
+                } else {
+                    MessageBox(GetHWnd(), "用户不存在, 检查是否输入错误或者进行注册", "提示", MB_OK | MB_ICONWARNING);
+                    circle = 1;
+                }
+            } else {
+                user = nullptr;
+                circle = 0;
+            }
+        } while (circle);
+
+        return user;
+    }
+
+    /**
+     * @brief 注册
+     * 
+     * @param users 用户链表
+     * @return 若注册成功, 返回新注册的用户, 否则 nullptr
+     */
+    auto regis(std::list<std::shared_ptr<User>>& users) -> std::shared_ptr<User> {
+        int_t id {invalid::id};
+        int circle {1};
+        std::shared_ptr<User> user {nullptr};
+        do {
+            circle = 1;
+            if (Input::integer(id, "请输入学号", "输入用户信息")) {
+                user = find(users, id);
+                if (user == nullptr) {
+                    user = createUser(id);
+                    if (user != nullptr) {
+                        users.push_back(user);
+                        File::saveUserToFile("users.json", users);
+                        MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
+                        circle = 0;
+                    } else {
+                        circle = 1;
+                    }
+                } else {
+                    circle = 0;
+                    MessageBox(GetHWnd(), "当前用户已注册, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
+                    user = nullptr;
+                }
+            } else {
+                circle = 0;
+                user = nullptr;
+            }
+        } while (circle);
+
+        return user;
+    } 
+}

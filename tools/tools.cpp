@@ -1,6 +1,7 @@
 #include "tools.hpp"
 #include <sstream>
 #include <ctime>
+#include <cstring>
 
 namespace BK {
 
@@ -134,5 +135,158 @@ namespace BK {
         print("     下架书籍数目:", num_removed, l, t, w, h);
         print("     已交易书籍数目:", num_sold, l, t, w, h);
         print("     总交易金额:", all_price, l, t, w, h);
+    }
+
+    namespace Input {
+
+        /**
+         * @brief 输入字符串
+         * 
+         * @param s 待输入的字符串
+         * @param info 显示信息
+         * @param tip 信息类型
+         * @return 成功输入返回true, 取消输入返回false
+         */
+        auto string(std::string& s, const std::string& info, const std::string tip) -> bool {
+            bool changed {false};
+            int circle {1};
+
+            char buf[BUF_SIZE] {""};
+            std::snprintf(buf, BUF_SIZE, "%s", s.c_str());
+            do {
+                circle = 1;
+                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                    if (buf[0] != '\0') {
+                        s = buf;
+                        changed = true;
+                        circle = 0;
+                    } else {
+                        MessageBox(GetHWnd(), "输入不能为空", "提示", MB_OK | MB_ICONWARNING);
+                        circle = 1;
+                    }
+                } else {
+                    circle = 0;
+                    changed = false;
+                }
+            } while (circle);
+
+            return changed;
+        }
+
+        /**
+         * @brief 输入整数
+         * 
+         * @param i 待输入的整数
+         * @param info 显示信息
+         * @param tip 信息类型
+         * @return 成功输入返回 true, 取消输入返回 false
+         */
+        auto integer(int_t& i, const std::string& info, const std::string& tip) -> bool {
+            bool changed {false};
+            int circle {1};
+
+            int_t tmp_num {0};
+            char buf[BUF_SIZE] {""};
+            std::snprintf(buf, BUF_SIZE, "%lld", i);
+            do {
+                circle = 1;
+                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                    int_t n {0};
+                    if (std::sscanf(buf, "%lld%n", &tmp_num, &n) == 1 && buf[n] == '\0') {
+                        i = tmp_num;
+                        circle = 0;
+                        changed = true;
+                    } else {
+                        MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
+				        circle = 1;
+                    }
+                } else {
+                    circle = 0;
+                    changed = false;
+                }
+            } while (circle);
+
+            return changed;
+        }
+
+        /**
+         * @brief 输入浮点数
+         * 
+         * @param i 待输入的浮点数
+         * @param info 显示信息
+         * @param tip 信息类型
+         * @return 成功输入返回 true, 取消输入返回 false
+         */
+        auto floatPoint(float_t& f, const std::string& info, const std::string& tip) -> bool {
+            bool changed {false};
+            int circle {1};
+
+            int_t tmp_num {0};
+            char buf[BUF_SIZE] {""};
+            std::snprintf(buf, BUF_SIZE, "%lf", f);
+            do {
+                circle = 1;
+                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                    int_t n {0};
+                    if (std::sscanf(buf, "%lf%n", &tmp_num, &n) == 1 && buf[n] == '\0') {
+                        f = tmp_num;
+                        circle = 0;
+                        changed = true;
+                    } else {
+                        MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
+				        circle = 1;
+                    }
+                } else {
+                    circle = 0;
+                    changed = false;
+                }
+            } while (circle);
+
+            return changed;
+        }
+
+        /**
+         * @brief 输入日期
+         * 
+         * @param i 待输入的日期
+         * @param info 显示信息
+         * @param tip 信息类型
+         * @return 成功输入返回 true, 取消输入返回 false
+         */
+        auto date(time_t& t, const std::string& info, const std::string& tip) -> bool {
+            bool changed {false};
+            int circle {1};
+
+            int_t tmp_time {t > invalid::time ? t : 0};
+            struct tm struct_time {};
+            localtime_s(&struct_time, &tmp_time);
+            char buf[BUF_SIZE] {""};
+            std::snprintf(buf, BUF_SIZE, "%d %d %d", struct_time.tm_year, struct_time.tm_mon + 1, struct_time.tm_mday);
+            int y {0}, m {0}, d {0};
+            do {
+                circle = 1;
+                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                    int_t n {0};
+                    if (std::sscanf(buf, "%d%d%d%n", &y, &m, &d, &n) == 3 && buf[n] == '\0' && y < 3000 && y > 1970) {
+                        struct_time.tm_year = y - 1900;
+                        struct_time.tm_mon = m - 1;
+				        struct_time.tm_mday = d;
+
+                        t = mktime(&struct_time);
+                        
+                        circle = 0;
+                        changed = true;
+                    } else {
+                        MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
+				        circle = 1;
+                    }
+                } else {
+                    circle = 0;
+                    changed = false;
+                }
+            } while (circle);
+
+            return changed;
+        }
     }
 }

@@ -66,6 +66,13 @@ namespace BK {
     auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h) -> void;
     auto printStatistics(const std::list<std::shared_ptr<Book>>& books, const std::list<std::shared_ptr<User>>& users, int_t l, int_t t, int_t w, int_t h) -> void;
 
+    namespace Input {
+        constexpr uint_t BUF_SIZE {256};
+        auto string(std::string& s, const std::string& info, const std::string tip) -> bool;
+        auto integer(int_t& i, const std::string& info, const std::string& tip) -> bool;
+        auto floatPoint(float_t& f, const std::string& info, const std::string& tip) -> bool;
+        auto date(time_t& t, const std::string& info, const std::string& tip) -> bool;
+    }
 }
 
 

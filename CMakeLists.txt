@@ -34,12 +34,13 @@ set(MENU_SRC ${CMAKE_CURRENT_SOURCE_DIR}/menu/menu.cpp) # 菜单
 set(TOOLS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tools/tools.cpp)  # 工具函数集合
 
 set(PROCESS_SAVELOAD_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/saveandload/saveandload.cpp)  # 文件持久化
+set(PROCESS_LOGIN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/login/login.cpp)      # 登录与注册
 
 # 可执行文件输出到bin/目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 # Win32即使用Windows的窗口作为程序入口
-add_executable(BookEase WIN32 ${MAIN_SRC} ${BASE_SRC} ${MENU_SRC} ${TOOLS_SRC} ${PROCESS_SAVELOAD_SRC})
+add_executable(BookEase WIN32 ${MAIN_SRC} ${BASE_SRC} ${MENU_SRC} ${TOOLS_SRC} ${PROCESS_SAVELOAD_SRC} ${PROCESS_LOGIN_SRC})
 
 # 链接EasyX
 target_link_libraries(BookEase PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/easyx/lib/libeasyx.a")
