@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <list>
 #include <memory>
+#include <limits>
 
 namespace BK {
     using int_t = int64_t;                                      // 有符号整数
@@ -16,16 +17,10 @@ namespace BK {
     constexpr int_t min_integrity           {0};                // 最小书籍完整度
     constexpr int_t max_integrity           {100};              // 最小书籍完整度
 
-    /* 无效值(全部为负数)在窗口中一律不显示, 和空字符串一样 */
+    /* 无效值用于判断是否存在, 比如预定者的id为-1, 则为无预定者 */
     namespace invalid {
-        constexpr int_t integrity       {-1};               // 无效完整度
         constexpr int_t id              {-1};               // 无效Id
-        constexpr int_t tel             {-1};               // 无效电话
-        constexpr int_t qq              {-1};               // 无效qq
-        constexpr float_t price         {-1.0};             // 无效价格(本质上是负数为无效)
         constexpr time_t time           {-1};               // 无效时间
-        constexpr int_t category        {-1};               // 无效类别
-        constexpr int_t status          {-1};               // 无效状态
     }
 }
 
@@ -80,41 +75,6 @@ namespace BK {
     }
 }
 
-
-namespace BK {
-    template <typename T>
-    class range {
-        private:
-            T min_;
-            T max_;
-        public:
-            /* 负数代表无限制 */
-            range(T t1, T t2) : min_(t1), max_(t2) {}
-
-            /* 是否在当前范围内 */
-            auto include(T t) const -> bool {
-                return (max_ < 0 || t <= max_) && ( min_ < 0 || t >= min_);
-            }
-
-            /* 强制改成范围内 */
-            auto forceInclude(T& t) const -> void {
-                if (min_ >= 0 && t < min_) t = min_;
-                if (max_ >= 0 && t > max_) t = max_;
-            }
-    };
-
-    template <>
-    inline auto range<double>::include(double t) const -> bool {
-        return (t < -EPS || t <= max_ + EPS) && (t < -EPS || t >= min_ - EPS);
-    }
-    
-    template <>
-    inline auto range<double>::forceInclude(double& t) const -> void {
-        if (min_ >= EPS && t < min_ - EPS) t = min_;
-        if (min_ >= EPS && t > max_ + EPS) t = max_;
-    }
-}
-
 namespace BK {
     class Key {
         private:
@@ -141,8 +101,29 @@ namespace BK {
 namespace BK {
     /* 用于判断用户是否符合所选的比较条件 */
     struct UserCmpCondition {
-        std::string name    {};                 // 用户名的比较条件
-        int_t id            {invalid::id};      // 用户id的比较条件
+        enum class Unlimit : uint_t {
+            name = 0x1 << 0,
+            id = 0x1 << 1
+        };
+
+        Unlimit flag {std::numeric_limits<uint_t>::max()};
+        std::string name {};      
+        int_t id {};      
+
+        /* 设置无限制 */
+        auto setUnlimit(Unlimit u) -> void {
+            flag = static_cast<Unlimit>(static_cast<uint_t>(flag) | static_cast<uint_t>(u));
+        }
+
+        /* 取消无限制 */
+        auto unsetUnlimit(Unlimit u) -> void {
+            flag = static_cast<Unlimit>(static_cast<uint_t>(flag) & ~static_cast<uint_t>(u));
+        }
+
+        /* 是否为无限制 */
+        auto isUmlimit(Unlimit u) const -> bool {
+            return static_cast<uint_t>(flag) & static_cast<uint_t>(u);
+        }
     };
 
     class Book;
@@ -151,12 +132,12 @@ namespace BK {
     struct User {
             /* 基础信息 */
             Key key;
-            std::string name        {};                     // 用户名 
-            int_t id                {invalid::id};          // 用户id
-            int_t tel               {invalid::tel};         // 电话号码
-            int_t qq                {invalid::qq};          // qq号
-            std::string wechat      {};                     // 微信号
-            time_t register_time    {invalid::time};        // 注册时间
+            std::string name     {};        // 用户名 
+            int_t id             {};        // 用户id
+            int_t tel            {0};       // 电话号码
+            int_t qq             {0};       // qq号
+            std::string wechat   {};        // 微信号
+            time_t register_time {0};       // 注册时间
 
             User(const std::string& password);
             User(const std::string salt, const std::string hash_key);
@@ -173,40 +154,73 @@ namespace BK {
 
     /* 用于判断书籍是否符合所选的比较条件 */
     struct BookCmpCondition {
-        int_t id                                {invalid::id};                      // 书籍id比较条件
-        std::string title                       {};                                 // 书籍标题比较条件
-        std::string isbn                        {};                                 // ISBN比较条件
-        std::string author                      {};                                 // 作者名称
-        std::string press                       {};                                 // 出版社
-        range<double> price_range               {invalid::price, invalid::price};   // 价格区间
-        range<time_t> publish_time_range        {invalid::time, invalid::time};     // 发布时间区间
-        range<time_t> buy_time_range            {invalid::time, invalid::time};     // 购买时间区间
-        range<time_t> reserve_time_range        {invalid::time, invalid::time};     // 预定时间区间
-        range<int_t> integrity_range            {min_integrity, max_integrity};     // 书籍完整程度
-        int_t category                          {invalid::category};                // 书籍种类
-        int_t status                            {invalid::status};                  // 书籍状态
+        enum class Unlimit : uint_t {
+            id   = 0x1 << 0,
+            title = 0x1 << 1,
+            isbn  = 0x1 << 2,
+            author = 0x1 << 3,
+            press = 0x1 << 4,
+            down_price = 0x1 << 5,
+            up_price = 0x1 << 6,
+            down_publish_time = 0x1 << 7,
+            up_publish_time = 0x1 << 8,
+            down_integrity = 0x1 << 9,
+            up_integrity = 0x1 << 10,
+            category = 0x1 << 11,
+            status = 0x1 << 12
+        };
+
+        Unlimit flag {std::numeric_limits<uint_t>::max()}; 
+        int_t id  {0};    
+        std::string title {};                            
+        std::string isbn  {};                                 
+        std::string author {};                                
+        std::string press {};                                 
+        float_t down_price {};
+        float_t up_price {};
+        time_t down_publish_time {};
+        time_t up_publish_time {};
+        int_t down_integrity {};     
+        int_t up_integrity  {};
+        int_t category {};           
+        int_t status {};          
+
+        /* 设置无限制 */
+        auto setUnlimit(Unlimit u) -> void {
+            flag = static_cast<Unlimit>(static_cast<uint_t>(flag) | static_cast<uint_t>(u));
+        }
+
+        /* 取消无限制 */
+        auto unsetUnlimit(Unlimit u) -> void {
+            flag = static_cast<Unlimit>(static_cast<uint_t>(flag) & ~static_cast<uint_t>(u));
+        }
+        
+        /* 是否为无限制 */
+        auto isUmlimit(Unlimit u) const -> bool {
+            return static_cast<uint_t>(flag) & static_cast<uint_t>(u);
+        }
     };
 
     /* 书籍 */
     struct Book {
-        static int_t book_num;                          // 书籍总数目, 也是新增书籍id的标准
-        int_t id                {invalid::id};          // 书籍id
-        int_t seller_id         {invalid::id};          // 售卖者id
-        int_t buyer_id          {invalid::id};          // 购买者id
-        int_t reserver_id       {invalid::id};          // 预定者Id
+        static int_t book_num;                                      // 书籍总数目, 也是新增书籍id的标准
+        int_t id {invalid::id};                                     // 书籍id
+        int_t seller_id {invalid::id};                              // 售卖者id
+        int_t buyer_id {invalid::id};                               // 购买者id
+        int_t reserver_id {invalid::id};                            // 预定者Id
 
-        std::string title       {};                     // 书名
-        std::string isbn        {};                     // ISBN
-        std::string author      {};                     // 作者
-        std::string press       {};                     // 出版社
-        std::string other       {};                     // 其他信息
-        float_t price           {invalid::price};       // 价格
-        time_t publish_time     {invalid::time};        // 发布时间
-        time_t buy_time         {invalid::time};        // 购买时间
-        time_t reserve_time     {invalid::time};        // 预定时间
-        int_t status            {invalid::status};      // 书籍状态
-        int_t integrity         {invalid::integrity};   // 书籍完整程度
-        int_t category          {invalid::category};    // 书籍类别
+        std::string title {};                                       // 书名
+        std::string isbn {};                                        // ISBN
+        std::string author {};                                      // 作者
+        std::string press {};                                       // 出版社
+        std::string other {};                                       // 其他信息
+        float_t price {5.20};                                       // 价格
+        time_t publish_time {invalid::time};                        // 发布时间
+        time_t buy_time {invalid::time};                            // 购买时间
+        time_t reserve_time {invalid::time};                        // 预定时间
+        int_t status {static_cast<int_t>(BookStatus::removed)};     // 书籍状态
+        int_t integrity {max_integrity};                            // 书籍完整程度
+        int_t category {static_cast<int_t>(BookCategory::other)};   // 书籍类别
 
         auto seller(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User>;
         auto buyer(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User>;

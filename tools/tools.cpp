@@ -174,7 +174,7 @@ namespace BK {
         }
 
         /**
-         * @brief 输入整数
+         * @brief 输入整数(不允许负数)
          * 
          * @param i 待输入的整数
          * @param info 显示信息
@@ -192,7 +192,7 @@ namespace BK {
                 circle = 1;
                 if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
                     int_t n {0};
-                    if (std::sscanf(buf, "%lld%n", &tmp_num, &n) == 1 && buf[n] == '\0') {
+                    if (std::sscanf(buf, "%lld%n", &tmp_num, &n) == 1 && buf[n] == '\0' && tmp_num >= 0) {
                         i = tmp_num;
                         circle = 0;
                         changed = true;
@@ -210,7 +210,7 @@ namespace BK {
         }
 
         /**
-         * @brief 输入浮点数
+         * @brief 输入浮点数(不允许负数)
          * 
          * @param i 待输入的浮点数
          * @param info 显示信息
@@ -221,14 +221,14 @@ namespace BK {
             bool changed {false};
             int circle {1};
 
-            int_t tmp_num {0};
+            float_t tmp_num {0};
             char buf[BUF_SIZE] {""};
             std::snprintf(buf, BUF_SIZE, "%lf", f);
             do {
                 circle = 1;
                 if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
                     int_t n {0};
-                    if (std::sscanf(buf, "%lf%n", &tmp_num, &n) == 1 && buf[n] == '\0') {
+                    if (std::sscanf(buf, "%lf%n", &tmp_num, &n) == 1 && buf[n] == '\0' && tmp_num >= -EPS) {
                         f = tmp_num;
                         circle = 0;
                         changed = true;
@@ -246,7 +246,7 @@ namespace BK {
         }
 
         /**
-         * @brief 输入日期
+         * @brief 输入日期(1970 < 年份 < 3000)
          * 
          * @param i 待输入的日期
          * @param info 显示信息
@@ -257,7 +257,7 @@ namespace BK {
             bool changed {false};
             int circle {1};
 
-            int_t tmp_time {t > invalid::time ? t : 0};
+            int_t tmp_time {t > 0 ? t : 0};
             struct tm struct_time {};
             localtime_s(&struct_time, &tmp_time);
             char buf[BUF_SIZE] {""};

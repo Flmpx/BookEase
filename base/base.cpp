@@ -61,69 +61,90 @@ namespace BK {
      * @param cmp_condition 书籍比较结构体
      */
     auto Book::operator==(const BookCmpCondition& cmp_condition) const -> bool {
-
         /* 比较书籍ID */
-        if (cmp_condition.id != invalid::id && cmp_condition.id != id) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::id) && 
+            cmp_condition.id != id) {
             return false;
         }
 
         /* 比较书籍标题 */
-        if (title.find(cmp_condition.title) == std::string::npos) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::title) &&
+            title.find(cmp_condition.title) == std::string::npos) {
             return false;
         }
 
         /* 比较ISBN */
-        if (isbn.find(cmp_condition.isbn) == std::string::npos) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::isbn) &&
+            isbn.find(cmp_condition.isbn) == std::string::npos) {
             return false;
         }
 
         /* 比较作者 */
-        if (author.find(cmp_condition.author) == std::string::npos) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::author) &&
+            author.find(cmp_condition.author) == std::string::npos) {
             return false;
         }
 
         /* 比较出版社 */
-        if (press.find(cmp_condition.press) == std::string::npos) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::press) && 
+            press.find(cmp_condition.press) == std::string::npos) {
             return false;
         }
 
         /* 比较价格 */
-        if (!cmp_condition.price_range.include(price)) {
-            return false;
+        {
+            if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::down_price) &&
+                price < cmp_condition.down_price - EPS) {
+                return false;
+            }
+    
+            if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::up_price) &&
+                price > cmp_condition.up_price + EPS) {
+                return false;
+            }
         }
 
         /* 比较书籍完整度 */
-        if (!cmp_condition.integrity_range.include(integrity)) {
-            return false;
+        {
+            if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::down_integrity) && 
+                integrity < cmp_condition.down_integrity) {
+                return false;
+            }
+
+            if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::up_integrity) && 
+                integrity > cmp_condition.up_integrity) {
+                return false;
+            }
+
         }
         
         /* 比较发布时间 */
-        if (!cmp_condition.publish_time_range.include(publish_time)) {
-            return false;
-        }
-        
-        /* 比较购买时间 */
-        if (!cmp_condition.buy_time_range.include(buy_time)) {
-            return false;
-        }
-        
-        /* 比较预定时间 */
-        if (!cmp_condition.reserve_time_range.include(reserve_time)) {
-            return false;
+        {
+            if (cmp_condition.isUmlimit(BookCmpCondition::Unlimit::down_publish_time) &&
+                publish_time < cmp_condition.down_publish_time) {
+                return false;
+            }
+
+            if (cmp_condition.isUmlimit(BookCmpCondition::Unlimit::up_publish_time) &&
+                publish_time > cmp_condition.up_publish_time) {
+                return false;
+            }
+
         }
         
         /* 比较类别 */
-        if (cmp_condition.category != invalid::category && cmp_condition.category & category) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::category) &&
+            cmp_condition.category & category) {
             return false;
         }
-
+        
         /* 比较状态 */
-        if (cmp_condition.status != invalid::status && cmp_condition.status & status) {
+        if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::status) &&
+            cmp_condition.status & status) {
             return false;
         }
 
         return true;
-        
     }
 }
 
@@ -243,12 +264,14 @@ namespace BK {
     auto User::operator==(const UserCmpCondition& cmp_condition) const -> bool {
         
         /* 比较用户名 */
-        if (name.find(cmp_condition.name) == std::string::npos) {
+        if (!cmp_condition.isUmlimit(UserCmpCondition::Unlimit::name) &&
+            name.find(cmp_condition.name) == std::string::npos) {
             return false;
         }
 
         /* 比较ID */
-        if (cmp_condition.id != invalid::id && cmp_condition.id != id) {
+        if (!cmp_condition.isUmlimit(UserCmpCondition::Unlimit::id) &&
+            cmp_condition.id != id) {
             return false;
         }
         

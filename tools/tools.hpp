@@ -43,7 +43,7 @@ namespace BK {
     template <>
     inline auto print<time_t>(const std::string& info, const time_t& tp, int_t l, int_t t, int_t w, int_t h) -> void {
         std::stringstream tmp {};
-        if (tp > invalid::time) {
+        if (tp >= 0) {
             struct tm time {};
             localtime_s(&time, &tp);
 
