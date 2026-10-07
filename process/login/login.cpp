@@ -91,7 +91,7 @@ namespace BK {
                     user = createUser(id);
                     if (user != nullptr) {
                         users.push_back(user);
-                        File::saveUserToFile("users.json", users);
+                        File::saveUserToFile(USERS_FILE_DIR, users);
                         MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
                         circle = 0;
                     } else {

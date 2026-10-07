@@ -35,12 +35,26 @@ set(TOOLS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tools/tools.cpp)  # 工具函数集合
 
 set(PROCESS_SAVELOAD_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/saveandload/saveandload.cpp)  # 文件持久化
 set(PROCESS_LOGIN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/login/login.cpp)      # 登录与注册
+set(PROCESS_MAINPAGE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/mainpage/mainpage.cpp)  # 主界面
+set(PROCESS_BUY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/buy/buy.cpp)        # 购买书籍
+set(PROCESS_POST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/post/post.cpp)     # 发布书籍
+set(PROCESS_MY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/my/my.cpp)           # 我的页
+set(PROCESS_ABOUT_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/about/about.cpp)  # 关于页
 
 # 可执行文件输出到bin/目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 
 # Win32即使用Windows的窗口作为程序入口
-add_executable(BookEase WIN32 ${MAIN_SRC} ${BASE_SRC} ${MENU_SRC} ${TOOLS_SRC} ${PROCESS_SAVELOAD_SRC} ${PROCESS_LOGIN_SRC})
+add_executable(BookEase WIN32 ${MAIN_SRC} ${BASE_SRC} ${MENU_SRC} ${TOOLS_SRC} 
+                              ${PROCESS_SAVELOAD_SRC} 
+                              ${PROCESS_LOGIN_SRC} 
+                              ${PROCESS_MAINPAGE_SRC}
+                              ${PROCESS_MAINPAGE_SRC}
+                              ${PROCESS_BUY_SRC}
+                              ${PROCESS_POST_SRC}
+                              ${PROCESS_MY_SRC}
+                              ${PROCESS_ABOUT_SRC}
+              )
 
 # 链接EasyX
 target_link_libraries(BookEase PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/easyx/lib/libeasyx.a")

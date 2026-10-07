@@ -1,0 +1,36 @@
+#include "mainpage.hpp"
+#include "../../menu/menu.hpp"
+#include "../buy/buy.hpp"
+#include "../my/my.hpp"
+#include "../post/post.hpp"
+#include "../about/about.hpp"
+#include <easyx.h>
+
+
+namespace BK {
+
+    auto mainpage(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
+        int circle {1};
+        Menu menu(80, 30, "退出登录", 30, 20, "选中操作", 200, 90);
+        std::vector<std::string> selections {
+            "买书", "卖书", "我的", "关于"
+        };
+
+        do {
+            circle = 1;
+            cleardevice();
+            int_t choice {menu.showNormal(selections)};
+            switch (choice) {
+                case 0: 
+                    if (MessageBox(GetHWnd(), "确认退出吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+                        circle = 0;
+                    }
+                    break;
+                case 1: buy(user, users, books); break;
+                case 2: post(user, users, books);   break;
+                case 3: my(user, users, books);     break;
+                case 4: about(user, users, books);  break;
+            }
+        } while (circle);
+    }
+}
