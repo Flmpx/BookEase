@@ -289,4 +289,34 @@ namespace BK {
             return changed;
         }
     }
+
+    /**
+     * @brief 验证用户密码
+     * 
+     * @param user 用户
+     */
+    auto authenUser(std::shared_ptr<User>& user) -> bool {
+        int circle {0};
+        std::string password {};
+        bool res {false};
+        do {
+            circle = 1;
+            if (Input::string(password, "请输入登录密码", "输入用户信息")) {
+                if (user->key.verify(password)) {
+                    circle = 0;
+                    res = true;
+                    MessageBox(GetHWnd(), "认证成功", "提示", MB_OK | MB_ICONINFORMATION);
+                } else {
+                    circle = 1;
+                    MessageBox(GetHWnd(), "认证失败, 请重试", "提示", MB_OK | MB_ICONWARNING);
+                }
+
+            } else {
+                circle = 0;
+                res = false;
+            }
+        } while (circle);
+
+        return res;
+    }
 }

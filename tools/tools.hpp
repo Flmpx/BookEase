@@ -73,6 +73,8 @@ namespace BK {
         auto floatPoint(float_t& f, const std::string& info, const std::string& tip) -> bool;
         auto date(time_t& t, const std::string& info, const std::string& tip) -> bool;
     }
+
+    auto authenUser(std::shared_ptr<User>& user) -> bool;
 }
 
 
