@@ -137,7 +137,7 @@ namespace BK {
             std::string str(size, '\0');
             fin.read(&str[0], size);
 
-            flJson* arr = flJson_ParseWithLength(str.c_str(), size);
+            flJson* arr = flJson_Parse(str.c_str());
 
             if (arr) {
                 flJsonArrayIter iter;
@@ -165,6 +165,7 @@ namespace BK {
         auto loadUsersFromFile(const char* dir) -> std::list<std::shared_ptr<User>> {
             std::ifstream fin(dir, std::ios::in);
             if (!fin.is_open()) {
+                MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
                 throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
             }
             std::list<std::shared_ptr<User>> ret(loadUsersFromFile(fin));
@@ -203,6 +204,7 @@ namespace BK {
         auto saveUserToFile(const char* dir, const std::list<std::shared_ptr<User>>& users) -> void {
             std::ofstream fout(dir, std::ios::out);
             if (!fout.is_open()) {
+                MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
                 throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
             }
 
@@ -226,7 +228,7 @@ namespace BK {
             std::string str(size, '\0');
             fin.read(&str[0], size);
 
-            flJson* arr = flJson_ParseWithLength(str.c_str(), size);
+            flJson* arr = flJson_Parse(str.c_str());
 
             if (arr) {
                 flJsonArrayIter iter;
@@ -253,6 +255,7 @@ namespace BK {
         auto loadBooksFromFile(const char* dir) -> std::list<std::shared_ptr<Book>> {
             std::ifstream fin(dir, std::ios::in);
             if (!fin.is_open()) {
+                MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
                 throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
             }
             std::list<std::shared_ptr<Book>> ret(loadBooksFromFile(fin));
@@ -291,6 +294,7 @@ namespace BK {
         auto saveBooksToFile(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void {
             std::ofstream fout(dir, std::ios::out);
             if (!fout.is_open()) {
+                MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
                 throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
             }
             

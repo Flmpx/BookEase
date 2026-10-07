@@ -360,7 +360,7 @@ namespace BK {
                     Theme::BookBlock::start();
                     if (hover_flags_book[i]) Theme::BookBlock::hover();
                     if (click_flags_book[i]) Theme::BookBlock::click();
-                    
+
                     l = books_start_w + (i % col) * book_w;
                     t = books_start_h + (i / col) * book_h;
                     w = book_w; h = book_h;
@@ -471,13 +471,17 @@ namespace BK {
             }
 
             /* 绘制 */
-            for (int_t i = 0; i < blocks.size(); i++) {
-                Theme::SelectBlock::start();
-                if (hover_flags[i]) Theme::SelectBlock::hover();
-                if (click_flags[i]) Theme::SelectBlock::click();
-
-                blocks[i].draw();
+            BeginBatchDraw();
+            {
+                for (int_t i = 0; i < blocks.size(); i++) {
+                    Theme::SelectBlock::start();
+                    if (hover_flags[i]) Theme::SelectBlock::hover();
+                    if (click_flags[i]) Theme::SelectBlock::click();
+    
+                    blocks[i].draw();
+                }
             }
+            EndBatchDraw();
 
             /* 对点击行为作出反应 */
             for (int_t i = 0; i < blocks.size(); i++) {
