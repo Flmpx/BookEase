@@ -2,6 +2,7 @@
 #include <list>
 #include <vector>
 #include "../tools/tools.hpp"
+#include "theme.hpp"
 
 namespace BK {
 
@@ -70,15 +71,25 @@ namespace BK {
             BeginBatchDraw();
             {
                 /* 绘制Back键 */
+                Theme::BackBlock::start();
+                if (hover_flags[0]) Theme::BackBlock::hover();
+                if (click_flags[0]) Theme::BackBlock::click();
+
                 l = 0, t = 0, w = back_w_, h = back_h_;
                 getRoundRectleBlock(back_content_, l, t, w, h);
 
                 /* 绘制引导信息 */
+                Theme::InstruBlock::start();
+
                 l = 0, t = instru_start_h, w = select_w_, h = instru_h_;
                 getRectangleBlock(instru_, l, t, w, h);
 
                 /* 绘制选项 */
                 for (int i = 0; i < selections.size(); i++) {
+                    Theme::SelectBlock::start();
+                    if (hover_flags[i + 1]) Theme::SelectBlock::hover();
+                    if (click_flags[i + 1]) Theme::SelectBlock::click();
+
                     l = 0, t = select_start_h + select_h_ * i, w = select_w_, h = select_h_;
                     getRectangleBlock(selections[i], l, t, w, h);
                 }
@@ -110,10 +121,14 @@ namespace BK {
         int_t l {0}, t {0}, w {0}, h {0};
 
         /* 绘制书籍详细信息块的提示信息块 */
+        Theme::TipBlock::start();
+
         l = select_w_ + grap_select_book; t = 0; w = screen_w - l; h = back_h_ + grap_back_instru_;
         getRoundRectleBlock(book_tip, l, t, w, h);
 
         /* 绘制书籍详细信息块 */
+        Theme::NormalBlock::start();
+
         l = select_w_ + grap_select_book; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
         printBook(book, l, t, w, h);
 
@@ -136,10 +151,14 @@ namespace BK {
         int_t l {0}, t {0}, w {0}, h {0};
 
         /* 绘制用户详细信息块的提示信息块 */
+        Theme::TipBlock::start();
+
         l = select_w_ + grap_select_user; t = 0; w = screen_w - l; h = back_h_ + grap_back_instru_;
         getRoundRectleBlock(user_tip, l, t, w, h);
 
         /* 绘制用户详细信息块 */
+        Theme::NormalBlock::start();
+
         l = select_w_ + grap_select_user; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
         printUser(user, l, t, w, h);
 
@@ -163,10 +182,14 @@ namespace BK {
         int_t l {0}, t {0}, w {0}, h {0};
 
         /* 绘制统计信息块的提示信息块 */
+        Theme::TipBlock::start();
+
         l = select_w_ + grap_select_statistics; t = 0; w = screen_w - l; h = back_h_ + grap_back_instru_;
         getRoundRectleBlock(statistics_tip, l, t, w, h);
 
         /* 绘制统计信息块 */
+        Theme::NormalBlock::start();
+
         l = select_w_ + grap_select_statistics; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
         printStatistics(books, users, l, t, w, h);
 
@@ -283,15 +306,25 @@ namespace BK {
                 cleardevice();      // 绘制之前先清屏, 书籍的信息会变动
 
                 /* 绘制Back键 */
+                Theme::BackBlock::start();
+                if (hover_flags_select[0]) Theme::BackBlock::hover();
+                if (click_flags_select[0]) Theme::BackBlock::click();
+
                 l = 0, t = 0, w = back_w_, h = back_h_;
                 getRoundRectleBlock(back_content_, l, t, w, h);
 
                 /* 绘制引导信息 */
+                Theme::InstruBlock::start();
+
                 l = 0, t = instru_start_h, w = select_w_, h = instru_h_;
                 getRectangleBlock(instru_, l, t, w, h);
 
                 /* 绘制选项 */
                 for (int i = 0; i < selections.size(); i++) {
+                    Theme::SelectBlock::start();
+                    if (hover_flags_select[i + 1]) Theme::SelectBlock::hover();
+                    if (click_flags_select[i + 1]) Theme::SelectBlock::click();
+
                     l = 0, t = select_start_h + select_h_ * i, w = select_w_, h = select_h_;
                     getRectangleBlock(selections[i], l, t, w, h);
                 }
@@ -299,21 +332,35 @@ namespace BK {
                 /* 绘制方向键 */
                 {
                     /* <<< */
+                    Theme::DictionBlock::start();
+                    if (hover_flags_dir[0]) Theme::DictionBlock::hover();
+                    if (click_flags_dir[0]) Theme::DictionBlock::click();
+
                     l = 0; t = screen_h - diction_h; w =diction_w; h = diction_h;
                     getRectangleBlock("<<<", l, t, w, h);
-
+                    
                     /* >>> */
+                    Theme::DictionBlock::start();
+                    if (hover_flags_dir[1]) Theme::DictionBlock::hover();
+                    if (click_flags_dir[1]) Theme::DictionBlock::click();
+
                     l = select_w_ - diction_w; t = screen_h - diction_h; w = diction_w; h = diction_h;
                     getRectangleBlock(">>>", l, t, w, h);
                 }
 
                 /* 绘制书籍提示信息 */
+                Theme::TipBlock::start();
+
                 l = books_start_w; t = 0; w = screen_w = l; h = books_start_h;
                 getRoundRectleBlock(books_tip, l, t, w, h);
 
                 /* 绘制书籍信息 */
                 auto book_tmp {book_now};
                 for (uint_t i = 0; i < col * row && i < books.size() - book_now_num; i++, book_tmp++) {
+                    Theme::BookBlock::start();
+                    if (hover_flags_book[i]) Theme::BookBlock::hover();
+                    if (click_flags_book[i]) Theme::BookBlock::click();
+                    
                     l = books_start_w + (i % col) * book_w;
                     t = books_start_h + (i / col) * book_h;
                     w = book_w; h = book_h;
@@ -425,7 +472,10 @@ namespace BK {
 
             /* 绘制 */
             for (int_t i = 0; i < blocks.size(); i++) {
-                
+                Theme::SelectBlock::start();
+                if (hover_flags[i]) Theme::SelectBlock::hover();
+                if (click_flags[i]) Theme::SelectBlock::click();
+
                 blocks[i].draw();
             }
 
