@@ -2,6 +2,7 @@
 #include <sstream>
 #include <ctime>
 #include <cstring>
+#include "../menu/menu.hpp"
 
 namespace BK {
 
@@ -318,5 +319,163 @@ namespace BK {
         } while (circle);
 
         return res;
+    }
+
+    namespace Change {
+
+        /**
+         * @brief 修改书籍的类别(必定会被修改)
+         * 
+         * @param category 类别
+         */
+        auto bookCategory(BookCategory& category) -> void {
+            cleardevice();
+            Menu menu(80, 30, "返回", 30, 20, "选择书籍类别", 200, 90);
+            std::vector<std::string> selections {
+                "教材", "小说", "学术类", "考试类", "其他"
+            };
+            int_t choice {menu.showNormal(selections)};
+            switch (choice) {
+                case 1: category = BookCategory::textbook; break;
+                case 2: category = BookCategory::fiction;  break;
+                case 3: category = BookCategory::academic; break;
+                case 4: category = BookCategory::exam;     break;
+                case 5: category = BookCategory::other;    break;
+            }
+        }
+
+
+        /**
+         * @brief 修改用户密码
+         * 
+         * @param user 用户
+         * @return 成功修改返回 true
+         */
+        auto userKey(std::shared_ptr<User>& user) -> bool {
+            if (!authenUser(user)) {
+                return false;
+            }
+            std::string new_password {};
+            if (Input::string(new_password, "输入新密码", "提示")) {
+                user->key.change(new_password);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        /**
+         * @brief 修改用户基本信息
+         * 
+         * @param user 用户
+         * @return 成功修改返回 true
+         */
+        auto userInfo(std::shared_ptr<User>& user) -> bool {
+            auto tmp_user {std::make_shared<User>(*user)};
+            bool changed {false};
+
+            Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 90);
+            std::vector<std::string> selections {
+                "保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"
+            };
+
+            int circle {1};
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {menu.showUser(selections, 10, "正在被修改的用户信息详情", tmp_user)};
+
+                switch (choice) {
+                    case 0: 
+                        if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+                            changed = false;
+                            circle = 0;
+                        }
+                        break;
+                    case 1: 
+                        *user = *tmp_user;
+                        changed = true;
+                        circle = 0;
+                        break;
+                    case 2:
+                        Input::string(tmp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入");
+                        break;
+                    case 3:
+                        Input::integer(tmp_user->tel, "输入电话", "输入");
+                        break;
+                    case 4:
+                        Input::integer(tmp_user->tel, "输入QQ号", "输入");
+                        break;
+                    case 5:
+                        Input::string(tmp_user->wechat, "输入微信号", "输入");
+                        break;
+                    
+                }
+
+            } while (circle);
+
+            return changed;
+        }
+
+        /**
+         * @brief 修改书籍信息
+         * 
+         * @param book 书籍
+         * @return 成功修改返回 true
+         */
+        auto bookInfo(std::shared_ptr<Book>& book) -> bool {
+            auto tmp_book {std::make_shared<Book>(*book)};
+            bool changed {false};
+
+            Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 90);
+            std::vector<std::string> selections {
+               "保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍状态", "书籍类别", "书籍价格"
+            };
+
+            int circle {1};
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {menu.showBook(selections, 10, "正在被修改的书籍详情", tmp_book)};
+
+                switch (choice) {
+                    case 0: 
+                        if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+                            changed = false;
+                            circle = 0;
+                        }
+                        break;
+                    case 1: 
+                        *book = *tmp_book;
+                        changed = true;
+                        circle = 0;
+                        break;
+                    case 2:
+                        Input::string(tmp_book->title, "输入书籍名称", "输入");
+                        break;
+                    case 3:
+                        Input::string(tmp_book->isbn, "输入书籍ISBN", "输入");
+                        break;
+                    case 4:
+                        Input::string(tmp_book->author, "输入书籍作者", "输入");
+                        break;
+                    case 5:
+                        Input::string(tmp_book->press, "输入书籍出版社", "输入");
+                        break;
+                    case 6:
+                        bookCategory(tmp_book->category);
+                        break;
+                    case 7:
+                        Input::integer(tmp_book->integrity, "输入书籍完整度(0-100)", "输入");
+                        break;
+                    case 8:
+                        Input::floatPoint(tmp_book->price, "输入价格", "输入");
+                        break;
+                }
+
+            } while (circle);
+
+            return changed;
+        }
     }
 }

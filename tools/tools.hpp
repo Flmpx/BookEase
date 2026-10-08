@@ -75,6 +75,13 @@ namespace BK {
     }
 
     auto authenUser(std::shared_ptr<User>& user) -> bool;
+
+    namespace Change {
+        auto bookCategory(BookCategory& categroy) -> void;
+        auto userKey(std::shared_ptr<User>& user) -> bool;
+        auto userInfo(std::shared_ptr<User>& user) -> bool;
+        auto bookInfo(std::shared_ptr<Book>& book) -> bool;
+    }
 }
 
 
