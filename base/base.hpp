@@ -31,7 +31,7 @@ namespace BK {
 namespace BK {
     
     /* 书籍类别 */
-    enum class BookCategory {
+    enum class BookCategory : uint_t {
         textbook    = 0x1 << 0,                         // 教材
         fiction     = 0x1 << 1,                         // 小说
         academic    = 0x1 << 2,                         // 学术类
@@ -41,7 +41,7 @@ namespace BK {
     };
 
     inline auto operator|(BookCategory c1, BookCategory c2) -> BookCategory {
-        return static_cast<BookCategory>(static_cast<int_t>(c1) | static_cast<int_t>(c2));
+        return static_cast<BookCategory>(static_cast<uint_t>(c1) | static_cast<uint_t>(c2));
     }
 
     inline auto getBookCategoryString(BookCategory c) -> std::string {
@@ -55,7 +55,7 @@ namespace BK {
         }
     }
 
-    enum class BookStatus {
+    enum class BookStatus : uint_t {
         on_sale     = 0x1 << 0,                         // 在售 
         reserved    = 0x1 << 1,                         // 以预约
         sold        = 0x1 << 2,                         // 已售
@@ -64,7 +64,7 @@ namespace BK {
     };
 
     inline auto operator|(BookStatus s1, BookStatus s2) -> BookStatus {
-        return static_cast<BookStatus>(static_cast<int_t>(s1) | static_cast<int_t>(s2));
+        return static_cast<BookStatus>(static_cast<uint_t>(s1) | static_cast<uint_t>(s2));
     }
 
     inline auto getBookStatusString(BookStatus s) -> std::string {
@@ -185,8 +185,8 @@ namespace BK {
         time_t up_publish_time {};
         int_t down_integrity {};     
         int_t up_integrity  {};
-        int_t category {};           
-        int_t status {};          
+        BookCategory category {};           
+        BookStatus status {};          
 
         /* 设置无限制 */
         auto setUnlimit(Unlimit u) -> void {
@@ -221,9 +221,9 @@ namespace BK {
         time_t publish_time {invalid::time};                        // 发布时间
         time_t buy_time {invalid::time};                            // 购买时间
         time_t reserve_time {invalid::time};                        // 预定时间
-        int_t status {static_cast<int_t>(BookStatus::removed)};     // 书籍状态
+        BookStatus status {BookStatus::removed};                    // 书籍状态
         int_t integrity {max_integrity};                            // 书籍完整程度
-        int_t category {static_cast<int_t>(BookCategory::other)};   // 书籍类别
+        BookCategory category {BookCategory::other};                // 书籍类别
 
         auto seller(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User>;
         auto buyer(std::list<std::shared_ptr<User>>& users) const -> std::shared_ptr<User>;

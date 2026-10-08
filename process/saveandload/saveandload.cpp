@@ -14,6 +14,18 @@ namespace BK {
             flJsonObject_Add(&obj, key, ele);
             flJson_UnRef(ele);
         }
+        /* 将书籍类别添加到对象中 */
+        auto objAdd(flJson& obj, const char* key, BookCategory c) {
+            flJson* ele = flJsonLL_New(static_cast<long long>(c));
+            flJsonObject_Add(&obj, key, ele);
+            flJson_UnRef(ele);
+        }
+        /* 将书籍状态添加到对象中 */
+        auto objAdd(flJson& obj, const char* key, BookStatus s) {
+            flJson* ele = flJsonLL_New(static_cast<long long>(s));
+            flJsonObject_Add(&obj, key, ele);
+            flJson_UnRef(ele);
+        }
         /* 将浮点数添加到对象中 */
         auto objAdd(flJson& obj, const char* key, float_t f) {
             flJson* ele = flJsonDouble_New(f);
@@ -27,21 +39,35 @@ namespace BK {
             flJson_UnRef(ele);
         }
 
-        /* 通过对象中对于键的值来修改整数 */
+        /* 通过对象中对应键的值来修改整数 */
         auto objGet(int_t& i, flJson& obj, const char* key) {
             flJson* ele = flJsonObject_Get(&obj, key);
             if (ele) {
                 i = *flJsonLL_Get(ele);
             }
         } 
-        /* 通过对象中对于键的值来修改浮点数 */
+        /* 通过对象中对应键的值来修改书籍类别 */
+        auto objGet(BookCategory& c, flJson& obj, const char* key) {
+            flJson* ele = flJsonObject_Get(&obj, key);
+            if (ele) {
+                c = static_cast<BookCategory>(*flJsonLL_Get(ele));
+            }
+        }
+        /* 通过对象中对应键的值来修改书籍状态 */
+        auto objGet(BookStatus& s, flJson& obj, const char* key) {
+            flJson* ele = flJsonObject_Get(&obj, key);
+            if (ele) {
+                s = static_cast<BookStatus>(*flJsonLL_Get(ele));
+            }
+        }
+        /* 通过对象中对应键的值来修改浮点数 */
         auto objGet(float_t& f, flJson& obj, const char* key) {
             flJson* ele = flJsonObject_Get(&obj, key);
             if (ele) {
                 f = *flJsonDouble_Get(ele);
             }
         } 
-        /* 通过对象中对于键的值来修改字符串 */
+        /* 通过对象中对应键的值来修改字符串 */
         auto objGet(std::string& str, flJson& obj, const char* key) {
             flJson* ele = flJsonObject_Get(&obj, key);
             if (ele) {

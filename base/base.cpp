@@ -134,13 +134,13 @@ namespace BK {
         
         /* 比较类别 */
         if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::category) &&
-            cmp_condition.category & category) {
+            static_cast<uint_t>(cmp_condition.category) & static_cast<uint_t>(category)) {
             return false;
         }
         
         /* 比较状态 */
         if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::status) &&
-            cmp_condition.status & status) {
+            static_cast<uint_t>(cmp_condition.status) & static_cast<uint_t>(status)) {
             return false;
         }
 
@@ -290,7 +290,9 @@ namespace BK {
     auto User::books(std::list<std::shared_ptr<Book>>& books, BookStatus status, BookCategory category) const -> std::list<std::shared_ptr<Book>> {
         std::list<std::shared_ptr<Book>> ret {};
         for (auto& it : books) {
-            if ((static_cast<int_t>(status) & it->status) && (static_cast<int_t>(category) & it->category) && (it->seller_id == id || it->reserver_id == id || it->buyer_id == id)) {
+            if ((static_cast<uint_t>(status) & static_cast<uint_t>(it->status)) && 
+                (static_cast<uint_t>(category) & static_cast<uint_t>(it->category)) && 
+                (it->seller_id == id || it->reserver_id == id || it->buyer_id == id)) {
                 ret.push_back(it);
             }
         }
