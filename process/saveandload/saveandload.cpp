@@ -264,6 +264,7 @@ namespace BK {
                     std::shared_ptr<Book> book {new Book};
                     in(book, *ele);
                     books.push_back(book);
+                    Book::book_num++;
                     flJsonArrayIter_MoveNext(&iter);
                 }
                 flJson_UnRef(arr);

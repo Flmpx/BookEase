@@ -70,12 +70,12 @@ namespace BK {
         int_t info_num {7};
         int_t th {h / info_num};
         
-        print("     用户名:", user->name, l, t += th, w, h);
-        print("     用户ID:", user->id, l, t += th, w, h);
-        print("     电话:", user->tel, l, t += th, w, h);
-        print("     QQ:", user->qq, l, t += th, w, h);
-        print("     微信号:", user->wechat, l, t += th, w, h);
-        print("     注册时间:", user->register_time, l, t += th, w, h);
+        print("     用户名:", user->name, l, t, w, th);      // 第一个的高度要从t开始
+        print("     用户ID:", user->id, l, t += th, w, th);
+        print("     电话:", user->tel, l, t += th, w, th);
+        print("     QQ:", user->qq, l, t += th, w, th);
+        print("     微信号:", user->wechat, l, t += th, w, th);
+        print("     注册时间:", user->register_time, l, t += th, w, th);
     }
 
     /**
@@ -88,18 +88,18 @@ namespace BK {
      * @param h 高度
      */
     auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h) -> void {
-        int_t info_num {10};
+        int_t info_num {9};
         int_t th {h / info_num};
 
-        print("     ID:", book->id, l, t += th, w, h);
-        print("     书名:", book->title, l, t += th, w, h);
-        print("     作者:", book->author, l, t += th, w, h);
-        print("     出版社:", book->press, l, t += th, w, h);
-        print("     ISBN:", book->isbn, l, t += th, w, h);
-        print("     价格:", book->price, l, t += th, w, h);
-        print("     书籍完整度:", book->integrity, l, t += th, w, h);
-        print("     书籍类别:", getBookCategoryString(static_cast<BookCategory>(book->category)), l, t += th, w, h);
-        print("     书籍状态:", getBookStatusString(static_cast<BookStatus>(book->status)), l, t += th, w, h);
+        print("     ID:", book->id, l, t, w, th);       // 第一个的高度要从t开始
+        print("     书名:", book->title, l, t += th, w, th);
+        print("     作者:", book->author, l, t += th, w, th);
+        print("     出版社:", book->press, l, t += th, w, th);
+        print("     ISBN:", book->isbn, l, t += th, w, th);
+        print("     价格:", book->price, l, t += th, w, th);
+        print("     书籍完整度:", book->integrity, l, t += th, w, th);
+        print("     书籍类别:", getBookCategoryString(static_cast<BookCategory>(book->category)), l, t += th, w, th);
+        print("     书籍状态:", getBookStatusString(static_cast<BookStatus>(book->status)), l, t += th, w, th);
     }
 
     /**
@@ -113,10 +113,13 @@ namespace BK {
      * @param h 高度
      */
     auto printStatistics(const std::list<std::shared_ptr<Book>>& books, const std::list<std::shared_ptr<User>>& users, int_t l, int_t t, int_t w, int_t h) -> void {
+        int_t info_num {8};
+        int_t th {h / info_num};
+        
         const time_t release_time {1778935434};
-        print("     软件发布时间", release_time, l, t, w, h);
-        print("     总用户数:", users.size(), l, t, w, h);
-        print("     总书籍数目:", books.size(), l, t, w, h);
+        print("     软件发布时间", release_time, l, t, w, h);           // 第一个的高度要从t开始
+        print("     总用户数:", users.size(), l, t + th, w, h);
+        print("     总书籍数目:", books.size(), l, t += th, w, h);
 
         int_t num_on_sale {0}, num_reserved {0}, num_removed {0}, num_sold {0};
         float_t all_price {0.0};
@@ -131,11 +134,11 @@ namespace BK {
             all_price += it->price;
         }
 
-        print("     在售书籍数目:", num_on_sale, l, t, w, h);
-        print("     已被预定书籍数目:", num_reserved, l, t, w, h);
-        print("     下架书籍数目:", num_removed, l, t, w, h);
-        print("     已交易书籍数目:", num_sold, l, t, w, h);
-        print("     总交易金额:", all_price, l, t, w, h);
+        print("     在售书籍数目:", num_on_sale, l, t += th, w, h);
+        print("     已被预定书籍数目:", num_reserved, l, t += th, w, h);
+        print("     下架书籍数目:", num_removed, l, t += th, w, h);
+        print("     已交易书籍数目:", num_sold, l, t += th, w, h);
+        print("     总交易金额:", all_price, l, t += th, w, h);
     }
 
     namespace Input {
@@ -427,7 +430,7 @@ namespace BK {
             auto tmp_book {std::make_shared<Book>(*book)};
             bool changed {false};
 
-            Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 90);
+            Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 70);
             std::vector<std::string> selections {
                "保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍状态", "书籍类别", "书籍价格"
             };

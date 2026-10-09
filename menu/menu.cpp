@@ -130,6 +130,7 @@ namespace BK {
         Theme::NormalBlock::start();
 
         l = select_w_ + grap_select_book; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
+        getRoundRectleBlock("", l, t, w, h);
         printBook(book, l, t, w, h);
 
         return showNormal(selections);
@@ -160,6 +161,7 @@ namespace BK {
         Theme::NormalBlock::start();
 
         l = select_w_ + grap_select_user; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
+        getRoundRectleBlock("", l, t, w, h);
         printUser(user, l, t, w, h);
 
         return showNormal(selections);
@@ -191,6 +193,7 @@ namespace BK {
         Theme::NormalBlock::start();
 
         l = select_w_ + grap_select_statistics; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
+        getRoundRectleBlock("", l, t, w, h);
         printStatistics(books, users, l, t, w, h);
 
         return showNormal(selections);
