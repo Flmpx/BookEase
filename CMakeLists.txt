@@ -23,7 +23,7 @@ include(FetchContent)
 FetchContent_Declare(
     flJson
     GIT_REPOSITORY ${BOOKEASE_DEPEND_LINK}
-    GIT_TAG ea1ab1f8c3aa4b7c81a514cbbade7711e265bf05
+    GIT_TAG v0.2.1
 )
 FetchContent_MakeAvailable(flJson)
 
