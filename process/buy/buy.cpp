@@ -337,6 +337,7 @@ namespace BK {
             Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
+                cleardevice();
                 int_t choice {menu.showBook(selelctions, 10, "选中书籍的详情", book)};
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -381,7 +382,7 @@ namespace BK {
                 circle = 1;
                 int_t choice {menu.showBooks(selections, 40, 40, 10, "当前检索到的所有书籍", 3, 2, now_books)};
                 if (choice < 0) {
-                    int_t idx {-choice + 1};
+                    int_t idx {-choice - 1};
                     if (readyToReserve(user, users, books, *std::next(books.begin(), idx))) {
                         now_books.erase(std::next(now_books.begin(), idx));
                     }
@@ -503,6 +504,6 @@ namespace BK {
                 case 11: Select::timeRange(cmp_condition.down_publish_time, cmp_condition.up_publish_time, "书籍发布时间", cmp_condition, BookCmpCondition::Unlimit::down_publish_time, BookCmpCondition::Unlimit::up_publish_time); break;
             }
         } while (circle);
-        
+
     }
 }

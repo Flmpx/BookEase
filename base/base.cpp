@@ -120,12 +120,12 @@ namespace BK {
         
         /* 比较发布时间 */
         {
-            if (cmp_condition.isUmlimit(BookCmpCondition::Unlimit::down_publish_time) &&
+            if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::down_publish_time) &&
                 publish_time < cmp_condition.down_publish_time) {
                 return false;
             }
 
-            if (cmp_condition.isUmlimit(BookCmpCondition::Unlimit::up_publish_time) &&
+            if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::up_publish_time) &&
                 publish_time > cmp_condition.up_publish_time) {
                 return false;
             }
@@ -134,13 +134,13 @@ namespace BK {
         
         /* 比较类别 */
         if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::category) &&
-            static_cast<uint_t>(cmp_condition.category) & static_cast<uint_t>(category)) {
+            !(static_cast<uint_t>(cmp_condition.category) & static_cast<uint_t>(category))) {
             return false;
         }
         
         /* 比较状态 */
         if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::status) &&
-            static_cast<uint_t>(cmp_condition.status) & static_cast<uint_t>(status)) {
+            !(static_cast<uint_t>(cmp_condition.status) & static_cast<uint_t>(status))) {
             return false;
         }
 
