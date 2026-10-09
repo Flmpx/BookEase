@@ -1,7 +1,48 @@
 #include "post.hpp"
+#include "../../menu/menu.hpp"
+#include <ctime>
+#include "../saveandload/saveandload.hpp"
+#include "../../tools/tools.hpp"
 
 namespace BK {
     auto post(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
-        
+        auto tmp_book {std::make_shared<Book>()};
+        tmp_book->seller_id = user->id;
+        tmp_book->id = Book::book_num + 1;
+
+
+        Menu menu(80, 30, "取消发布", 30, 20, "选择操作", 200, 90);
+        std::vector<std::string> selelctions {
+            "确认发布", "进行修改"
+        };
+
+        int_t circle {1};
+        do {
+            circle = 1;
+            cleardevice();
+            int_t choice {menu.showBook(selelctions, 10, "当前待发布书籍详情", tmp_book)};
+
+            switch (choice) {
+                case 0: 
+                    if (MessageBox(GetHWnd(), "确定要取消发布吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+					    circle = 0;
+				    }
+                    break;
+                case 1:
+                    tmp_book->publish_time = std::time(nullptr);
+                    tmp_book->status = BookStatus::on_sale;
+                    books.push_back(tmp_book);
+                    File::saveBooksToFile(BOOKS_FILE_DIR, books);
+                    Book::book_num++;
+                    MessageBox(GetHWnd(), "发布成功", "提示", MB_OK | MB_ICONINFORMATION);
+                    circle = 0;
+                    break;
+                case 2:
+                    if (Change::bookInfo(tmp_book)) {
+                        MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
+                    }
+                    break;
+            }
+        } while (circle);
     }
 }
