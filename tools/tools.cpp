@@ -16,7 +16,7 @@ namespace BK {
      * @param h ¿é¸ß¶È
      */
     auto isInBlock(const ExMessage& msg, int_t l, int_t t, int_t w, int_t h) -> bool {
-        if (msg.x >= l && msg.x <= l + w && msg.y >= t && msg.y <= t + h) {
+        if (msg.x > l && msg.x < l + w && msg.y > t && msg.y < t + h) {
             return true;
         } else {
             return false;

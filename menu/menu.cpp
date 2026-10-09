@@ -351,7 +351,7 @@ namespace BK {
                 /* 绘制书籍提示信息 */
                 Theme::TipBlock::start();
 
-                l = books_start_w; t = 0; w = screen_w = l; h = books_start_h;
+                l = books_start_w; t = 0; w = screen_w - l; h = books_start_h;
                 getRoundRectleBlock(books_tip, l, t, w, h);
 
                 /* 绘制书籍信息 */
