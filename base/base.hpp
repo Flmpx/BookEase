@@ -6,6 +6,9 @@
 #include <list>
 #include <memory>
 #include <limits>
+#include <ctime>
+#include <array>
+#include <iomanip>
 
 namespace BK {
     inline constexpr const char* BOOKS_FILE_DIR {"./bkdata/books.json"};        // 书籍数据文件地址
@@ -16,15 +19,11 @@ namespace BK {
     using float_t = double;                                     // 浮点数
 
     constexpr float_t EPS                   {1e-9};             // 浮点数比较所用误差
+    constexpr uint_t BUF_SIZE               {256};              // 输入时缓冲区的大小
 
     constexpr int_t min_integrity           {0};                // 最小书籍完整度
     constexpr int_t max_integrity           {100};              // 最小书籍完整度
 
-    /* 无效值用于判断是否存在, 比如预定者的id为-1, 则为无预定者 */
-    namespace invalid {
-        constexpr int_t id              {-1};               // 无效Id
-        constexpr time_t time           {-1};               // 无效时间
-    }
 }
 
 
@@ -76,6 +75,176 @@ namespace BK {
             default:                    return "None";
         }
     }
+
+    template <typename T>
+    class Range {
+        private:
+            T min_;
+            T max_;
+        public:     
+
+            Range(T min = std::numeric_limits<T>::lowest(), T max = std::numeric_limits<T>::max())
+            : min_(min), max_(max)
+            {}
+
+
+            /* 是否包括 */
+            auto contain(T ele) const -> bool {
+                return (ele <= max_ && ele >= min_);
+            }
+
+            /* 强制包括 */
+            auto forceContain(T& ele) const -> void {
+                if (ele > max_) ele = max_;
+                if (ele < min_) ele = min_;
+            }
+
+            auto min() -> T {
+                return min_;
+            }
+            auto max() -> T {
+                return max_;
+            }
+    };
+
+    template <>
+    class Range<float_t> {
+        private:
+            float_t min_;
+            float_t max_;
+        public:     
+
+            Range(float_t min = std::numeric_limits<float_t>::lowest(), float_t max = std::numeric_limits<float_t>::max())
+            : min_(min), max_(max)
+            {}
+
+
+            /* 是否包括 */
+            auto contain(float_t ele) const -> bool {
+                return (ele <= max_ + EPS && ele >= min_ - EPS);
+            }
+
+            /* 强制包括 */
+            auto forceContain(float_t& ele) const -> void {
+                if (ele > max_ + EPS) ele = max_;
+                if (ele < min_ + EPS) ele = min_;
+            }
+
+            auto min() -> float_t {
+                return min_;
+            }
+            auto max() -> float_t {
+                return max_;
+            }
+    };
+
+
+    class Time {
+        private:
+            static constexpr int_t max_time_sec_ {32503679999};
+            static constexpr int_t min_time_sec_ {0};
+            static constexpr std::array<int_t, 12> days_every_mouth_ {
+                31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+            };
+            time_t time_sec_;
+            struct tm time_struct_;
+
+            auto is_leap_year(int_t year) const -> bool {
+                return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+            }
+        public:
+        
+            Time() {
+                time_sec_ = 0;
+                localtime_s(&time_struct_, &time_sec_);
+            };
+
+            /* 通过年月日设置时间 */
+            auto set(int_t year, int_t month, int_t day) {
+                Range<int_t>(1970, 2999).forceContain(year);
+                Range<int_t>(1, 12).forceContain(month);
+
+                if (month == 2) {
+                    if (is_leap_year(year)) {
+                        Range<int_t>(1, 29).forceContain(day);
+                    } else {
+                        Range<int_t>(1, 28).forceContain(day);
+                    }
+                } else {
+                    Range<int_t>(1, days_every_mouth_[month - 1]).forceContain(day);
+                }
+
+                time_struct_.tm_year = year - 1900;
+                time_struct_.tm_mon = month - 1;
+                time_struct_.tm_mday = day;
+
+                time_sec_ = std::mktime(&time_struct_);
+
+            }
+
+            /* 通过结构体设置时间 */
+            auto set(struct tm* time) {
+                time_struct_ = *time;
+                time_sec_ = std::mktime(&time_struct_);
+            }
+
+            /* 通过 */
+            auto set(time_t t) {
+                Range<int_t>(min_time_sec_, max_time_sec_).forceContain(t);
+                time_sec_ = t;
+                localtime_s(&time_struct_, &time_sec_);
+            }
+
+            auto year() const -> int_t {return time_struct_.tm_year + 1900;}
+            auto month() const -> int_t {return time_struct_.tm_mon + 1;}
+            auto day() const -> int_t {return time_struct_.tm_mday;}
+            auto time() const -> time_t {return time_sec_;}
+            
+            auto operator<=>(const Time& t) const -> std::strong_ordering {
+                return time_sec_ <=> t.time_sec_;
+            }
+
+            friend auto operator<<(std::ostream& os, const Time& t) -> std::ostream& {
+                os << t.year()  << "年" 
+                   << t.month() << "月" 
+                   << t.day()   << "日";
+
+                return os;
+            }
+
+    };
+}
+
+namespace std {
+    template <>
+    class numeric_limits<BK::Time> {
+        public:
+            static auto min() -> BK::Time {
+                BK::Time t {};
+                t.set(time_t(0));
+                return t;
+            }
+
+            static auto max() -> BK::Time {
+                BK::Time t {};
+                t.set(2999, 12, 31);
+                return t;
+            }
+            
+            static auto lowest() -> BK::Time {
+                return min();
+            }
+    };
+
+    inline auto to_string(const BK::Time& t) -> string {
+        stringstream ret {};
+        ret << t.year()  << "年" 
+            << t.month() << "月" 
+            << t.day()   << "日";
+
+        return ret.str();
+    }
+
 }
 
 namespace BK {
@@ -89,7 +258,7 @@ namespace BK {
             auto generateSalt() -> void;
 
         public:
-            Key(const std::string& password);
+            Key(const std::string& password = "");
             Key(const std::string& salt, const std::string& hash_key);
 
             auto verify(const std::string& password) const -> bool;
@@ -133,16 +302,14 @@ namespace BK {
 
     /* 用户 */
     struct User {
-            /* 基础信息 */
-            Key key;
+            Key key;                        // 密钥
             std::string name     {};        // 用户名 
             int_t id             {};        // 用户id
             int_t tel            {0};       // 电话号码
             int_t qq             {0};       // qq号
             std::string wechat   {};        // 微信号
-            time_t register_time {0};       // 注册时间
-
-            User(const std::string& password);
+            Time register_time   {};        // 注册时间
+            User(const std::string& password = "");
             User(const std::string salt, const std::string hash_key);
 
             auto operator==(const User& user) const -> bool = default;
@@ -181,8 +348,8 @@ namespace BK {
         std::string press {};                                 
         float_t down_price {};
         float_t up_price {};
-        time_t down_publish_time {};
-        time_t up_publish_time {};
+        Time down_publish_time {};
+        Time up_publish_time {};
         int_t down_integrity {};     
         int_t up_integrity  {};
         BookCategory category {};           
@@ -207,10 +374,10 @@ namespace BK {
     /* 书籍 */
     struct Book {
         static int_t book_num;                                      // 书籍总数目, 也是新增书籍id的标准
-        int_t id {invalid::id};                                     // 书籍id
-        int_t seller_id {invalid::id};                              // 售卖者id
-        int_t buyer_id {invalid::id};                               // 购买者id
-        int_t reserver_id {invalid::id};                            // 预定者Id
+        int_t id {};                                                // 书籍id
+        int_t seller_id {};                                         // 售卖者id
+        int_t buyer_id {};                                          // 购买者id
+        int_t reserver_id {};                                       // 预定者Id
 
         std::string title {};                                       // 书名
         std::string isbn {};                                        // ISBN
@@ -218,9 +385,9 @@ namespace BK {
         std::string press {};                                       // 出版社
         std::string other {};                                       // 其他信息
         float_t price {5.20};                                       // 价格
-        time_t publish_time {invalid::time};                        // 发布时间
-        time_t buy_time {invalid::time};                            // 购买时间
-        time_t reserve_time {invalid::time};                        // 预定时间
+        Time publish_time {};                                       // 发布时间
+        Time buy_time {};                                           // 购买时间
+        Time reserve_time {};                                       // 预定时间
         BookStatus status {BookStatus::removed};                    // 书籍状态
         int_t integrity {max_integrity};                            // 书籍完整程度
         BookCategory category {BookCategory::other};                // 书籍类别

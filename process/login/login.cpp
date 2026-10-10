@@ -23,10 +23,10 @@ namespace BK {
             std::shared_ptr<User> user {nullptr};
             do {
                 circle = 1;
-                if (Input::string(password, "请输入密码", "输入用户信息")) {
+                if (input(password, "请输入密码", "输入用户信息", Range<uint_t>(8, 16))) {
                     user.reset(new User(password));
                     user->id = id;
-                    user->register_time = std::time(nullptr);
+                    user->register_time.set(std::time(nullptr));
                     circle = 0;
                 } else {
                     circle = 0;
@@ -45,16 +45,16 @@ namespace BK {
      * @return 若登录成功, 返回用户, 否则 nullptr
      */
     auto login(std::list<std::shared_ptr<User>>& users) -> std::shared_ptr<User> {
-        int_t id {invalid::id};
+        int_t id {0};
         int circle {1};
         std::shared_ptr<User> user {nullptr};
         do {
             circle = 1;
-            if (Input::integer(id, "请输入学号", "请输入用户信息")) {   // 输入学号
+            if (input(id, "请输入ID", "请输入用户信息", Range<int_t>(0))) {   // 输入学号
                 user = find(users, id);
                 if (user != nullptr) {
                     std::string password {};
-                    if (authenUser(user)) {
+                    if (authenKey(user->key)) {
                         circle = 0;
                     } else {
                         circle = 1;
@@ -80,18 +80,18 @@ namespace BK {
      * @return 若注册成功, 返回新注册的用户, 否则 nullptr
      */
     auto regis(std::list<std::shared_ptr<User>>& users) -> std::shared_ptr<User> {
-        int_t id {invalid::id};
+        int_t id {0};
         int circle {1};
         std::shared_ptr<User> user {nullptr};
         do {
             circle = 1;
-            if (Input::integer(id, "请输入学号", "输入用户信息")) {
+            if (input(id, "请输入学号", "输入用户信息", Range<int_t>(0))) {
                 user = find(users, id);
                 if (user == nullptr) {
                     user = createUser(id);
                     if (user != nullptr) {
                         users.push_back(user);
-                        File::saveUserToFile(USERS_FILE_DIR, users);
+                        saveUserToFile(USERS_FILE_DIR, users);
                         MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
                         circle = 0;
                     } else {

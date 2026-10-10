@@ -9,7 +9,7 @@ namespace BK {
 
     namespace {
         /* 将整数添加到对象中 */
-        auto objAdd(flJson& obj, const char* key, int_t i) {    // 由于int_t和time_t都是long long类型, 为了避免重复定义, 故只保留int_t
+        auto objAdd(flJson& obj, const char* key, int_t i) {   
             flJson* ele = flJsonLL_New(i);
             flJsonObject_Add(&obj, key, ele);
             flJson_UnRef(ele);
@@ -37,6 +37,17 @@ namespace BK {
             flJson* ele = flJsonString_New(str.c_str());
             flJsonObject_Add(&obj, key, ele);
             flJson_UnRef(ele);
+        }
+        /* 将时间添加到对象中 */
+        auto objAdd(flJson& obj, const char* key, const Time& time) {
+            flJson* ele = flJsonLL_New(time.time());
+            flJsonObject_Add(&obj, key, ele);
+            flJson_UnRef(ele);
+        }
+        /* 将密钥添加到对象中 */
+        auto objAdd(flJson& obj, const Key& key) {
+            objAdd(obj, "salt", key.salt());
+            objAdd(obj, "hashkey", key.hashKey());
         }
 
         /* 通过对象中对应键的值来修改整数 */
@@ -74,6 +85,20 @@ namespace BK {
                 str = std::string(flJsonString_Get(ele));
             }
         } 
+        /* 通过对象中对应键的值来修改时间 */
+        auto objGet(Time& time, flJson& obj,  const char* key) {
+            flJson* ele = flJsonObject_Get(&obj, key);
+            if (ele) {
+                time.set(*flJsonLL_Get(ele));
+            }
+        }
+        /* 通过对象中对应键的值来修改密钥 */
+        auto objGet(Key& key, flJson& obj) {
+            std::string hash_key {}, salt {};
+            objGet(salt, obj, "salt");
+            objGet(hash_key, obj, "hashkey");
+            key = Key(salt, hash_key);
+        }
 
         /* 将对象中的内容输入到用户中 */
         auto in(std::shared_ptr<User>& user, flJson& obj) {
@@ -83,10 +108,7 @@ namespace BK {
             objGet(user->qq, obj, "qq");
             objGet(user->wechat, obj, "wechat");
             objGet(user->register_time, obj, "registertime");
-            std::string salt {}, hash_key {};
-            objGet(salt, obj, "salt");
-            objGet(hash_key, obj, "hashkey");
-            user->key = Key(salt, hash_key);
+            objGet(user->key, obj);
         }
         
         /* 将对象中的内容输入到书籍中 */
@@ -117,8 +139,7 @@ namespace BK {
             objAdd(obj, "qq", user->qq);
             objAdd(obj, "wechat", user->wechat);
             objAdd(obj, "registertime", user->register_time);
-            objAdd(obj, "salt", user->key.salt());
-            objAdd(obj, "hashkey", user->key.hashKey());
+            objAdd(obj, user->key);
         }
         
         /* 将书籍中的内容输出到对象中 */
@@ -133,9 +154,7 @@ namespace BK {
             objAdd(obj, "status", book->status);
             objAdd(obj, "integrity", book->integrity);
             objAdd(obj, "category", book->category);
-
             objAdd(obj, "price", book->price);
-
             objAdd(obj, "title", book->title);
             objAdd(obj, "isbn", book->isbn);
             objAdd(obj, "author", book->author);
@@ -145,188 +164,188 @@ namespace BK {
         
     }
 
-    namespace File {
 
-        /**
-         * @brief 通过输入文件指针将文件中的用户内容加载到用户链表中
-         * 
-         * @param fin 输入文件指针
-         * @return 用户链表
-         */
-        auto loadUsersFromFile(std::ifstream& fin) -> std::list<std::shared_ptr<User>> {
-            std::list<std::shared_ptr<User>> users {};
 
-            fin.seekg(0, std::ios::end);
-            auto size {fin.tellg()};
-            fin.seekg(0, std::ios::beg);
-            
-            std::string str(size, '\0');
-            fin.read(&str[0], size);
+    /**
+     * @brief 通过输入文件指针将文件中的用户内容加载到用户链表中
+     * 
+     * @param fin 输入文件指针
+     * @return 用户链表
+     */
+    auto loadUsersFromFile(std::ifstream& fin) -> std::list<std::shared_ptr<User>> {
+        std::list<std::shared_ptr<User>> users {};
 
-            flJson* arr = flJson_Parse(str.c_str());
+        fin.seekg(0, std::ios::end);
+        auto size {fin.tellg()};
+        fin.seekg(0, std::ios::beg);
+        
+        std::string str(size, '\0');
+        fin.read(&str[0], size);
 
-            if (arr) {
-                flJsonArrayIter iter;
-                flJsonArrayIter_Init(&iter, arr);
-                while (flJsonArrayIter_HasCur(&iter)) {
-                    flJson* ele = flJsonArrayIter_Cur(&iter);
-                    std::shared_ptr<User> user {new User("", "")};
-                    in(user, *ele);
-                    users.push_back(user);
-                    flJsonArrayIter_MoveNext(&iter);
-                }
-                flJson_UnRef(arr);
+        flJson* arr = flJson_Parse(str.c_str());
+
+        if (arr) {
+            flJsonArrayIter iter;
+            flJsonArrayIter_Init(&iter, arr);
+            while (flJsonArrayIter_HasCur(&iter)) {
+                flJson* ele = flJsonArrayIter_Cur(&iter);
+                std::shared_ptr<User> user {new User()};
+                in(user, *ele);
+                users.push_back(user);
+                flJsonArrayIter_MoveNext(&iter);
             }
-
-            return users;
-
-        }
-
-        /**
-         * @brief 通过文件名打开文件, 并将文件中的用户内容加载到用户链表中
-         * 
-         * @param dir 文件名
-         * @return 用户链表
-         */
-        auto loadUsersFromFile(const char* dir) -> std::list<std::shared_ptr<User>> {
-            std::ifstream fin(dir, std::ios::in);
-            if (!fin.is_open()) {
-                MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
-                throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
-            }
-            std::list<std::shared_ptr<User>> ret(loadUsersFromFile(fin));
-            fin.close();
-
-            return ret;
-        }
-
-        /**
-         * @brief 将用户链表的内容保存到文件指针指定的文件中
-         * 
-         * @param fout 输出文件指针
-         * @param users 用户链表
-         */
-        auto saveUserToFile(std::ofstream& fout, const std::list<std::shared_ptr<User>>& users) -> void {
-            flJson* arr = flJsonArray_New();
-            for (auto& it : users) {
-                flJson* ele = flJsonObject_New();
-                out(*ele, it);
-                flJsonArray_Add(arr, ele, flJsonArray_Size(arr));
-                flJson_UnRef(ele);
-            }
-            char* arr_str = flJson_Dump(arr);
-            fout << arr_str;
-
-            free(arr_str);
             flJson_UnRef(arr);
         }
 
-        /**
-         * @brief 将用户链表的内容保存到文件名所指定的文件中
-         * 
-         * @param dir 文件名
-         * @param users 用户链表
-         */
-        auto saveUserToFile(const char* dir, const std::list<std::shared_ptr<User>>& users) -> void {
-            std::ofstream fout(dir, std::ios::out);
-            if (!fout.is_open()) {
-                MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
-                throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
-            }
+        return users;
 
-            saveUserToFile(fout, users);
-            fout.close();
-        }
-
-        /**
-         * @brief 通过输入文件指针将文件中的书籍内容加载到书籍链表中
-         * 
-         * @param fin 输入文件指针
-         * @return 书籍链表
-         */
-        auto loadBooksFromFile(std::ifstream& fin) -> std::list<std::shared_ptr<Book>> {
-            std::list<std::shared_ptr<Book>> books {};
-            
-            fin.seekg(0, std::ios::end);
-            auto size {fin.tellg()};
-            fin.seekg(0, std::ios::beg);
-
-            std::string str(size, '\0');
-            fin.read(&str[0], size);
-
-            flJson* arr = flJson_Parse(str.c_str());
-
-            if (arr) {
-                flJsonArrayIter iter;
-                flJsonArrayIter_Init(&iter, arr);
-                while (flJsonArrayIter_HasCur(&iter)) {
-                    flJson* ele = flJsonArrayIter_Cur(&iter);
-                    std::shared_ptr<Book> book {new Book};
-                    in(book, *ele);
-                    books.push_back(book);
-                    Book::book_num++;
-                    flJsonArrayIter_MoveNext(&iter);
-                }
-                flJson_UnRef(arr);
-            }
-
-            return books;
-        }
-
-        /**
-         * @brief 通过文件名打开文件, 并将文件中的书籍内容加载到书籍链表中
-         * 
-         * @param dir 文件名
-         * @return 书籍链表
-         */
-        auto loadBooksFromFile(const char* dir) -> std::list<std::shared_ptr<Book>> {
-            std::ifstream fin(dir, std::ios::in);
-            if (!fin.is_open()) {
-                MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
-                throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
-            }
-            std::list<std::shared_ptr<Book>> ret(loadBooksFromFile(fin));
-            fin.close();
-
-            return ret;
-        }
-
-        /**
-         * @brief 将书籍链表的内容保存到文件指针指定的文件中
-         * 
-         * @param fout 输出文件指针
-         * @param books 书籍链表
-         */
-        auto saveBooksToFile(std::ofstream& fout, const std::list<std::shared_ptr<Book>>& books) -> void {
-            flJson* arr = flJsonArray_New();
-            for (auto& it : books) {
-                flJson* ele = flJsonObject_New();
-                out(*ele, it);
-                flJsonArray_Add(arr, ele, flJsonArray_Size(arr));
-                flJson_UnRef(ele);
-            }
-            char* arr_str = flJson_Dump(arr);
-            fout << arr_str;
-
-            free(arr_str);
-            flJson_UnRef(arr);
-        }
-
-        /**
-         * @brief 将书籍链表的内容保存到文件名所指定的文件中
-         * 
-         * @param dir 文件名
-         * @param books 用户链表
-         */
-        auto saveBooksToFile(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void {
-            std::ofstream fout(dir, std::ios::out);
-            if (!fout.is_open()) {
-                MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
-                throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
-            }
-            
-            saveBooksToFile(fout, books);
-            fout.close();
-        }
     }
+
+    /**
+     * @brief 通过文件名打开文件, 并将文件中的用户内容加载到用户链表中
+     * 
+     * @param dir 文件名
+     * @return 用户链表
+     */
+    auto loadUsersFromFile(const char* dir) -> std::list<std::shared_ptr<User>> {
+        std::ifstream fin(dir, std::ios::in);
+        if (!fin.is_open()) {
+            MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
+            throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
+        }
+        std::list<std::shared_ptr<User>> ret(loadUsersFromFile(fin));
+        fin.close();
+
+        return ret;
+    }
+
+    /**
+     * @brief 将用户链表的内容保存到文件指针指定的文件中
+     * 
+     * @param fout 输出文件指针
+     * @param users 用户链表
+     */
+    auto saveUserToFile(std::ofstream& fout, const std::list<std::shared_ptr<User>>& users) -> void {
+        flJson* arr = flJsonArray_New();
+        for (auto& it : users) {
+            flJson* ele = flJsonObject_New();
+            out(*ele, it);
+            flJsonArray_Add(arr, ele, flJsonArray_Size(arr));
+            flJson_UnRef(ele);
+        }
+        char* arr_str = flJson_Dump(arr);
+        fout << arr_str;
+
+        free(arr_str);
+        flJson_UnRef(arr);
+    }
+
+    /**
+     * @brief 将用户链表的内容保存到文件名所指定的文件中
+     * 
+     * @param dir 文件名
+     * @param users 用户链表
+     */
+    auto saveUserToFile(const char* dir, const std::list<std::shared_ptr<User>>& users) -> void {
+        std::ofstream fout(dir, std::ios::out);
+        if (!fout.is_open()) {
+            MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
+            throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
+        }
+
+        saveUserToFile(fout, users);
+        fout.close();
+    }
+
+    /**
+     * @brief 通过输入文件指针将文件中的书籍内容加载到书籍链表中
+     * 
+     * @param fin 输入文件指针
+     * @return 书籍链表
+     */
+    auto loadBooksFromFile(std::ifstream& fin) -> std::list<std::shared_ptr<Book>> {
+        std::list<std::shared_ptr<Book>> books {};
+        
+        fin.seekg(0, std::ios::end);
+        auto size {fin.tellg()};
+        fin.seekg(0, std::ios::beg);
+
+        std::string str(size, '\0');
+        fin.read(&str[0], size);
+
+        flJson* arr = flJson_Parse(str.c_str());
+
+        if (arr) {
+            flJsonArrayIter iter;
+            flJsonArrayIter_Init(&iter, arr);
+            while (flJsonArrayIter_HasCur(&iter)) {
+                flJson* ele = flJsonArrayIter_Cur(&iter);
+                std::shared_ptr<Book> book {new Book};
+                in(book, *ele);
+                books.push_back(book);
+                Book::book_num++;
+                flJsonArrayIter_MoveNext(&iter);
+            }
+            flJson_UnRef(arr);
+        }
+
+        return books;
+    }
+
+    /**
+     * @brief 通过文件名打开文件, 并将文件中的书籍内容加载到书籍链表中
+     * 
+     * @param dir 文件名
+     * @return 书籍链表
+     */
+    auto loadBooksFromFile(const char* dir) -> std::list<std::shared_ptr<Book>> {
+        std::ifstream fin(dir, std::ios::in);
+        if (!fin.is_open()) {
+            MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
+            throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
+        }
+        std::list<std::shared_ptr<Book>> ret(loadBooksFromFile(fin));
+        fin.close();
+
+        return ret;
+    }
+
+    /**
+     * @brief 将书籍链表的内容保存到文件指针指定的文件中
+     * 
+     * @param fout 输出文件指针
+     * @param books 书籍链表
+     */
+    auto saveBooksToFile(std::ofstream& fout, const std::list<std::shared_ptr<Book>>& books) -> void {
+        flJson* arr = flJsonArray_New();
+        for (auto& it : books) {
+            flJson* ele = flJsonObject_New();
+            out(*ele, it);
+            flJsonArray_Add(arr, ele, flJsonArray_Size(arr));
+            flJson_UnRef(ele);
+        }
+        char* arr_str = flJson_Dump(arr);
+        fout << arr_str;
+
+        free(arr_str);
+        flJson_UnRef(arr);
+    }
+
+    /**
+     * @brief 将书籍链表的内容保存到文件名所指定的文件中
+     * 
+     * @param dir 文件名
+     * @param books 用户链表
+     */
+    auto saveBooksToFile(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void {
+        std::ofstream fout(dir, std::ios::out);
+        if (!fout.is_open()) {
+            MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
+            throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
+        }
+        
+        saveBooksToFile(fout, books);
+        fout.close();
+    }
+
 }

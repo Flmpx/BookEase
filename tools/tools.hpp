@@ -8,7 +8,7 @@
 namespace BK {
 
     /**
-     * @brief 输出文字到窗口(上下居中, 左右居左)
+     * @brief 输出单行文字到窗口(上下居中, 左右居左)
      * 
      * @tparam T 类型
      * @param info 前缀信息
@@ -20,43 +20,20 @@ namespace BK {
      */
     template <typename T>
     inline auto print(const std::string& info, const T& tp, int_t l, int_t t, int_t w, int_t h) -> void {
-        std::stringstream tmp {};
-        tmp << info << tp;
-
-        std::string str(tmp.str());
+        std::string str {info + std::to_string(tp)};
         int_t th {textheight(str.c_str())};
 
         outtextxy(l, t + (h - th) / 2, str.c_str());
     }
-
-    /**
-     * @brief 输出时间到窗口(上下居中, 左右居左)
-     * 
-     * @tparam  时间
-     * @param info 前缀信息
-     * @param tp 时间
-     * @param l 左界
-     * @param t 上界
-     * @param w 宽度
-     * @param h 高度
-     */
+    
     template <>
-    inline auto print<time_t>(const std::string& info, const time_t& tp, int_t l, int_t t, int_t w, int_t h) -> void {
-        std::stringstream tmp {};
-        if (tp >= 0) {
-            struct tm time {};
-            localtime_s(&time, &tp);
-
-            tmp << info << time.tm_year + 1900 << "-" << time.tm_mon + 1 << "-" << time.tm_mday;
-        } else {
-            tmp << "None";
-        }
-
-        std::string str(tmp.str());
+    inline auto print<std::string>(const std::string& info, const std::string& tp, int_t l, int_t t, int_t w, int_t h) -> void {
+        std::string str {info + tp};
         int_t th {textheight(str.c_str())};
 
         outtextxy(l, t + (h - th) / 2, str.c_str());
     }
+
 
     auto isInBlock(const ExMessage& msg, int_t l, int_t t, int_t w, int_t h) -> bool;
     auto getRectangleBlock(const std::string& text, int_t l, int_t t, int_t w, int_t h) -> void;
@@ -66,22 +43,18 @@ namespace BK {
     auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h) -> void;
     auto printStatistics(const std::list<std::shared_ptr<Book>>& books, const std::list<std::shared_ptr<User>>& users, int_t l, int_t t, int_t w, int_t h) -> void;
 
-    namespace Input {
-        constexpr uint_t BUF_SIZE {256};
-        auto string(std::string& s, const std::string& info, const std::string tip) -> bool;
-        auto integer(int_t& i, const std::string& info, const std::string& tip) -> bool;
-        auto floatPoint(float_t& f, const std::string& info, const std::string& tip) -> bool;
-        auto date(time_t& t, const std::string& info, const std::string& tip) -> bool;
-    }
+        
+    auto input(std::string& s, const std::string& info, const std::string tip, const Range<uint_t> r = Range<uint_t>()) -> bool;
+    auto input(int_t& i, const std::string& info, const std::string& tip, const Range<int_t> r = Range<int_t>()) -> bool;
+    auto input(float_t& f, const std::string& info, const std::string& tip, const Range<float_t> r = Range<float_t>()) -> bool;
+    auto input(Time& t, const std::string& info, const std::string& tip, const Range<Time> r = Range<Time>()) -> bool;
 
-    auto authenUser(std::shared_ptr<User>& user) -> bool;
+    auto authenKey(const Key& user) -> bool;
 
-    namespace Change {
-        auto bookCategory(BookCategory& categroy) -> void;
-        auto userKey(std::shared_ptr<User>& user) -> bool;
-        auto userInfo(std::shared_ptr<User>& user) -> bool;
-        auto bookInfo(std::shared_ptr<Book>& book) -> bool;
-    }
+    auto change(BookCategory& categroy) -> void;
+    auto change(Key& key) -> bool;
+    auto change(std::shared_ptr<User>& user) -> bool;
+    auto change(std::shared_ptr<Book>& book) -> bool;
 }
 
 

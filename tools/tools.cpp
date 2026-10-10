@@ -141,172 +141,178 @@ namespace BK {
         print("     总交易金额:", all_price, l, t += th, w, h);
     }
 
-    namespace Input {
+    /**
+     * @brief 输入字符串(可设置长度范围)
+     * 
+     * @param s 待输入的字符串
+     * @param info 显示信息
+     * @param tip 信息类型
+     * @return 成功输入返回true, 取消输入返回false
+     */
+    auto input(std::string& s, const std::string& info, const std::string tip, const Range<uint_t> r) -> bool {
+        bool changed {false};
+        int circle {1};
 
-        /**
-         * @brief 输入字符串
-         * 
-         * @param s 待输入的字符串
-         * @param info 显示信息
-         * @param tip 信息类型
-         * @return 成功输入返回true, 取消输入返回false
-         */
-        auto string(std::string& s, const std::string& info, const std::string tip) -> bool {
-            bool changed {false};
-            int circle {1};
+        char buf[BUF_SIZE] {""};
+        std::snprintf(buf, BUF_SIZE, "%s", s.c_str());
+        do {
+            circle = 1;
+            if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                if (r.contain(std::strlen(buf))) {
+                    s = buf;
+                    changed = true;
+                    circle = 0;
+                } else {
+                    MessageBox(GetHWnd(), "输入长度错误", "提示", MB_OK | MB_ICONWARNING);
+                    circle = 1;
+                }
+            } else {
+                circle = 0;
+                changed = false;
+            }
+        } while (circle);
 
-            char buf[BUF_SIZE] {""};
-            std::snprintf(buf, BUF_SIZE, "%s", s.c_str());
-            do {
-                circle = 1;
-                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
-                    if (buf[0] != '\0') {
-                        s = buf;
-                        changed = true;
+        return changed;
+    }
+
+    /**
+     * @brief 输入整数
+     * 
+     * @param i 待输入的整数
+     * @param info 显示信息
+     * @param tip 信息类型
+     * @return 成功输入返回 true, 取消输入返回 false
+     */
+    auto input(int_t& i, const std::string& info, const std::string& tip, const Range<int_t> r) -> bool {
+        bool changed {false};
+        int circle {1};
+
+        int_t tmp_num {0};
+        char buf[BUF_SIZE] {""};
+        std::snprintf(buf, BUF_SIZE, "%lld", i);
+        do {
+            circle = 1;
+            if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                int_t n {0};
+                if (std::sscanf(buf, "%lld%n", &tmp_num, &n) == 1 && buf[n] == '\0') {
+                    if (r.contain(tmp_num)) {
+                        i = tmp_num;
                         circle = 0;
+                        changed = true; 
                     } else {
-                        MessageBox(GetHWnd(), "输入不能为空", "提示", MB_OK | MB_ICONWARNING);
+                        MessageBox(GetHWnd(), "输入数据范围错误", "提示", MB_OK | MB_ICONWARNING);
                         circle = 1;
                     }
                 } else {
-                    circle = 0;
-                    changed = false;
+                    MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
+                    circle = 1;
                 }
-            } while (circle);
+            } else {
+                circle = 0;
+                changed = false;
+            }
+        } while (circle);
 
-            return changed;
-        }
+        return changed;
+    }
 
-        /**
-         * @brief 输入整数(不允许负数)
-         * 
-         * @param i 待输入的整数
-         * @param info 显示信息
-         * @param tip 信息类型
-         * @return 成功输入返回 true, 取消输入返回 false
-         */
-        auto integer(int_t& i, const std::string& info, const std::string& tip) -> bool {
-            bool changed {false};
-            int circle {1};
+    /**
+     * @brief 输入浮点数
+     * 
+     * @param i 待输入的浮点数
+     * @param info 显示信息
+     * @param tip 信息类型
+     * @return 成功输入返回 true, 取消输入返回 false
+     */
+    auto input(float_t& f, const std::string& info, const std::string& tip, const Range<float_t> r) -> bool {
+        bool changed {false};
+        int circle {1};
 
-            int_t tmp_num {0};
-            char buf[BUF_SIZE] {""};
-            std::snprintf(buf, BUF_SIZE, "%lld", i);
-            do {
-                circle = 1;
-                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
-                    int_t n {0};
-                    if (std::sscanf(buf, "%lld%n", &tmp_num, &n) == 1 && buf[n] == '\0' && tmp_num >= 0) {
-                        i = tmp_num;
-                        circle = 0;
-                        changed = true;
-                    } else {
-                        MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
-				        circle = 1;
-                    }
-                } else {
-                    circle = 0;
-                    changed = false;
-                }
-            } while (circle);
-
-            return changed;
-        }
-
-        /**
-         * @brief 输入浮点数(不允许负数)
-         * 
-         * @param i 待输入的浮点数
-         * @param info 显示信息
-         * @param tip 信息类型
-         * @return 成功输入返回 true, 取消输入返回 false
-         */
-        auto floatPoint(float_t& f, const std::string& info, const std::string& tip) -> bool {
-            bool changed {false};
-            int circle {1};
-
-            float_t tmp_num {0};
-            char buf[BUF_SIZE] {""};
-            std::snprintf(buf, BUF_SIZE, "%lf", f);
-            do {
-                circle = 1;
-                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
-                    int_t n {0};
-                    if (std::sscanf(buf, "%lf%n", &tmp_num, &n) == 1 && buf[n] == '\0' && tmp_num >= -EPS) {
+        float_t tmp_num {0};
+        char buf[BUF_SIZE] {""};
+        std::snprintf(buf, BUF_SIZE, "%lf", f);
+        do {
+            circle = 1;
+            if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                int_t n {0};
+                if (std::sscanf(buf, "%lf%n", &tmp_num, &n) == 1 && buf[n] == '\0') {
+                    if (r.contain(tmp_num)) {
                         f = tmp_num;
                         circle = 0;
                         changed = true;
                     } else {
-                        MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
-				        circle = 1;
+                        MessageBox(GetHWnd(), "输入数据范围错误", "提示", MB_OK | MB_ICONWARNING);
+                        circle = 1;
                     }
                 } else {
-                    circle = 0;
-                    changed = false;
+                    MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
+                    circle = 1;
                 }
-            } while (circle);
+            } else {
+                circle = 0;
+                changed = false;
+            }
+        } while (circle);
 
-            return changed;
-        }
-
-        /**
-         * @brief 输入日期(1970 < 年份 < 3000)
-         * 
-         * @param i 待输入的日期
-         * @param info 显示信息
-         * @param tip 信息类型
-         * @return 成功输入返回 true, 取消输入返回 false
-         */
-        auto date(time_t& t, const std::string& info, const std::string& tip) -> bool {
-            bool changed {false};
-            int circle {1};
-
-            int_t tmp_time {t > 0 ? t : 0};
-            struct tm struct_time {};
-            localtime_s(&struct_time, &tmp_time);
-            char buf[BUF_SIZE] {""};
-            std::snprintf(buf, BUF_SIZE, "%d %d %d", struct_time.tm_year, struct_time.tm_mon + 1, struct_time.tm_mday);
-            int y {0}, m {0}, d {0};
-            do {
-                circle = 1;
-                if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
-                    int_t n {0};
-                    if (std::sscanf(buf, "%d%d%d%n", &y, &m, &d, &n) == 3 && buf[n] == '\0' && y < 3000 && y > 1970) {
-                        struct_time.tm_year = y - 1900;
-                        struct_time.tm_mon = m - 1;
-				        struct_time.tm_mday = d;
-
-                        t = mktime(&struct_time);
-                        
-                        circle = 0;
-                        changed = true;
-                    } else {
-                        MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
-				        circle = 1;
-                    }
-                } else {
-                    circle = 0;
-                    changed = false;
-                }
-            } while (circle);
-
-            return changed;
-        }
+        return changed;
     }
 
     /**
-     * @brief 验证用户密码
+     * @brief 输入日期
      * 
-     * @param user 用户
+     * @param i 待输入的日期
+     * @param info 显示信息
+     * @param tip 信息类型
+     * @return 成功输入返回 true, 取消输入返回 false
      */
-    auto authenUser(std::shared_ptr<User>& user) -> bool {
+    auto input(Time& t, const std::string& info, const std::string& tip, const Range<Time> r) -> bool {
+        bool changed {false};
+        int circle {1};
+
+        int y {0}, m {0}, d {0};
+        Time tmp_time {};
+        char buf[BUF_SIZE] {""};
+        std::snprintf(buf, BUF_SIZE, "%d %d %d", t.year(), t.month(), t.day());
+        do {
+            circle = 1;
+            if (InputBox(buf, BUF_SIZE, info.c_str(), tip.c_str(), buf, 0, 0, false)) {
+                int_t n {0};
+                if (std::sscanf(buf, "%d%d%d%n", &y, &m, &d, &n) == 3 && buf[n] == '\0') {
+                    tmp_time.set(y, m, d);
+                    if (r.contain(tmp_time)) {
+                        t = tmp_time;
+                        circle = 0;
+                        changed = true;
+                    } else {
+                        MessageBox(GetHWnd(), "输入数据范围错误", "提示", MB_OK | MB_ICONWARNING);
+                        circle = 1;
+                    }
+                } else {
+                    MessageBox(GetHWnd(), "输入数据异常", "提示", MB_OK | MB_ICONWARNING);
+                    circle = 1;
+                }
+            } else {
+                circle = 0;
+                changed = false;
+            }
+        } while (circle);
+
+        return changed;
+    }
+
+    /**
+     * @brief 验证密钥
+     * 
+     * @param key 密钥
+     */
+    auto authenKey(const Key& key) -> bool {
         int circle {0};
         std::string password {};
         bool res {false};
         do {
             circle = 1;
-            if (Input::string(password, "请输入登录密码", "输入用户信息")) {
-                if (user->key.verify(password)) {
+            if (input(password, "请输入密码", "验证密钥", Range<uint_t>(8, 16))) {
+                if (key.verify(password)) {
                     circle = 0;
                     res = true;
                     MessageBox(GetHWnd(), "认证成功", "提示", MB_OK | MB_ICONINFORMATION);
@@ -324,161 +330,159 @@ namespace BK {
         return res;
     }
 
-    namespace Change {
 
-        /**
-         * @brief 修改书籍的类别(必定会被修改)
-         * 
-         * @param category 类别
-         */
-        auto bookCategory(BookCategory& category) -> void {
+    /**
+     * @brief 修改书籍的类别(必定会被修改)
+     * 
+     * @param category 类别
+     */
+    auto change(BookCategory& category) -> void {
+        cleardevice();
+        Menu menu(80, 30, "返回", 30, 20, "选择书籍类别", 200, 90);
+        std::vector<std::string> selections {
+            "教材", "小说", "学术类", "考试类", "其他"
+        };
+        int_t choice {menu.showNormal(selections)};
+        switch (choice) {
+            case 1: category = BookCategory::textbook; break;
+            case 2: category = BookCategory::fiction;  break;
+            case 3: category = BookCategory::academic; break;
+            case 4: category = BookCategory::exam;     break;
+            case 5: category = BookCategory::other;    break;
+        }
+    }
+
+
+    /**
+     * @brief 修改密钥
+     * 
+     * @param key 密钥
+     * @return 成功修改返回 true
+     */
+    auto change(Key& key) -> bool {
+        if (!authenKey(key)) {
+            return false;
+        }
+        std::string new_password {};
+        if (input(new_password, "输入新密码", "提示", Range<uint_t>(8, 16))) {
+            key.change(new_password);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @brief 修改用户基本信息
+     * 
+     * @param user 用户
+     * @return 成功修改返回 true
+     */
+    auto change(std::shared_ptr<User>& user) -> bool {
+        auto tmp_user {std::make_shared<User>(*user)};
+        bool changed {false};
+
+        Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 90);
+        std::vector<std::string> selections {
+            "保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"
+        };
+
+        int circle {1};
+        do {
+            circle = 1;
             cleardevice();
-            Menu menu(80, 30, "返回", 30, 20, "选择书籍类别", 200, 90);
-            std::vector<std::string> selections {
-                "教材", "小说", "学术类", "考试类", "其他"
-            };
-            int_t choice {menu.showNormal(selections)};
+            int_t choice {menu.showUser(selections, 10, "正在被修改的用户信息详情", tmp_user)};
+
             switch (choice) {
-                case 1: category = BookCategory::textbook; break;
-                case 2: category = BookCategory::fiction;  break;
-                case 3: category = BookCategory::academic; break;
-                case 4: category = BookCategory::exam;     break;
-                case 5: category = BookCategory::other;    break;
-            }
-        }
-
-
-        /**
-         * @brief 修改用户密码
-         * 
-         * @param user 用户
-         * @return 成功修改返回 true
-         */
-        auto userKey(std::shared_ptr<User>& user) -> bool {
-            if (!authenUser(user)) {
-                return false;
-            }
-            std::string new_password {};
-            if (Input::string(new_password, "输入新密码", "提示")) {
-                user->key.change(new_password);
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        /**
-         * @brief 修改用户基本信息
-         * 
-         * @param user 用户
-         * @return 成功修改返回 true
-         */
-        auto userInfo(std::shared_ptr<User>& user) -> bool {
-            auto tmp_user {std::make_shared<User>(*user)};
-            bool changed {false};
-
-            Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 90);
-            std::vector<std::string> selections {
-                "保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"
-            };
-
-            int circle {1};
-            do {
-                circle = 1;
-                cleardevice();
-                int_t choice {menu.showUser(selections, 10, "正在被修改的用户信息详情", tmp_user)};
-
-                switch (choice) {
-                    case 0: 
-                        if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
-                            changed = false;
-                            circle = 0;
-                        }
-                        break;
-                    case 1: 
-                        *user = *tmp_user;
-                        changed = true;
+                case 0: 
+                    if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+                        changed = false;
                         circle = 0;
-                        break;
-                    case 2:
-                        Input::string(tmp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入");
-                        break;
-                    case 3:
-                        Input::integer(tmp_user->tel, "输入电话", "输入");
-                        break;
-                    case 4:
-                        Input::integer(tmp_user->tel, "输入QQ号", "输入");
-                        break;
-                    case 5:
-                        Input::string(tmp_user->wechat, "输入微信号", "输入");
-                        break;
-                    
-                }
+                    }
+                    break;
+                case 1: 
+                    *user = *tmp_user;
+                    changed = true;
+                    circle = 0;
+                    break;
+                case 2:
+                    input(tmp_user->name, "输入用户名\n\"一个好的名字能让别人更快的记住你\"", "输入");
+                    break;
+                case 3:
+                    input(tmp_user->tel, "输入电话", "输入");
+                    break;
+                case 4:
+                    input(tmp_user->tel, "输入QQ号", "输入");
+                    break;
+                case 5:
+                    input(tmp_user->wechat, "输入微信号", "输入");
+                    break;
+                
+            }
 
-            } while (circle);
+        } while (circle);
 
-            return changed;
-        }
+        return changed;
+    }
 
-        /**
-         * @brief 修改书籍信息
-         * 
-         * @param book 书籍
-         * @return 成功修改返回 true
-         */
-        auto bookInfo(std::shared_ptr<Book>& book) -> bool {
-            auto tmp_book {std::make_shared<Book>(*book)};
-            bool changed {false};
+    /**
+     * @brief 修改书籍信息
+     * 
+     * @param book 书籍
+     * @return 成功修改返回 true
+     */
+    auto change(std::shared_ptr<Book>& book) -> bool {
+        auto tmp_book {std::make_shared<Book>(*book)};
+        bool changed {false};
 
-            Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 70);
-            std::vector<std::string> selections {
-               "保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍类别", "书籍完整度", "书籍价格"
-            };
+        Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 70);
+        std::vector<std::string> selections {
+            "保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍类别", "书籍完整度", "书籍价格"
+        };
 
-            int circle {1};
-            do {
-                circle = 1;
-                cleardevice();
-                int_t choice {menu.showBook(selections, 10, "正在被修改的书籍详情", tmp_book)};
+        int circle {1};
+        do {
+            circle = 1;
+            cleardevice();
+            int_t choice {menu.showBook(selections, 10, "正在被修改的书籍详情", tmp_book)};
 
-                switch (choice) {
-                    case 0: 
-                        if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
-                            changed = false;
-                            circle = 0;
-                        }
-                        break;
-                    case 1: 
-                        *book = *tmp_book;
-                        changed = true;
+            switch (choice) {
+                case 0: 
+                    if (MessageBox(GetHWnd(), "确认退出修改吗? 修改不会保存", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+                        changed = false;
                         circle = 0;
-                        break;
-                    case 2:
-                        Input::string(tmp_book->title, "输入书籍名称", "输入");
-                        break;
-                    case 3:
-                        Input::string(tmp_book->isbn, "输入书籍ISBN", "输入");
-                        break;
-                    case 4:
-                        Input::string(tmp_book->author, "输入书籍作者", "输入");
-                        break;
-                    case 5:
-                        Input::string(tmp_book->press, "输入书籍出版社", "输入");
-                        break;
-                    case 6:
-                        bookCategory(tmp_book->category);
-                        break;
-                    case 7:
-                        Input::integer(tmp_book->integrity, "输入书籍完整度(0-100)", "输入");
-                        break;
-                    case 8:
-                        Input::floatPoint(tmp_book->price, "输入价格", "输入");
-                        break;
-                }
+                    }
+                    break;
+                case 1: 
+                    *book = *tmp_book;
+                    changed = true;
+                    circle = 0;
+                    break;
+                case 2:
+                    input(tmp_book->title, "输入书籍名称", "输入");
+                    break;
+                case 3:
+                    input(tmp_book->isbn, "输入书籍ISBN", "输入");
+                    break;
+                case 4:
+                    input(tmp_book->author, "输入书籍作者", "输入");
+                    break;
+                case 5:
+                    input(tmp_book->press, "输入书籍出版社", "输入");
+                    break;
+                case 6:
+                    change(tmp_book->category);
+                    break;
+                case 7:
+                    input(tmp_book->integrity, "输入书籍完整度(0-100)", "输入", Range<int_t>(min_integrity, max_integrity));
+                    break;
+                case 8:
+                    input(tmp_book->price, "输入价格", "输入", Range<float_t>(0.0));
+                    break;
+            }
 
-            } while (circle);
+        } while (circle);
 
-            return changed;
-        }
+        return changed;
     }
 }

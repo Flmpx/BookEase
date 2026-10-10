@@ -16,8 +16,8 @@ auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	settextcolor(BLACK);
     
     /* ‘ÿ»Î */
-    std::list<std::shared_ptr<BK::User>> users {BK::File::loadUsersFromFile(BK::USERS_FILE_DIR)};
-    std::list<std::shared_ptr<BK::Book>> books {BK::File::loadBooksFromFile(BK::BOOKS_FILE_DIR)};
+    std::list<std::shared_ptr<BK::User>> users {BK::loadUsersFromFile(BK::USERS_FILE_DIR)};
+    std::list<std::shared_ptr<BK::Book>> books {BK::loadBooksFromFile(BK::BOOKS_FILE_DIR)};
     std::shared_ptr<BK::User> user {nullptr};
 
 

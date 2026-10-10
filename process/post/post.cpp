@@ -29,16 +29,16 @@ namespace BK {
 				    }
                     break;
                 case 1:
-                    tmp_book->publish_time = std::time(nullptr);
+                    tmp_book->publish_time.set(std::time(nullptr));
                     tmp_book->status = BookStatus::on_sale;
                     books.push_back(tmp_book);
-                    File::saveBooksToFile(BOOKS_FILE_DIR, books);
+                    saveBooksToFile(BOOKS_FILE_DIR, books);
                     Book::book_num++;
                     MessageBox(GetHWnd(), "发布成功", "提示", MB_OK | MB_ICONINFORMATION);
                     circle = 0;
                     break;
                 case 2:
-                    if (Change::bookInfo(tmp_book)) {
+                    if (change(tmp_book)) {
                         MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
                     }
                     break;
