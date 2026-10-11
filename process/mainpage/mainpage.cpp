@@ -1,3 +1,8 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
+
 #include "mainpage.hpp"
 #include "../../menu/menu.hpp"
 #include "../buy/buy.hpp"

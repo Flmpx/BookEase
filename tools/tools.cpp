@@ -1,3 +1,8 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
+
 #include "tools.hpp"
 #include <sstream>
 #include <ctime>

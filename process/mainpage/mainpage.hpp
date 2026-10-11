@@ -1,3 +1,8 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
+
 #ifndef BK_MAINPAGE_HPP_
 #define BK_MAINPAGE_HPP_
 

@@ -1,3 +1,8 @@
+/*
+* Copyright (c) 2026 Flmpx
+* Licensed under MIT (see LICENSE).
+*/
+
 #include "login.hpp"
 #include "../../tools/tools.hpp"
 #include <easyx.h>
