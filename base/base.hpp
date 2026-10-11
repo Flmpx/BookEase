@@ -6,10 +6,10 @@
 #ifndef BK_BASE_HPP_
 #define BK_BASE_HPP_
 
-#define BK_VERSION_MAJOR 1
-#define BK_VERSION_MINOR 4
+#define BK_VERSION_MAJOR 2
+#define BK_VERSION_MINOR 0
 #define BK_VERSION_PATCH 0
-#define BK_VERSION "1.4.0"
+#define BK_VERSION "2.0.0"
 
 
 #include <string>
