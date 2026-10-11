@@ -290,9 +290,19 @@ namespace BK {
     auto User::books(std::list<std::shared_ptr<Book>>& books, BookStatus status, BookCategory category) const -> std::list<std::shared_ptr<Book>> {
         std::list<std::shared_ptr<Book>> ret {};
         for (auto& it : books) {
-            if ((static_cast<uint_t>(status) & static_cast<uint_t>(it->status)) && 
-                (static_cast<uint_t>(category) & static_cast<uint_t>(it->category)) && 
-                (it->seller_id == id || it->reserver_id == id || it->buyer_id == id)) {
+            if 
+            (
+                /* 书籍状态符合要求 */
+                (static_cast<uint_t>(status) & static_cast<uint_t>(it->status)) &&  
+
+                /* 书籍类别符合要求 */
+                (static_cast<uint_t>(category) & static_cast<uint_t>(it->category)) &&      
+
+                /* 书籍的某个id与用户有关(售卖者id永远有效, 预定者id只在预定时候有效, 购买者id只在已购后有效) */
+                (it->seller_id == id || (it->status == BookStatus::reserved && it->reserver_id == id) || (it->status == BookStatus::sold && it->buyer_id == id))
+                
+            ) 
+            {
                 ret.push_back(it);
             }
         }

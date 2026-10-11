@@ -67,7 +67,7 @@ namespace BK {
      * @param h 高度
      */
     auto printUser(const std::shared_ptr<User>& user, int_t l, int_t t, int_t w, int_t h) -> void {
-        int_t info_num {7};
+        int_t info_num {6};
         int_t th {h / info_num};
         
         print("     用户名:", user->name, l, t, w, th);      // 第一个的高度要从t开始

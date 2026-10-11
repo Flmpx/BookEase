@@ -230,8 +230,9 @@ namespace BK {
                 int_t choice {menu.showBooks(selections, 40, 40, 10, "当前检索到的所有书籍", 3, 2, now_books)};
                 if (choice < 0) {
                     int_t idx {-choice - 1};
-                    if (readyToReserve(user, users, books, *std::next(books.begin(), idx))) {
-                        now_books.erase(std::next(now_books.begin(), idx));
+                    auto book {std::next(now_books.begin(), idx)};
+                    if (readyToReserve(user, users, books, *book)) {
+                        now_books.erase(book);
                     }
                     continue;
                 }
