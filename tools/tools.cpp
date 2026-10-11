@@ -116,10 +116,11 @@ namespace BK {
         int_t info_num {8};
         int_t th {h / info_num};
         
-        const time_t release_time {1778935434};
-        print("     软件发布时间", release_time, l, t, w, h);           // 第一个的高度要从t开始
-        print("     总用户数:", users.size(), l, t + th, w, h);
-        print("     总书籍数目:", books.size(), l, t += th, w, h);
+        Time release_time {};
+        release_time.set(time_t(1778935434));
+        print("     软件发布时间: ", release_time, l, t, w, th);           // 第一个的高度要从t开始
+        print("     总用户数:", users.size(), l, t += th, w, th);
+        print("     总书籍数目:", books.size(), l, t += th, w, th);
 
         int_t num_on_sale {0}, num_reserved {0}, num_removed {0}, num_sold {0};
         float_t all_price {0.0};
@@ -131,14 +132,14 @@ namespace BK {
                 case BookStatus::removed:   num_removed++;  break;
                 case BookStatus::sold:      num_sold++;     break;
             }
-            all_price += it->price;
+            if (it->status == BookStatus::sold) all_price += it->price;
         }
 
-        print("     在售书籍数目:", num_on_sale, l, t += th, w, h);
-        print("     已被预定书籍数目:", num_reserved, l, t += th, w, h);
-        print("     下架书籍数目:", num_removed, l, t += th, w, h);
-        print("     已交易书籍数目:", num_sold, l, t += th, w, h);
-        print("     总交易金额:", all_price, l, t += th, w, h);
+        print("     在售书籍数目:", num_on_sale, l, t += th, w, th);
+        print("     已被预定书籍数目:", num_reserved, l, t += th, w, th);
+        print("     下架书籍数目:", num_removed, l, t += th, w, th);
+        print("     已交易书籍数目:", num_sold, l, t += th, w, th);
+        print("     总交易金额:", all_price, l, t += th, w, th);
     }
 
     /**
