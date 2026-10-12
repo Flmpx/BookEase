@@ -25,6 +25,20 @@ namespace BK {
             }
         }
 
+        /* 下架时间 */
+        namespace RemovedTime {
+            inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
+                Time a {book_a->removed_time}, b {book_b->removed_time};
+                if (a <= b) return true;
+                else return false;
+            }
+            inline auto down(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
+                Time a {book_a->removed_time}, b {book_b->removed_time};
+                if (a >= b) return true;
+                else return false;
+            }
+        }
+
         /* 预定时间 */
         namespace ReservedTime {
             inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {

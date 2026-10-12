@@ -44,8 +44,8 @@ namespace BK {
     auto getRectangleBlock(const std::string& text, int_t l, int_t t, int_t w, int_t h) -> void;
     auto getRoundRectleBlock(const std::string& text, int_t l, int_t t, int_t w, int_t h) -> void;
 
-    auto printUser(const std::shared_ptr<User>& user, int_t l, int_t t, int_t w, int_t h) -> void;
-    auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h) -> void;
+    auto printUser(const std::shared_ptr<User>& user, int_t l, int_t t, int_t w, int_t h, bool reveal_time = false) -> void;
+    auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h, bool reveal_time = false) -> void;
     auto printStatistics(const std::list<std::shared_ptr<Book>>& books, const std::list<std::shared_ptr<User>>& users, int_t l, int_t t, int_t w, int_t h) -> void;
 
         

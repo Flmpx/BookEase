@@ -117,10 +117,11 @@ namespace BK {
      * @param grap_select_book 书籍详细信息块与选项块之间的间隔
      * @param book_tip 书籍详细信息块的提示信息内容
      * @param book 书籍详细信息块的内容
+     * @param reveal_time 是否展示与时间有关的书籍信息
      * @return 返回 0 则为点击了返回键  
      * @return 1 为点击了第 1 个选项, 2 为第 2 个, 以此类推  
      */
-    auto Menu::showBook(const std::vector<std::string>& selections, int_t grap_select_book, const std::string& book_tip, const std::shared_ptr<Book>& book) const -> int_t {
+    auto Menu::showBook(const std::vector<std::string>& selections, int_t grap_select_book, const std::string& book_tip, const std::shared_ptr<Book>& book, bool reveal_time) const -> int_t {
         int_t screen_h {getheight()};
         int_t screen_w {getwidth()};
         int_t l {0}, t {0}, w {0}, h {0};
@@ -136,7 +137,7 @@ namespace BK {
 
         l = select_w_ + grap_select_book; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
         getRoundRectleBlock("", l, t, w, h);
-        printBook(book, l, t, w, h);
+        printBook(book, l, t, w, h, reveal_time);
 
         return showNormal(selections);
     }
@@ -148,10 +149,11 @@ namespace BK {
      * @param grap_select_user 用户详细信息块与选项块之间的间隔
      * @param user_tip 用户详细信息块的提示信息块
      * @param user 用户详细信息块的内容
+     * @param reveal_time 是否展示与时间有关的用户信息
      * @return 返回 0 则为点击了返回键   
      * @return 1 为点击了第 1 个选项, 2 为第 2 个, 以此类推  
      */
-    auto Menu::showUser(const std::vector<std::string>& selections, int_t grap_select_user, const std::string& user_tip, const std::shared_ptr<User>& user) const -> int_t {
+    auto Menu::showUser(const std::vector<std::string>& selections, int_t grap_select_user, const std::string& user_tip, const std::shared_ptr<User>& user, bool reveal_time) const -> int_t {
         int_t screen_h {getheight()};
         int_t screen_w {getwidth()};
         int_t l {0}, t {0}, w {0}, h {0};
@@ -167,7 +169,7 @@ namespace BK {
 
         l = select_w_ + grap_select_user; t = back_h_ + grap_back_instru_; w = screen_w - l; h = screen_h - t;
         getRoundRectleBlock("", l, t, w, h);
-        printUser(user, l, t, w, h);
+        printUser(user, l, t, w, h, reveal_time);
 
         return showNormal(selections);
     }

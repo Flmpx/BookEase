@@ -32,8 +32,8 @@ namespace BK {
         public:
             Menu(int_t back_w, int_t back_h, const std::string& back_content, int_t grap_back_instru, int_t instru_h, const std::string& instru, int_t select_w, int_t select_h);
             auto showNormal(const std::vector<std::string>& selections) const -> int_t;
-            auto showBook(const std::vector<std::string>& selections, int_t grap_select_book, const std::string& book_tip, const std::shared_ptr<Book>& book) const -> int_t;
-            auto showUser(const std::vector<std::string>& selections, int_t grap_select_user, const std::string& user_tip, const std::shared_ptr<User>& user) const -> int_t;
+            auto showBook(const std::vector<std::string>& selections, int_t grap_select_book, const std::string& book_tip, const std::shared_ptr<Book>& book, bool reveal_time = false) const -> int_t;
+            auto showUser(const std::vector<std::string>& selections, int_t grap_select_user, const std::string& user_tip, const std::shared_ptr<User>& user, bool reveal_time = false) const -> int_t;
             auto showStatistics(const std::vector<std::string>& selections, int_t grap_select_statistics, const std::string& statistics_tip, const std::list<std::shared_ptr<Book>>& books, const std::list<std::shared_ptr<User>>& users) const -> int_t;
             auto showBooks(const std::vector<std::string>& selections, int_t diction_w, int_t diction_h, int_t grap_select_books, const std::string& books_tip, int_t row, int col, const std::list<std::shared_ptr<Book>>& books) const -> int_t;
     };

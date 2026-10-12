@@ -34,7 +34,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已购书籍详情", book)};
+                int_t choice {menu.showBook(selections, 10, "已购书籍详情", book, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -89,7 +89,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已预定的书籍详情", book)};
+                int_t choice {menu.showBook(selections, 10, "已预定的书籍详情", book, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -174,13 +174,14 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "在售书籍详情", book)};
+                int_t choice {menu.showBook(selections, 10, "在售书籍详情", book, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
                     case 1:
                         if (MessageBox(GetHWnd(), "确定要下架书籍吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
                             book->status = BookStatus::removed;
+                            book->removed_time.set(std::time(nullptr));
                             saveBooksToFile(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "已下架书籍\n可以在下架页找到当前书籍", "提示", MB_OK | MB_ICONINFORMATION);
                             changed = true;
@@ -238,7 +239,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已被预定书籍详情", book)};
+                int_t choice {menu.showBook(selections, 10, "已被预定书籍详情", book, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -304,7 +305,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已被预定书籍详情", book)};
+                int_t choice {menu.showBook(selections, 10, "已被预定书籍详情", book, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -359,7 +360,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已下架的书籍详情", book)};
+                int_t choice {menu.showBook(selections, 10, "已下架的书籍详情", book, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -393,7 +394,7 @@ namespace BK {
             now_books.remove_if([&user](const std::shared_ptr<Book>& book) {return book->seller_id != user->id;});
             
             std::vector<std::string> selections {
-                "按价格升序", "按价格降序"
+                "按价格升序", "按价格降序", "按下架时间升序", "按下架时间降序"
             };
             Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
@@ -412,6 +413,8 @@ namespace BK {
                     case 0: circle = 0; break;
                     case 1: now_books.sort(CmpBook::Price::up); break;
                     case 2: now_books.sort(CmpBook::Price::down); break;
+                    case 3: now_books.sort(CmpBook::RemovedTime::up); break;
+                    case 4: now_books.sort(CmpBook::RemovedTime::down); break;
                 }
             } while (circle);
         }
@@ -450,7 +453,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showUser(selections, 10, "个人信息", user)};
+                int_t choice {menu.showUser(selections, 10, "个人信息", user, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;

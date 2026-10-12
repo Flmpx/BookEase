@@ -62,6 +62,11 @@ namespace BK {
         outtextxy(l + (w - tw) / 2, t + (h - th) / 2, text.c_str());
     }
 
+    namespace {
+        constexpr int_t NUM_USER_INFO {5};          // 用户基础信息的条数
+        constexpr int_t NUM_BOOK_INFO {9};          // 书籍基础信息的条数
+    }
+
     /**
      * @brief 输出用户信息到窗口(文字上下居中, 左右居左)
      * 
@@ -70,17 +75,29 @@ namespace BK {
      * @param t 上界
      * @param w 宽度
      * @param h 高度
+     * @param reveal_time 是否展示与时间有关的信息
      */
-    auto printUser(const std::shared_ptr<User>& user, int_t l, int_t t, int_t w, int_t h) -> void {
-        int_t info_num {6};
+    auto printUser(const std::shared_ptr<User>& user, int_t l, int_t t, int_t w, int_t h, bool reveal_time) -> void {
+        int_t info_num {NUM_USER_INFO};
+
+        /* 只有展示时间的时候开启 */
+        if (reveal_time) {
+            info_num++;
+        }
+
         int_t th {h / info_num};
-        
-        print("     用户名:", user->name, l, t, w, th);      // 第一个的高度要从t开始
-        print("     用户ID:", user->id, l, t += th, w, th);
-        print("     电话:", user->tel, l, t += th, w, th);
-        print("     QQ:", user->qq, l, t += th, w, th);
-        print("     微信号:", user->wechat, l, t += th, w, th);
-        print("     注册时间:", user->register_time, l, t += th, w, th);
+        int_t cnt {0};
+
+        print("     用户名:", user->name, l, t + th * cnt++, w, th);    
+        print("     用户ID:", user->id, l, t + th * cnt++, w, th);
+        print("     电话:", user->tel, l, t + th * cnt++, w, th);
+        print("     QQ:", user->qq, l, t + th * cnt++, w, th);
+        print("     微信号:", user->wechat, l, t + th * cnt++, w, th);
+
+        /* 只有展示时间的时候开启 */
+        if (reveal_time) {
+            print("     注册时间:", user->register_time, l, t + th * cnt++, w, th);
+        }
     }
 
     /**
@@ -91,20 +108,53 @@ namespace BK {
      * @param t 上界
      * @param w 宽度
      * @param h 高度
+     * @param reveal_time 是否展示与时间有关的信息
      */
-    auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h) -> void {
-        int_t info_num {9};
-        int_t th {h / info_num};
+    auto printBook(const std::shared_ptr<Book>& book, int_t l, int_t t, int_t w, int_t h, bool reveal_time) -> void {
+        int_t info_num {NUM_BOOK_INFO};
 
-        print("     ID:", book->id, l, t, w, th);       // 第一个的高度要从t开始
-        print("     书名:", book->title, l, t += th, w, th);
-        print("     作者:", book->author, l, t += th, w, th);
-        print("     出版社:", book->press, l, t += th, w, th);
-        print("     ISBN:", book->isbn, l, t += th, w, th);
-        print("     价格:", book->price, l, t += th, w, th);
-        print("     书籍完整度:", book->integrity, l, t += th, w, th);
-        print("     书籍类别:", getBookCategoryString(static_cast<BookCategory>(book->category)), l, t += th, w, th);
-        print("     书籍状态:", getBookStatusString(static_cast<BookStatus>(book->status)), l, t += th, w, th);
+        /* 只有展示时间的时候开启 */
+        if (reveal_time) {
+            switch (book->status) {
+                case BookStatus::on_sale: info_num += 1; break;
+                case BookStatus::removed: info_num += 1; break;
+                case BookStatus::reserved: info_num += 2; break;
+                case BookStatus::sold: info_num += 2; break;
+            }
+        }
+
+        int_t th {h / info_num};
+        int_t cnt {0};
+
+        print("     ID:", book->id, l, t + th * cnt++, w, th);     
+        print("     书名:", book->title, l, t + th * cnt++, w, th);
+        print("     作者:", book->author, l, t + th * cnt++, w, th);
+        print("     出版社:", book->press, l, t + th * cnt++, w, th);
+        print("     ISBN:", book->isbn, l, t + th * cnt++, w, th);
+        print("     价格:", book->price, l, t + th * cnt++, w, th);
+        print("     书籍完整度:", book->integrity, l, t + th * cnt++, w, th);
+        print("     书籍类别:", getBookCategoryString(static_cast<BookCategory>(book->category)), l, t + th * cnt++, w, th);
+        print("     书籍状态:", getBookStatusString(static_cast<BookStatus>(book->status)), l, t + th * cnt++, w, th);
+
+        /* 只有展示时间的时候开启 */
+        if (reveal_time) {
+            switch (book->status) {
+                case BookStatus::on_sale:
+                    print("     发布时间: ", book->publish_time, l, t + th * cnt++, w, th);
+                    break;
+                case BookStatus::removed: 
+                    print("     下架时间: ", book->removed_time, l, t + th * cnt++, w, th);
+                    break;
+                case BookStatus::reserved: 
+                    print("     发布时间: ", book->publish_time, l, t + th * cnt++, w, th);
+                    print("     预定时间: ", book->reserve_time, l, t + th * cnt++, w, th);
+                    break;
+                case BookStatus::sold:
+                    print("     发布时间: ", book->publish_time, l, t + th * cnt++, w, th);
+                    print("     购买时间: ", book->buy_time, l, t + th * cnt++, w, th);
+                    break;
+            }
+        }
     }
 
     /**

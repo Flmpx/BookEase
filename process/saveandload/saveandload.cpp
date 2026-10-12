@@ -125,6 +125,7 @@ namespace BK {
             objGet(book->publish_time, obj, "publishtime");
             objGet(book->buy_time, obj, "buytime");
             objGet(book->reserve_time, obj, "reservetime");
+            objGet(book->removed_time, obj, "removedtime");
             objGet(book->status, obj, "status");
             objGet(book->integrity, obj, "integrity");
             objGet(book->category, obj, "category");
@@ -156,6 +157,7 @@ namespace BK {
             objAdd(obj, "publishtime", book->publish_time);
             objAdd(obj, "buytime", book->buy_time);
             objAdd(obj, "reservetime", book->reserve_time);
+            objAdd(obj, "removedtime", book->removed_time);
             objAdd(obj, "status", book->status);
             objAdd(obj, "integrity", book->integrity);
             objAdd(obj, "category", book->category);

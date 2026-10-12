@@ -399,6 +399,7 @@ namespace BK {
         Time publish_time {};                                       // 发布时间
         Time buy_time {};                                           // 购买时间
         Time reserve_time {};                                       // 预定时间
+        Time removed_time {};                                       // 下架时间
         BookStatus status {BookStatus::removed};                    // 书籍状态
         int_t integrity {max_integrity};                            // 书籍完整程度
         BookCategory category {BookCategory::other};                // 书籍类别

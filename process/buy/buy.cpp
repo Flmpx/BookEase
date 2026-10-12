@@ -190,7 +190,7 @@ namespace BK {
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selelctions, 10, "选中书籍的详情", book)};
+                int_t choice {menu.showBook(selelctions, 10, "选中书籍的详情", book, true)};
                 switch (choice) {
                     case 0: circle = 0; break;
                     case 1:
