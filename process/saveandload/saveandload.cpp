@@ -213,7 +213,7 @@ namespace BK {
      * @return 用户链表
      */
     auto loadUsersFromFile(const char* dir) -> std::list<std::shared_ptr<User>> {
-        std::ifstream fin(dir, std::ios::in);
+        std::ifstream fin(dir, std::ios::in | std::ios_base::binary);
         if (!fin.is_open()) {
             MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
             throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
@@ -252,7 +252,7 @@ namespace BK {
      * @param users 用户链表
      */
     auto saveUserToFile(const char* dir, const std::list<std::shared_ptr<User>>& users) -> void {
-        std::ofstream fout(dir, std::ios::out);
+        std::ofstream fout(dir, std::ios::out | std::ios_base::binary);
         if (!fout.is_open()) {
             MessageBox(GetHWnd(), "重要文件bkdata/users.json丢失", "异常", MB_OK | MB_ICONSTOP);
             throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
@@ -304,7 +304,7 @@ namespace BK {
      * @return 书籍链表
      */
     auto loadBooksFromFile(const char* dir) -> std::list<std::shared_ptr<Book>> {
-        std::ifstream fin(dir, std::ios::in);
+        std::ifstream fin(dir, std::ios::in | std::ios_base::binary);
         if (!fin.is_open()) {
             MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
             throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
@@ -343,7 +343,7 @@ namespace BK {
      * @param books 用户链表
      */
     auto saveBooksToFile(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void {
-        std::ofstream fout(dir, std::ios::out);
+        std::ofstream fout(dir, std::ios::out | std::ios_base::binary);
         if (!fout.is_open()) {
             MessageBox(GetHWnd(), "重要文件bkdata/books.json丢失", "异常", MB_OK | MB_ICONSTOP);
             throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
