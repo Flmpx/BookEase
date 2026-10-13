@@ -42,53 +42,57 @@ flowchart TD
 ## 项目目录结构
 
 ```txt
-.
-├── CMakeLists.txt              # CMake构建文件
-├── LICENSE                     # 开源许可证
-├── README.md                   # 本文档
-├── base                        # 基础类, 结构体以及枚举等
+├── CHANGELOG.md                        # 版本记录
+├── CMakeLists.txt                      # CMake构建文件
+├── LICENSE                             # 开源许可证
+├── README.md                           # 本文档
+├── main.cpp                            # 程序入口
+├── base                                # 基础类, 结构体以及枚举等
 │   ├── base.cpp
 │   └── base.hpp
-├── docs           
-│   └── design.md               # 设计文档      
-├── easyx                       # EasyX的相关头文件和静态库
+├── docs
+│   └── design.md                       # 设计文档
+├── easyx                               # EasyX图形库
 │   ├── include
 │   │   ├── easyx.h
 │   │   └── graphics.h
 │   └── lib
 │       ├── libeasyx.a
 │       └── libeasyxw.a
-├── main.cpp                    # 程序入口
-├── menu                        # 菜单
+├── menu                                # 菜单工具
 │   ├── menu.cpp
 │   ├── menu.hpp
-│   └── theme.hpp                                       # 配色和主题
-├── process        
-│   ├── about                   # 关于页 
+│   └── theme.hpp
+├── process
+│   ├── about                           # 关于
 │   │   ├── about.cpp
 │   │   └── about.hpp
-│   ├── buy                     # 购买书籍页
-│   │   ├── buy.cpp     
+│   ├── buy                             # 购买书籍
+│   │   ├── buy.cpp
 │   │   └── buy.hpp
-│   ├── login                   # 登录页
+│   ├── login                           # 注册与登录
 │   │   ├── login.cpp
 │   │   └── login.hpp
-│   ├── mainpage                # 首页
+│   ├── mainpage                        # 主页
 │   │   ├── mainpage.cpp
 │   │   └── mainpage.hpp
-│   ├── my                      # 我的页
+│   ├── my                              # 我的页
 │   │   ├── my.cpp
 │   │   └── my.hpp
-│   ├── post                    # 发布书籍页
-│   │   ├── post.cpp
-│   │   └── post.hpp
-│   └── saveandload             # 文件操作提供的工具
-│       ├── saveandload.cpp
-│       └── saveandload.hpp
-└── tools                       # 工具函数
-    ├── cmps.hpp                                        # 排序使用的比较函数
-    ├── tools.cpp
-    └── tools.hpp
+│   └── post                            # 发布书籍
+│       ├── post.cpp
+│       └── post.hpp
+└── tools                               
+    ├── cmps.hpp                        # 比较函数
+    ├── tools.hpp                       # 工具函数
+    └── src                             # 工具函数的实现文件
+        ├── auth.cpp                 
+        ├── change.cpp
+        ├── draw.cpp
+        ├── file.cpp
+        ├── input.cpp
+        └── print.cpp
+    
 ```
 
 
