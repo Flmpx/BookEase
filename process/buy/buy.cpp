@@ -175,10 +175,27 @@ namespace BK {
             } while (circle);
         }
 
+        auto revealSeller(std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const std::shared_ptr<User>& seller) -> void {
+            int_t circle {1};
+            std::vector<std::string> selections {};
+
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {Menu::showUser("返回", "仅查看", selections, "售卖者信息", seller, Menu::Layout::UserGen)};
+
+                switch (choice) {
+                    case 0: circle = 0; break;
+                }
+
+            } while (circle);
+
+        } 
+
         auto readyToReserve(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             std::vector<std::string> selelctions {
-                "预定"
+                "预定", "查看售卖者信息"
             };
             bool reserved {false};
             do {
@@ -205,6 +222,10 @@ namespace BK {
                             MessageBox(GetHWnd(), "不可以自己预定自己的书哦", "提示", MB_OK | MB_ICONSTOP);
                             circle = 1;
                         }
+                        break;
+                    case 2: 
+                        revealSeller(users, books, book->seller(users));
+                        break;
                 }
             } while (circle);
             

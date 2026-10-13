@@ -21,21 +21,41 @@ namespace BK {
 
     namespace {
 
+        /* 我的 > 我的购买 > 购买的书籍 > 书籍详情 > 售卖者信息 */
+        auto my_buy_sold_detail_seller(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const std::shared_ptr<User>& seller) {
+            int_t circle {1};
+            std::vector<std::string> selections {};
+
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {Menu::showUser("返回", "仅查看", selections, "售卖者信息", seller, Menu::Layout::UserGen)};
+
+                switch (choice) {
+                    case 0: circle = 0; break;
+                }
+
+            } while (circle);
+        }
+
         /* 我的 > 我的购买 > 购买的书籍 > 书籍详情 */
-        auto my_buy_sold_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
+        auto my_buy_sold_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             
             std::vector<std::string> selections {
-
+                "查看售卖者信息"
             };
             bool changed {false};
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {Menu::showBook("返回", "选择操作", selections, "已购书籍详情", book, Menu::Layout::BookGen)};
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "已购书籍详情", book, Menu::Layout::BookGen, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
+                    case 1: 
+                        my_buy_sold_detail_seller(user, users, books, book->seller(users));
+                        break;
                 }
             } while (circle);
 
@@ -43,7 +63,7 @@ namespace BK {
         }
         
         /* 我的 > 我的购买 > 购买的书籍 */
-        auto my_buy_sold(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_buy_sold(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::sold)};
@@ -59,7 +79,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (my_buy_sold_detail(user, books, *book)) {
+                    if (my_buy_sold_detail(user, users, books, *book)) {
                         now_books.erase(book);
                     }
                 }
@@ -74,12 +94,29 @@ namespace BK {
             } while (circle);
         }
 
+        /* 我的 > 我的购买 > 预定的书籍 > 书籍详情 > 售卖者信息 */
+        auto my_buy_reserved_detail_seller(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const std::shared_ptr<User>& seller) {
+            int_t circle {1};
+            std::vector<std::string> selections {};
+
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {Menu::showUser("返回", "仅查看", selections, "售卖者信息", seller, Menu::Layout::UserGen)};
+
+                switch (choice) {
+                    case 0: circle = 0; break;
+                }
+
+            } while (circle);
+        }
+
         /* 我的 > 我的购买 > 预定的书籍 > 书籍详情 */
-        auto my_buy_reserved_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
+        auto my_buy_reserved_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             
             std::vector<std::string> selections {
-                "取消预定"
+                "取消预定", "查看售卖者信息"
             };
             bool changed {false};
             do {
@@ -97,6 +134,10 @@ namespace BK {
                             circle = 0;
                         }
                         break;
+                    case 2:
+                        my_buy_reserved_detail_seller(user, users, books, book->seller(users));
+                        break;
+                        
                 }
             } while (circle);
 
@@ -104,7 +145,7 @@ namespace BK {
         }
 
         /* 我的 > 我的购买 > 预定的书籍 */
-        auto my_buy_reserved(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_buy_reserved(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::reserved)};
@@ -120,7 +161,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (my_buy_reserved_detail(user, books, *book)) {
+                    if (my_buy_reserved_detail(user, users, books, *book)) {
                         now_books.erase(book);
                     }
                 }
@@ -136,7 +177,7 @@ namespace BK {
         }
 
         /* 我的 > 我的购买 */
-        auto my_buy(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_buy(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -149,14 +190,14 @@ namespace BK {
 
                 switch (choice) {
                     case 0: circle = 0; break;
-                    case 1: my_buy_reserved(user, books); break;
-                    case 2: my_buy_sold(user, books); break;
+                    case 1: my_buy_reserved(user, users, books); break;
+                    case 2: my_buy_sold(user, users, books); break;
                 }
             } while (circle);
         }
 
         /* 我的 > 我的发布 > 在售的书籍 > 书籍详情 */
-        auto my_post_onsale_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
+        auto my_post_onsale_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -187,7 +228,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 在售的书籍 */
-        auto my_post_onsale(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_onsale(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::on_sale)};
@@ -203,7 +244,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (my_post_onsale_detail(user, books, *book)) {
+                    if (my_post_onsale_detail(user, users, books, *book)) {
                         now_books.erase(book);
                     }
                 }
@@ -218,12 +259,30 @@ namespace BK {
             } while (circle);
         }
 
+        
+        /* 我的 > 我的发布 > 已被预定的书籍 > 书籍详情 > 预定者信息 */
+        auto my_post_reserved_detail_reserver(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const std::shared_ptr<User>& reserver) {
+            int_t circle {1};
+            std::vector<std::string> selections {};
+
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {Menu::showUser("返回", "仅查看", selections, "预定者信息", reserver, Menu::Layout::UserGen)};
+
+                switch (choice) {
+                    case 0: circle = 0; break;
+                }
+
+            } while (circle);
+        }
+
         /* 我的 > 我的发布 > 已被预定的书籍 > 书籍详情 */
-        auto my_post_reserved_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
+        auto my_post_reserved_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             
             std::vector<std::string> selections {
-                "转为已售"
+                "转为已售", "查看预定者信息"
             };
             bool changed {false};
             do {
@@ -244,6 +303,9 @@ namespace BK {
                             circle = 0;
                         }
                         break;
+                    case 2:
+                        my_post_reserved_detail_reserver(user, users, books, book->reserver(users));
+                        break;
                 }
             } while (circle);
 
@@ -251,7 +313,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已被预定的书籍 */
-        auto my_post_reserved(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_reserved(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::reserved)};
@@ -267,7 +329,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (my_post_reserved_detail(user, books, *book)) {
+                    if (my_post_reserved_detail(user, users, books, *book)) {
                         now_books.erase(book);
                     }
                 }
@@ -282,12 +344,29 @@ namespace BK {
             } while (circle);
         }
 
+        /* 我的 > 我的发布 > 已售的书籍 > 书籍详情 > 购买者信息 */
+        auto my_post_sold_detail_buyer(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const std::shared_ptr<User>& buyer) {
+            int_t circle {1};
+            std::vector<std::string> selections {};
+
+            do {
+                circle = 1;
+                cleardevice();
+                int_t choice {Menu::showUser("返回", "仅查看", selections, "购买者信息", buyer, Menu::Layout::UserGen)};
+
+                switch (choice) {
+                    case 0: circle = 0; break;
+                }
+
+            } while (circle);
+        }
+
         /* 我的 > 我的发布 > 已售的书籍 > 书籍详情 */
-        auto my_post_sold_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
+        auto my_post_sold_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             
             std::vector<std::string> selections {
-                
+                "查看购买者信息"
             };
             bool changed {false};
             do {
@@ -297,6 +376,9 @@ namespace BK {
 
                 switch (choice) {
                     case 0: circle = 0; break;
+                    case 1: 
+                        my_post_sold_detail_buyer(user, users, books, book->buyer(users));
+                        break;
                 }
             } while (circle);
 
@@ -304,7 +386,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已售的书籍 */
-        auto my_post_sold(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_sold(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::sold)};
@@ -320,7 +402,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (my_post_sold_detail(user, books, *book)) {
+                    if (my_post_sold_detail(user, users, books, *book)) {
                         now_books.erase(book);
                     }
                 }
@@ -336,7 +418,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已下架的书籍 > 书籍详情 */
-        auto my_post_removed_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
+        auto my_post_removed_detail(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -373,7 +455,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已下架的书籍 */
-        auto my_post_removed(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_removed(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::removed)};
@@ -389,7 +471,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (my_post_removed_detail(user, books, *book)) {
+                    if (my_post_removed_detail(user, users, books, *book)) {
                         now_books.erase(book);
                     }
                 }
@@ -405,7 +487,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 */
-        auto my_post(std::shared_ptr<User>& user, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -418,16 +500,16 @@ namespace BK {
 
                 switch (choice) {
                     case 0: circle = 0; break;
-                    case 1: my_post_onsale(user, books); break;
-                    case 2: my_post_reserved(user, books); break;
-                    case 3: my_post_sold(user, books); break;
-                    case 4: my_post_removed(user, books); break;
+                    case 1: my_post_onsale(user, users, books); break;
+                    case 2: my_post_reserved(user, users, books); break;
+                    case 3: my_post_sold(user, users, books); break;
+                    case 4: my_post_removed(user, users, books); break;
                 }
             } while (circle);
         }
 
         /* 我的 > 我的信息 */
-        auto my_info(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users) {
+        auto my_info(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -472,9 +554,9 @@ namespace BK {
 
             switch (choice) {
                 case 0: circle = 0; break;
-                case 1: my_info(user, users); break;
-                case 2: my_post(user, books); break;
-                case 3: my_buy(user, books); break;
+                case 1: my_info(user, users, books); break;
+                case 2: my_post(user, users, books); break;
+                case 3: my_buy(user, users, books); break;
             }
         } while (circle);
         
