@@ -362,7 +362,7 @@ namespace BK {
                         }
                         break;
                     case 2:
-                        if (change(book)) {
+                        if (Tools::Change::book(book)) {
                             saveBooksToFile(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
                         }
@@ -442,13 +442,13 @@ namespace BK {
                 switch (choice) {
                     case 0: circle = 0; break;
                     case 1: 
-                        if (change(user)) {
+                        if (Tools::Change::user(user)) {
                             saveUserToFile(USERS_FILE_DIR, users);
                             MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
                         }
                         break;
                     case 2:
-                        if (change(user->key)) {
+                        if (Tools::Change::key(user->key)) {
                             saveUserToFile(USERS_FILE_DIR, users);
                             MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK | MB_ICONINFORMATION);
                         }

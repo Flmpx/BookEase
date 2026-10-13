@@ -16,6 +16,24 @@ namespace BK {
     namespace Menu {
 
         /**
+         * @brief 检测当前鼠标位置是否在块内
+         * 
+         * @param msg 消息
+         * @param l 块左界
+         * @param t 块右界
+         * @param w 块宽度
+         * @param h 块高度
+         */
+        auto isInBlock(const ExMessage& msg, int_t l, int_t t, int_t w, int_t h) -> bool {
+            if (msg.x > l && msg.x < l + w && msg.y > t && msg.y < t + h) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+
+        /**
          * @brief 输出普通菜单内容
          * 
          * @param back 返回块内容
@@ -76,13 +94,13 @@ namespace BK {
                     if (click_flags[0]) Theme::BackBlock::click();
 
                     l = 0, t = 0, w = back_w, h = back_h;
-                    getRoundRectleBlock(back, l, t, w, h);
+                    Tools::Draw::roundRectleBlock(back, l, t, w, h);
 
                     /* 绘制引导信息 */
                     Theme::InstruBlock::start();
 
                     l = 0, t = instru_start_h, w = select_w, h = instru_h;
-                    getRectangleBlock(instru, l, t, w, h);
+                    Tools::Draw::rectangleBlock(instru, l, t, w, h);
 
                     /* 绘制选项 */
                     for (int i = 0; i < selections.size(); i++) {
@@ -91,7 +109,7 @@ namespace BK {
                         if (click_flags[i + 1]) Theme::SelectBlock::click();
 
                         l = 0, t = select_start_h + select_h * i, w = select_w, h = select_h;
-                        getRectangleBlock(selections[i], l, t, w, h);
+                        Tools::Draw::rectangleBlock(selections[i], l, t, w, h);
                     }
                 }
                 EndBatchDraw();
@@ -130,14 +148,14 @@ namespace BK {
             Theme::TipBlock::start();
 
             l = select_w + grap_select_book; t = 0; w = screen_w - l; h = back_h + grap_back_instru;
-            getRoundRectleBlock(book_tip, l, t, w, h);
+            Tools::Draw::roundRectleBlock(book_tip, l, t, w, h);
 
             /* 绘制书籍详细信息块 */
             Theme::NormalBlock::start();
 
             l = select_w + grap_select_book; t = back_h + grap_back_instru; w = screen_w - l; h = screen_h - t;
-            getRoundRectleBlock("", l, t, w, h);
-            printBook(book, l, t, w, h, reveal_time);
+            Tools::Draw::roundRectleBlock("", l, t, w, h);
+            Tools::Print::book(book, l, t, w, h, reveal_time);
 
             return showNormal(back, instru, selections, normal);
         }
@@ -167,14 +185,14 @@ namespace BK {
             Theme::TipBlock::start();
 
             l = select_w + grap_select_user; t = 0; w = screen_w - l; h = back_h + grap_back_instru;
-            getRoundRectleBlock(user_tip, l, t, w, h);
+            Tools::Draw::roundRectleBlock(user_tip, l, t, w, h);
 
             /* 绘制用户详细信息块 */
             Theme::NormalBlock::start();
 
             l = select_w + grap_select_user; t = back_h + grap_back_instru; w = screen_w - l; h = screen_h - t;
-            getRoundRectleBlock("", l, t, w, h);
-            printUser(user, l, t, w, h, reveal_time);
+            Tools::Draw::roundRectleBlock("", l, t, w, h);
+            Tools::Print::user(user, l, t, w, h, reveal_time);
 
             return showNormal(back, instru, selections, normal);
         }
@@ -204,14 +222,14 @@ namespace BK {
             Theme::TipBlock::start();
 
             l = select_w + grap_select_statistics; t = 0; w = screen_w - l; h = back_h + grap_back_instru;
-            getRoundRectleBlock(statistics_tip, l, t, w, h);
+            Tools::Draw::roundRectleBlock(statistics_tip, l, t, w, h);
 
             /* 绘制统计信息块 */
             Theme::NormalBlock::start();
 
             l = select_w + grap_select_statistics; t = back_h + grap_back_instru; w = screen_w - l; h = screen_h - t;
-            getRoundRectleBlock("", l, t, w, h);
-            printStatistics(books, users, l, t, w, h);
+            Tools::Draw::roundRectleBlock("", l, t, w, h);
+            Tools::Print::statistics(books, users, l, t, w, h);
 
             return showNormal(back, instru, selections, normal);
         }
@@ -331,13 +349,13 @@ namespace BK {
                     if (click_flags_select[0]) Theme::BackBlock::click();
 
                     l = 0, t = 0, w = back_w, h = back_h;
-                    getRoundRectleBlock(back, l, t, w, h);
+                    Tools::Draw::roundRectleBlock(back, l, t, w, h);
 
                     /* 绘制引导信息 */
                     Theme::InstruBlock::start();
 
                     l = 0, t = instru_start_h, w = select_w, h = instru_h;
-                    getRectangleBlock(instru, l, t, w, h);
+                    Tools::Draw::rectangleBlock(instru, l, t, w, h);
 
                     /* 绘制选项 */
                     for (int i = 0; i < selections.size(); i++) {
@@ -346,7 +364,7 @@ namespace BK {
                         if (click_flags_select[i + 1]) Theme::SelectBlock::click();
 
                         l = 0, t = select_start_h + select_h * i, w = select_w, h = select_h;
-                        getRectangleBlock(selections[i], l, t, w, h);
+                        Tools::Draw::rectangleBlock(selections[i], l, t, w, h);
                     }
 
                     /* 绘制方向键 */
@@ -357,7 +375,7 @@ namespace BK {
                         if (click_flags_dir[0]) Theme::DictionBlock::click();
 
                         l = 0; t = screen_h - diction_h; w =diction_w; h = diction_h;
-                        getRectangleBlock("<<<", l, t, w, h);
+                        Tools::Draw::rectangleBlock("<<<", l, t, w, h);
                         
                         /* >>> */
                         Theme::DictionBlock::start();
@@ -365,14 +383,14 @@ namespace BK {
                         if (click_flags_dir[1]) Theme::DictionBlock::click();
 
                         l = select_w - diction_w; t = screen_h - diction_h; w = diction_w; h = diction_h;
-                        getRectangleBlock(">>>", l, t, w, h);
+                        Tools::Draw::rectangleBlock(">>>", l, t, w, h);
                     }
 
                     /* 绘制书籍提示信息 */
                     Theme::TipBlock::start();
 
                     l = books_start_w; t = 0; w = screen_w - l; h = books_start_h;
-                    getRoundRectleBlock(books_tip, l, t, w, h);
+                    Tools::Draw::roundRectleBlock(books_tip, l, t, w, h);
 
                     /* 绘制书籍信息 */
                     auto book_tmp {book_now};
@@ -384,8 +402,8 @@ namespace BK {
                         l = books_start_w + (i % col) * book_w;
                         t = books_start_h + (i / col) * book_h;
                         w = book_w; h = book_h;
-                        getRoundRectleBlock("", l, t, w, h);
-                        printBook(*book_tmp, l, t, w, h);
+                        Tools::Draw::roundRectleBlock("", l, t, w, h);
+                        Tools::Print::book(*book_tmp, l, t, w, h);
                     }
                 }
                 EndBatchDraw();
@@ -437,7 +455,7 @@ namespace BK {
          * 
          */
         auto Select::draw() const -> void {
-            getRoundRectleBlock(tip, l, t, w, h);
+            Tools::Draw::roundRectleBlock(tip, l, t, w, h);
         }
     
         /**

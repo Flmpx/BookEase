@@ -39,7 +39,7 @@ namespace BK {
                         break;
                     case 2:
                         cmp_codition.unsetUnlimit(BookCmpCondition::Unlimit::category);
-                        change(c);
+                        Tools::Change::bookCategory(c);
                         break;
                 }
 
@@ -68,7 +68,7 @@ namespace BK {
                         break;
                     case 2:
                         cmp_codition.unsetUnlimit(u);
-                        input(str, "输入" + selection, "输入", r);
+                        Tools::Input::element(str, "输入" + selection, "输入", r);
                         break;
                 }
 
@@ -97,7 +97,7 @@ namespace BK {
                         break;
                     case 2:
                         cmp_codition.unsetUnlimit(u);
-                        input(i, "输入" + selection, "输入", r);
+                        Tools::Input::element(i, "输入" + selection, "输入", r);
                         break;
                 }
 
@@ -139,7 +139,7 @@ namespace BK {
                         tmp_t = up_t;
                         do {
                             circle_in = 1;
-                            if (input(tmp_t, "输入" + selection + "上限", "输入", r)) {
+                            if (Tools::Input::element(tmp_t, "输入" + selection + "上限", "输入", r)) {
                                 if (!cmp_codition.isUmlimit(down_u) && !Range<T>(down_t, r.max()).contain(tmp_t)) {
                                     MessageBox(GetHWnd(), "上限不能小于下限", "提示", MB_OK | MB_ICONWARNING);
                                     circle_in = 1;
@@ -157,7 +157,7 @@ namespace BK {
                         tmp_t = down_t;
                         do {
                             circle_in = 1;
-                            if (input(tmp_t, "输入" + selection + "下限", "输入", r)) {
+                            if (Tools::Input::element(tmp_t, "输入" + selection + "下限", "输入", r)) {
                                 if (!cmp_codition.isUmlimit(up_u) && !Range<T>(r.min(), up_t).contain(tmp_t)) {
                                     MessageBox(GetHWnd(), "下限不能大于下限", "提示", MB_OK | MB_ICONWARNING);
                                     circle_in = 1;

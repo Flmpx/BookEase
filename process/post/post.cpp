@@ -42,7 +42,7 @@ namespace BK {
                     circle = 0;
                     break;
                 case 2:
-                    if (change(tmp_book)) {
+                    if (Tools::Change::book(tmp_book)) {
                         MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
                     }
                     break;

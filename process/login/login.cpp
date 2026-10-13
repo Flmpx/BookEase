@@ -28,7 +28,7 @@ namespace BK {
             std::shared_ptr<User> user {nullptr};
             do {
                 circle = 1;
-                if (input(password, "请输入密码", "输入用户信息", Range<uint_t>(8, 16))) {
+                if (Tools::Input::element(password, "请输入密码", "输入用户信息", Range<uint_t>(8, 16))) {
                     user.reset(new User(password));
                     user->id = id;
                     user->register_time.set(std::time(nullptr));
@@ -55,11 +55,11 @@ namespace BK {
         std::shared_ptr<User> user {nullptr};
         do {
             circle = 1;
-            if (input(id, "请输入ID", "请输入用户信息", Range<int_t>(0))) {   // 输入学号
+            if (Tools::Input::element(id, "请输入ID", "请输入用户信息", Range<int_t>(0))) {   // 输入学号
                 user = find(users, id);
                 if (user != nullptr) {
                     std::string password {};
-                    if (authenKey(user->key)) {
+                    if (Tools::Authen::key(user->key)) {
                         circle = 0;
                     } else {
                         circle = 1;
@@ -90,7 +90,7 @@ namespace BK {
         std::shared_ptr<User> user {nullptr};
         do {
             circle = 1;
-            if (input(id, "请输入学号", "输入用户信息", Range<int_t>(0))) {
+            if (Tools::Input::element(id, "请输入学号", "输入用户信息", Range<int_t>(0))) {
                 user = find(users, id);
                 if (user == nullptr) {
                     user = createUser(id);

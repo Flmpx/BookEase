@@ -16,6 +16,9 @@ namespace BK {
 
 
     namespace Menu {
+
+        auto isInBlock(const ExMessage& msg, int_t l, int_t t, int_t w, int_t h) -> bool;
+
         /* ²¼¾Ö */
         namespace Layout {
 
