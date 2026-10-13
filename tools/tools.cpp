@@ -394,11 +394,10 @@ namespace BK {
      */
     auto change(BookCategory& category) -> void {
         cleardevice();
-        Menu menu(80, 30, "返回", 30, 20, "选择书籍类别", 200, 90);
         std::vector<std::string> selections {
             "教材", "小说", "学术类", "考试类", "其他"
         };
-        int_t choice {menu.showNormal(selections)};
+        int_t choice {Menu::showNormal("返回", "选择书籍类别", selections, Menu::Layout::NormalGen)};
         switch (choice) {
             case 1: category = BookCategory::textbook; break;
             case 2: category = BookCategory::fiction;  break;
@@ -438,7 +437,6 @@ namespace BK {
         auto tmp_user {std::make_shared<User>(*user)};
         bool changed {false};
 
-        Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 90);
         std::vector<std::string> selections {
             "保存修改", "修改用户名", "修改电话", "修改QQ号", "修改微信号"
         };
@@ -447,7 +445,7 @@ namespace BK {
         do {
             circle = 1;
             cleardevice();
-            int_t choice {menu.showUser(selections, 10, "正在被修改的用户信息详情", tmp_user)};
+            int_t choice {Menu::showUser("不保存退出", "选择修改的信息", selections, "正在被修改的用户信息详情", user, Menu::Layout::UserGen)};
 
             switch (choice) {
                 case 0: 
@@ -491,7 +489,6 @@ namespace BK {
         auto tmp_book {std::make_shared<Book>(*book)};
         bool changed {false};
 
-        Menu menu(80, 30, "不保存退出", 30, 20, "选择修改的信息", 200, 70);
         std::vector<std::string> selections {
             "保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍类别", "书籍完整度", "书籍价格"
         };
@@ -500,7 +497,10 @@ namespace BK {
         do {
             circle = 1;
             cleardevice();
-            int_t choice {menu.showBook(selections, 10, "正在被修改的书籍详情", tmp_book)};
+
+            Menu::Layout::Book special(Menu::Layout::BookGen);
+            special.normal.select_h = 70;               // 由于选项过多必须修改高度
+            int_t choice {Menu::showBook("不保存退出", "选择修改的信息", selections, "正在被修改的书籍详情", tmp_book, special)};
 
             switch (choice) {
                 case 0: 

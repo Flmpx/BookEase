@@ -30,11 +30,10 @@ namespace BK {
 
             };
             bool changed {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已购书籍详情", book, true)};
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "已购书籍详情", book, Menu::Layout::BookGen)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -54,10 +53,9 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按购买时间升序", "按购买时间降序"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "已购买的书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "已购买的书籍", now_books, Menu::Layout::BooksGen)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
@@ -85,12 +83,10 @@ namespace BK {
                 "取消预定"
             };
             bool changed {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已预定的书籍详情", book, true)};
-
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "已预定的书籍详情", book, Menu::Layout::BookGen, true)};
                 switch (choice) {
                     case 0: circle = 0; break;
                     case 1:
@@ -118,10 +114,9 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按预定时间升序", "按预定时间降序"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "已预定的书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "已预定的书籍", now_books, Menu::Layout::BooksGen)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
@@ -148,11 +143,10 @@ namespace BK {
             std::vector<std::string> selections {
                 "已预定", "已购买"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择要查看的内容", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showNormal(selections)};
+                int_t choice {Menu::showNormal("返回", "选择要查看的内容", selections, Menu::Layout::NormalGen)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -170,11 +164,10 @@ namespace BK {
                 "下架书籍"
             };
             bool changed {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "在售书籍详情", book, true)};
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "在售书籍详情", book, Menu::Layout::BookGen, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -204,10 +197,9 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按发布时间升序", "按发布时间降序"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "在售的书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "在售的书籍", now_books, Menu::Layout::BooksGen)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
@@ -235,11 +227,10 @@ namespace BK {
                 "转为已售"
             };
             bool changed {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已被预定书籍详情", book, true)};
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "已被预定书籍详情", book, Menu::Layout::BookGen, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -270,10 +261,9 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按预定时间升序", "按预定时间降序"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "已被预定的书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "已被预定的书籍", now_books, Menu::Layout::BooksGen)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
@@ -301,11 +291,10 @@ namespace BK {
                 
             };
             bool changed {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已被预定书籍详情", book, true)};
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "已被预定书籍详情", book, Menu::Layout::BookGen, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -325,10 +314,9 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按已购时间升序", "按已购时间降序"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "已被购买的书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "已被购买的书籍", now_books, Menu::Layout::BooksGen)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
@@ -356,11 +344,10 @@ namespace BK {
                 "重新上架", "修改书籍信息"
             };
             bool changed {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selections, 10, "已下架的书籍详情", book, true)};
+                int_t choice {Menu::showBook("返回", "选择操作", selections, "已下架的书籍详情", book, Menu::Layout::BookGen, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -396,10 +383,9 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按下架时间升序", "按下架时间降序"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "已下架的书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "已下架的书籍", now_books, Menu::Layout::BooksGen)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
@@ -426,11 +412,10 @@ namespace BK {
             std::vector<std::string> selections {
                 "在售卖", "已被预定", "已被购买", "已下架"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择要查看的内容", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showNormal(selections)};
+                int_t choice {Menu::showNormal("返回", "选择要查看的内容", selections, Menu::Layout::NormalGen)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -449,11 +434,10 @@ namespace BK {
             std::vector<std::string> selections {
                 "修改基本信息", "修改密码"
             };
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showUser(selections, 10, "个人信息", user, true)};
+                int_t choice {Menu::showUser("返回", "选择操作", selections, "个人信息", user, Menu::Layout::UserGen, true)};
 
                 switch (choice) {
                     case 0: circle = 0; break;
@@ -482,11 +466,10 @@ namespace BK {
         std::vector<std::string> selelctions {
             "我的信息", "我的发布", "我的购买"
         };
-        Menu menu(80, 30, "返回", 30, 20, "选择要查看的内容", 200, 90);
         do {
             circle = 1;
             cleardevice();
-            int_t choice {menu.showNormal(selelctions)};
+            int_t choice {Menu::showNormal("返回", "选择要查看的内容", selelctions, Menu::Layout::NormalGen)};
 
             switch (choice) {
                 case 0: circle = 0; break;

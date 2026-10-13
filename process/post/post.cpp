@@ -16,8 +16,7 @@ namespace BK {
         tmp_book->id = Book::book_num + 1;
 
 
-        Menu menu(80, 30, "取消发布", 30, 20, "选择操作", 200, 90);
-        std::vector<std::string> selelctions {
+        std::vector<std::string> selections {
             "确认发布", "进行修改"
         };
 
@@ -25,7 +24,7 @@ namespace BK {
         do {
             circle = 1;
             cleardevice();
-            int_t choice {menu.showBook(selelctions, 10, "当前待发布书籍详情", tmp_book)};
+            int_t choice {Menu::showBook("取消发布", "选择操作", selections, "当前待发布书籍详情", tmp_book, Menu::Layout::BookGen)};
 
             switch (choice) {
                 case 0: 

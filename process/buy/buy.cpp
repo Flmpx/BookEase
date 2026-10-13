@@ -19,7 +19,6 @@ namespace BK {
     namespace {
         void select(BookCategory& c, BookCmpCondition& cmp_codition) {
             int circle {1};
-            Menu menu(80, 30, "保存并退出", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
@@ -29,7 +28,7 @@ namespace BK {
                 if (!cmp_codition.isUmlimit(BookCmpCondition::Unlimit::category)) {
                     selections[1] += (": " + getBookCategoryString(c));
                 }
-                int_t choice {menu.showNormal(selections)};
+                int_t choice {Menu::showNormal("保存并退出", "选择操作", selections, Menu::Layout::NormalGen)};
 
                 switch (choice) {
                     case 0: 
@@ -49,7 +48,6 @@ namespace BK {
 
         auto select(std::string& str,  const std::string& selection, BookCmpCondition& cmp_codition, BookCmpCondition::Unlimit u, Range<BK::uint_t> r = Range<BK::uint_t>()) -> void {
             int circle {1};
-            Menu menu(80, 30, "保存并退出", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
@@ -59,7 +57,7 @@ namespace BK {
                 if (!cmp_codition.isUmlimit(u)) {
                     selections[1] += (": " + str);
                 }
-                int_t choice {menu.showNormal(selections)};
+                int_t choice {Menu::showNormal("保存并退出", "选择操作", selections, Menu::Layout::NormalGen)};
 
                 switch (choice) {
                     case 0: 
@@ -79,7 +77,6 @@ namespace BK {
 
         auto select(int_t& i, const std::string& selection, BookCmpCondition& cmp_codition, BookCmpCondition::Unlimit u, Range<BK::int_t> r = Range<BK::int_t>()) -> void {
             int circle {1};
-            Menu menu(80, 30, "保存并退出", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
@@ -89,7 +86,7 @@ namespace BK {
                 if (!cmp_codition.isUmlimit(u)) {
                     selections[1] += (": " + std::to_string(i));
                 }
-                int_t choice {menu.showNormal(selections)};
+                int_t choice {Menu::showNormal("保存并退出", "选择操作", selections, Menu::Layout::NormalGen)};
 
                 switch (choice) {
                     case 0: 
@@ -111,7 +108,6 @@ namespace BK {
         auto selectRange(T& down_t, T& up_t, const std::string selection, BookCmpCondition& cmp_codition, BookCmpCondition::Unlimit down_u, BookCmpCondition::Unlimit up_u, Range<T> r = Range<T>()) -> void {
             int circle {1};
             int circle_in {1};
-            Menu menu(80, 30, "保存并退出", 30, 20, "选择操作", 250, 90);
             do {
                 circle = 1;
                 cleardevice();
@@ -128,7 +124,7 @@ namespace BK {
                 } else {
                     selections[2] += (": " + std::to_string(down_t));
                 }
-                int_t choice {menu.showNormal(selections)};
+                int_t choice {Menu::showNormal("保存并退出", "选择操作", selections, Menu::Layout::NormalGen)};
                 T tmp_t;
 
                 switch (choice) {
@@ -186,11 +182,10 @@ namespace BK {
                 "预定"
             };
             bool reserved {false};
-            Menu menu(80, 30, "返回", 30, 20, "选择操作", 200, 90);
             do {
                 circle = 1;
                 cleardevice();
-                int_t choice {menu.showBook(selelctions, 10, "选中书籍的详情", book, true)};
+                int_t choice {Menu::showBook("返回", "选择操作", selelctions, "选中书籍的详情", book, Menu::Layout::BookGen, true)};
                 switch (choice) {
                     case 0: circle = 0; break;
                     case 1:
@@ -225,14 +220,14 @@ namespace BK {
                 }
             }
 
-            Menu menu(80, 30, "返回", 30, 20, "选择排序方式", 200, 90);
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按发布时间升序", "按发布时间降序"
             };
             int_t circle {1};
             do {
                 circle = 1;
-                int_t choice {menu.showBooks(selections, 40, 40, 10, "当前检索到的所有书籍", 3, 2, now_books)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "当前检索到的所有书籍", now_books, Menu::Layout::BooksGen)};
+
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
@@ -263,7 +258,6 @@ namespace BK {
 
         int_t circle {1};
         char buf[256] {""};
-        Menu menu(80, 30, "退出检索", 30, 20, "修改筛选条件", 450, 50);
         do {
             circle = 1;
             cleardevice();
@@ -329,7 +323,11 @@ namespace BK {
                 selections[10] += ", +∞]";
             }
 
-            int_t choice {menu.showNormal(selections)};
+            Menu::Layout::Normal special(Menu::Layout::NormalGen);
+            special.select_h = 50;                          // 由于选项过多必须修改高度
+            special.select_w = 450;                         // 由于内容过多必须修改宽度
+            int_t choice {Menu::showNormal("退出检索", "修改筛选条件", selections, special)};
+
             switch (choice) {
                 case 0:
                     if (MessageBox(GetHWnd(), "退出检索将会丢失所写条件, 确认退出吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {

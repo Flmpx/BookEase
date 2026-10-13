@@ -16,7 +16,6 @@ namespace BK {
 
     auto mainpage(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         int circle {1};
-        Menu menu(80, 30, "退出登录", 30, 20, "选中操作", 200, 90);
         std::vector<std::string> selections {
             "买书", "卖书", "我的", "关于"
         };
@@ -24,7 +23,7 @@ namespace BK {
         do {
             circle = 1;
             cleardevice();
-            int_t choice {menu.showNormal(selections)};
+            int_t choice {Menu::showNormal("退出登录", "选中操作", selections, Menu::Layout::NormalGen)};
             switch (choice) {
                 case 0: 
                     if (MessageBox(GetHWnd(), "确认退出吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {

@@ -29,7 +29,7 @@ auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     /* 登录 注册 进入主界面 */
     BK::int_t block_w {200}, block_h {90};
     BK::int_t screen_w {getwidth()}, screen_h {getheight()};
-    std::vector<BK::Selection> selections {
+    std::vector<BK::Menu::Select> selections {
         {screen_w / 4 - block_w / 2, screen_h / 3 * 2 - block_h / 2, block_w, block_h, "注册"},
         {screen_w / 2 + (screen_w / 4 - block_w / 2), screen_h / 3 * 2 - block_h / 2, block_w, block_h, "登录"}
     };
@@ -38,7 +38,7 @@ auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     do {
         circle = 1;
         cleardevice();
-        BK::int_t choice {BK::showSelections(selections)};
+        BK::int_t choice {BK::Menu::showSelects(selections)};
         switch (choice) {
             case 0: user = BK::regis(users); break;
             case 1: user = BK::login(users); break;
