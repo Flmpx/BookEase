@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <easyx.h>
+#include "tools/tools.hpp"
 #include "menu/menu.hpp"
-#include "process/saveandload/saveandload.hpp"
 #include "process/login/login.hpp"
 #include "process/mainpage/mainpage.hpp"
 
@@ -21,8 +21,8 @@ auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	settextcolor(BLACK);
     
     /* ‘ÿ»Î */
-    std::list<std::shared_ptr<BK::User>> users {BK::loadUsersFromFile(BK::USERS_FILE_DIR)};
-    std::list<std::shared_ptr<BK::Book>> books {BK::loadBooksFromFile(BK::BOOKS_FILE_DIR)};
+    std::list<std::shared_ptr<BK::User>> users {BK::Tools::File::loadUsers(BK::USERS_FILE_DIR)};
+    std::list<std::shared_ptr<BK::Book>> books {BK::Tools::File::loadBooks(BK::BOOKS_FILE_DIR)};
     std::shared_ptr<BK::User> user {nullptr};
 
 

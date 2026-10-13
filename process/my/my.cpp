@@ -8,7 +8,6 @@
 #include <string>
 #include "../../menu/menu.hpp"
 #include "../../tools/tools.hpp"
-#include "../saveandload/saveandload.hpp"
 #include "../../tools/cmps.hpp"
 
 namespace BK {
@@ -92,7 +91,7 @@ namespace BK {
                     case 1:
                         if (MessageBox(GetHWnd(), "确定要取消预定", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
                             book->status = BookStatus::on_sale;
-                            saveBooksToFile(BOOKS_FILE_DIR, books);
+                            Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "已取消预定", "提示", MB_OK | MB_ICONINFORMATION);
                             changed = true;
                             circle = 0;
@@ -175,7 +174,7 @@ namespace BK {
                         if (MessageBox(GetHWnd(), "确定要下架书籍吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
                             book->status = BookStatus::removed;
                             book->removed_time.set(std::time(nullptr));
-                            saveBooksToFile(BOOKS_FILE_DIR, books);
+                            Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "已下架书籍\n可以在下架页找到当前书籍", "提示", MB_OK | MB_ICONINFORMATION);
                             changed = true;
                             circle = 0;
@@ -239,7 +238,7 @@ namespace BK {
                             book->status = BookStatus::sold;
                             book->buyer_id = book->reserver_id;
                             book->buy_time.set(std::time(nullptr));
-                            saveBooksToFile(BOOKS_FILE_DIR, books);
+                            Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "书籍已找到新的落脚点", "提示", MB_OK | MB_ICONINFORMATION);
                             changed = true;
                             circle = 0;
@@ -355,7 +354,7 @@ namespace BK {
                         if (MessageBox(GetHWnd(), "确定要要重新上架吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
                             book->status = BookStatus::on_sale;
                             book->publish_time.set(std::time(nullptr));
-                            saveBooksToFile(BOOKS_FILE_DIR, books);
+                            Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "重新上架成功", "提示", MB_OK | MB_ICONINFORMATION);
                             changed = true;
                             circle = 0;
@@ -363,7 +362,7 @@ namespace BK {
                         break;
                     case 2:
                         if (Tools::Change::book(book)) {
-                            saveBooksToFile(BOOKS_FILE_DIR, books);
+                            Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                             MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
                         }
                         break;
@@ -443,13 +442,13 @@ namespace BK {
                     case 0: circle = 0; break;
                     case 1: 
                         if (Tools::Change::user(user)) {
-                            saveUserToFile(USERS_FILE_DIR, users);
+                            Tools::File::saveUsers(USERS_FILE_DIR, users);
                             MessageBox(GetHWnd(), "修改保存成功", "提示", MB_OK | MB_ICONINFORMATION);
                         }
                         break;
                     case 2:
                         if (Tools::Change::key(user->key)) {
-                            saveUserToFile(USERS_FILE_DIR, users);
+                            Tools::File::saveUsers(USERS_FILE_DIR, users);
                             MessageBox(GetHWnd(), "密码修改成功", "提示", MB_OK | MB_ICONINFORMATION);
                         }
                         break;

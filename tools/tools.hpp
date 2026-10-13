@@ -7,8 +7,7 @@
 #define BK_TOOLS_HPP_
 
 #include "../base/base.hpp"
-#include <easyx.h>
-#include <sstream>
+#include <fstream>
 
 namespace BK {
 
@@ -47,6 +46,21 @@ namespace BK {
         /* 验证信息 */
         namespace Authen {
             auto key(const Key& user) -> bool;
+        }
+
+        /* 文件读写 */
+        namespace File {
+            auto loadUsers(std::ifstream& fin) -> std::list<std::shared_ptr<User>>;
+            auto loadUsers(const char* dir) -> std::list<std::shared_ptr<User>>;
+            
+            auto saveUsers(std::ofstream& fout, const std::list<std::shared_ptr<User>>& users) -> void;
+            auto saveUsers(const char* dir, const std::list<std::shared_ptr<User>>& users) -> void;
+
+            auto loadBooks(std::ifstream& fin) -> std::list<std::shared_ptr<Book>>;
+            auto loadBooks(const char* dir) -> std::list<std::shared_ptr<Book>>;
+
+            auto saveBooks(std::ofstream& fout, const std::list<std::shared_ptr<Book>>& books) -> void;
+            auto saveBooks(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void;
         }
 
     }

@@ -31,9 +31,8 @@ FetchContent_MakeAvailable(flJson)
 set(MAIN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)      # 主程序入口
 set(BASE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/base/base.cpp) # 基础类
 set(MENU_SRC ${CMAKE_CURRENT_SOURCE_DIR}/menu/menu.cpp) # 菜单
-set(TOOLS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tools/tools.cpp)  # 工具函数集合
+file(GLOB TOOLS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/tools/src/*.cpp)    # 工具函数集合
 
-set(PROCESS_SAVELOAD_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/saveandload/saveandload.cpp)  # 文件持久化
 set(PROCESS_LOGIN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/login/login.cpp)      # 登录与注册
 set(PROCESS_MAINPAGE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/mainpage/mainpage.cpp)  # 主界面
 set(PROCESS_BUY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/buy/buy.cpp)        # 购买书籍

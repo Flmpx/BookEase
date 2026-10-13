@@ -7,7 +7,6 @@
 #include "../../tools/tools.hpp"
 #include <easyx.h>
 #include <ctime>
-#include "../saveandload/saveandload.hpp"
 
 namespace BK {
 
@@ -96,7 +95,7 @@ namespace BK {
                     user = createUser(id);
                     if (user != nullptr) {
                         users.push_back(user);
-                        saveUserToFile(USERS_FILE_DIR, users);
+                        Tools::File::saveUsers(USERS_FILE_DIR, users);
                         MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
                         circle = 0;
                     } else {

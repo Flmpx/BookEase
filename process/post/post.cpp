@@ -6,7 +6,6 @@
 #include "post.hpp"
 #include "../../menu/menu.hpp"
 #include <ctime>
-#include "../saveandload/saveandload.hpp"
 #include "../../tools/tools.hpp"
 
 namespace BK {
@@ -36,7 +35,7 @@ namespace BK {
                     tmp_book->publish_time.set(std::time(nullptr));
                     tmp_book->status = BookStatus::on_sale;
                     books.push_back(tmp_book);
-                    saveBooksToFile(BOOKS_FILE_DIR, books);
+                    Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                     Book::book_num++;
                     MessageBox(GetHWnd(), "发布成功", "提示", MB_OK | MB_ICONINFORMATION);
                     circle = 0;

@@ -10,7 +10,6 @@
 #include "../../menu/menu.hpp"
 #include "../../tools/tools.hpp"
 #include "../../tools/cmps.hpp"
-#include "../saveandload/saveandload.hpp"
 #include <cstdio>
 #include <ctime>
 
@@ -195,7 +194,7 @@ namespace BK {
                                 book->reserve_time.set(std::time(nullptr));
                                 book->status = BookStatus::reserved;
     
-                                saveBooksToFile(BOOKS_FILE_DIR, books);
+                                Tools::File::saveBooks(BOOKS_FILE_DIR, books);
                                 MessageBox(GetHWnd(), "预定成功!\n你可在我的页查看已订详情\n尝试与卖者联系\n", "提示", MB_OK | MB_ICONINFORMATION);
                                 circle = 0;
                                 reserved = true;
