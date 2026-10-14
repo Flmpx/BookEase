@@ -7,9 +7,9 @@
 #define BK_BASE_HPP_
 
 #define BK_VERSION_MAJOR 2
-#define BK_VERSION_MINOR 0
+#define BK_VERSION_MINOR 1
 #define BK_VERSION_PATCH 0
-#define BK_VERSION "2.0.0"
+#define BK_VERSION "2.1.0"
 
 
 #include <string>
