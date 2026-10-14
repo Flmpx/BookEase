@@ -22,7 +22,7 @@ namespace BK {
                 bool res {false};
                 do {
                     circle = 1;
-                    if (Input::element(password, "请输入密码", "验证密钥", Range<uint_t>(8, 16))) {
+                    if (Input::element(password, "请输入密码(长度为8-16位)", "验证密钥", Range<uint_t>(8, 16))) {
                         if (key.verify(password)) {
                             circle = 0;
                             res = true;

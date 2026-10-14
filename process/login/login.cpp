@@ -27,7 +27,7 @@ namespace BK {
             std::shared_ptr<User> user {nullptr};
             do {
                 circle = 1;
-                if (Tools::Input::element(password, "请输入密码", "输入用户信息", Range<uint_t>(8, 16))) {
+                if (Tools::Input::element(password, "请输入密码(长度为8-16位)", "输入用户信息", Range<uint_t>(8, 16))) {
                     user.reset(new User(password));
                     user->id = id;
                     user->register_time.set(std::time(nullptr));
@@ -96,7 +96,7 @@ namespace BK {
                     if (user != nullptr) {
                         users.push_back(user);
                         Tools::File::saveUsers(USERS_FILE_DIR, users);
-                        MessageBox(GetHWnd(), "注册成功, 请前往登录", "提示", MB_OK | MB_ICONINFORMATION);
+                        MessageBox(GetHWnd(), "注册成功, 即将自动登录", "提示", MB_OK | MB_ICONINFORMATION);
                         circle = 0;
                     } else {
                         circle = 1;

@@ -46,7 +46,7 @@ namespace BK {
                     return false;
                 }
                 std::string new_password {};
-                if (Input::element(new_password, "输入新密码", "提示", Range<uint_t>(8, 16))) {
+                if (Input::element(new_password, "输入新密码(长度为8-16位)", "提示", Range<uint_t>(8, 16))) {
                     key.change(new_password);
                     return true;
                 } else {
@@ -72,7 +72,7 @@ namespace BK {
                 do {
                     circle = 1;
                     cleardevice();
-                    int_t choice {Menu::showUser("不保存退出", "选择修改的信息", selections, "正在被修改的用户信息详情", user, Menu::Layout::UserGen)};
+                    int_t choice {Menu::showUser("不保存退出", "选择修改的信息", selections, "正在被修改的用户信息详情", tmp_user, Menu::Layout::UserGen)};
         
                     switch (choice) {
                         case 0: 
@@ -93,7 +93,7 @@ namespace BK {
                             Input::element(tmp_user->tel, "输入电话", "输入");
                             break;
                         case 4:
-                            Input::element(tmp_user->tel, "输入QQ号", "输入");
+                            Input::element(tmp_user->qq, "输入QQ号", "输入");
                             break;
                         case 5:
                             Input::element(tmp_user->wechat, "输入微信号", "输入");
@@ -117,7 +117,7 @@ namespace BK {
                 bool changed {false};
         
                 std::vector<std::string> selections {
-                    "保存修改", "书籍名称", "ISBN", "书籍作者", "书籍出版社", "书籍类别", "书籍完整度", "书籍价格"
+                    "保存修改", "书籍名称", "书籍作者", "书籍出版社", "ISBN", "书籍价格", "书籍完整度", "书籍类别"
                 };
         
                 int circle {1};
@@ -145,22 +145,22 @@ namespace BK {
                             Input::element(tmp_book->title, "输入书籍名称", "输入");
                             break;
                         case 3:
-                            Input::element(tmp_book->isbn, "输入书籍ISBN", "输入");
-                            break;
-                        case 4:
                             Input::element(tmp_book->author, "输入书籍作者", "输入");
                             break;
-                        case 5:
+                        case 4:
                             Input::element(tmp_book->press, "输入书籍出版社", "输入");
                             break;
+                        case 5:
+                            Input::element(tmp_book->isbn, "输入书籍ISBN", "输入");
+                            break;
                         case 6:
-                            bookCategory(tmp_book->category);
+                            Input::element(tmp_book->price, "输入价格", "输入", Range<float_t>(0.0));
                             break;
                         case 7:
                             Input::element(tmp_book->integrity, "输入书籍完整度(0-100)", "输入", Range<int_t>(min_integrity, max_integrity));
                             break;
                         case 8:
-                            Input::element(tmp_book->price, "输入价格", "输入", Range<float_t>(0.0));
+                            bookCategory(tmp_book->category);
                             break;
                     }
         

@@ -15,12 +15,12 @@ namespace BK {
         namespace PublishTime {
             inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->publish_time}, b {book_b->publish_time};
-                if (a <= b) return true;
+                if (a < b) return true;
                 else return false;
             }
             inline auto down(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->publish_time}, b {book_b->publish_time};
-                if (a >= b) return true;
+                if (a > b) return true;
                 else return false;
             }
         }
@@ -29,12 +29,12 @@ namespace BK {
         namespace RemovedTime {
             inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->removed_time}, b {book_b->removed_time};
-                if (a <= b) return true;
+                if (a < b) return true;
                 else return false;
             }
             inline auto down(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->removed_time}, b {book_b->removed_time};
-                if (a >= b) return true;
+                if (a > b) return true;
                 else return false;
             }
         }
@@ -43,12 +43,12 @@ namespace BK {
         namespace ReservedTime {
             inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->reserve_time}, b {book_b->reserve_time};
-                if (a >= b) return true;
+                if (a > b) return true;
                 else return false;
             }
             inline auto down(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->reserve_time}, b {book_b->reserve_time};
-                if (a >= b) return true;
+                if (a > b) return true;
                 else return false;
             }
             
@@ -58,12 +58,12 @@ namespace BK {
         namespace SoldTime {
             inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->buy_time}, b {book_b->buy_time};
-                if (a >= b) return true;
+                if (a > b) return true;
                 else return false;
             }
             inline auto down(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
                 Time a {book_a->buy_time}, b {book_b->buy_time};
-                if (a >= b) return true;
+                if (a > b) return true;
                 else return false;
             }
             
