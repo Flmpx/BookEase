@@ -154,7 +154,7 @@ namespace BK {
                             Input::element(tmp_book->isbn, "输入书籍ISBN", "输入");
                             break;
                         case 6:
-                            Input::element(tmp_book->price, "输入价格", "输入", Range<float_t>(0.0));
+                            Input::element(tmp_book->price, "输入价格", "输入", Range<Price>(Price(0.0)));
                             break;
                         case 7:
                             Input::element(tmp_book->integrity, "输入书籍完整度(0-100)", "输入", Range<int_t>(min_integrity, max_integrity));

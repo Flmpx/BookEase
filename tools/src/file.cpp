@@ -58,6 +58,12 @@ namespace BK {
                     objAdd(obj, "salt", key.salt());
                     objAdd(obj, "hashkey", key.hashKey());
                 }
+                /* 将价格添加到对象中 */
+                auto objAdd(flJson& obj, const char* key, const Price& price) {
+                    flJson* ele = flJsonLL_New(price.cents());
+                    flJsonObject_Add(&obj, key, ele);
+                    flJson_UnRef(ele);
+                } 
         
                 /* 通过对象中对应键的值来修改整数 */
                 auto objGet(int_t& i, flJson& obj, const char* key) {
@@ -107,6 +113,13 @@ namespace BK {
                     objGet(salt, obj, "salt");
                     objGet(hash_key, obj, "hashkey");
                     key = Key(salt, hash_key);
+                }
+                /* 通过对象中对应键的值来修改价格 */
+                auto objGet(Price& price, flJson& obj, const char* key) {
+                    flJson* ele = flJsonObject_Get(&obj, key);
+                    if (ele) {
+                        price.set(*flJsonLL_Get(ele));
+                    }
                 }
         
                 /* 将对象中的内容输入到用户中 */

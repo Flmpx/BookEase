@@ -224,6 +224,37 @@ namespace BK {
             }
 
     };
+
+    class Price {
+        private:
+            int_t cents_;
+        public:
+            explicit Price(int_t cents) : cents_(cents) {}
+            explicit Price(float_t price) {
+                set(price);
+            }
+            Price() {cents_ = 0;}
+            
+            auto cents() const -> int_t {return cents_;}
+            auto set(int_t cents) -> void {cents_ = cents;}
+            auto set(float_t price) -> void {
+                Range<float_t>(Range<int_t>().min() / 100.0, Range<int_t>().max() / 100.0).forceContain(price);
+                cents_ = static_cast<int_t>(price * 100.0 + 0.5);
+            }
+
+            auto operator<=>(const Price& p) const -> std::strong_ordering {
+                return cents_ <=> p.cents_;
+            }
+            auto operator+=(const Price& p) -> void {
+                cents_ += p.cents_;
+            }
+
+            friend auto operator<<(std::ostream& os, const Price& p) -> std::ostream& {
+                os << p.cents() / 100 << "." << p.cents() % 100;
+
+                return os;
+            }
+    };
 }
 
 namespace std {
@@ -247,11 +278,34 @@ namespace std {
             }
     };
 
+    template <>
+    class numeric_limits<BK::Price> {
+        public:
+            static auto min() -> BK::Price {
+                return BK::Price(BK::int_t(0));
+            }
+
+            static auto max() -> BK::Price {
+                return BK::Price(std::numeric_limits<BK::int_t>::max());
+            }
+            
+            static auto lowest() -> BK::Price {
+                return BK::Price(std::numeric_limits<BK::int_t>::min());
+            }
+    };
+
     inline auto to_string(const BK::Time& t) -> string {
         stringstream ret {};
         ret << t.year()  << "年" 
             << t.month() << "月" 
             << t.day()   << "日";
+
+        return ret.str();
+    }
+
+    inline auto to_string(const BK::Price& p) -> string {
+        stringstream ret {};
+        ret << p.cents() / 100 << "." << p.cents() % 100;
 
         return ret.str();
     }
@@ -357,8 +411,8 @@ namespace BK {
         std::string isbn  {};                                 
         std::string author {};                                
         std::string press {};                                 
-        float_t down_price {};
-        float_t up_price {};
+        Price down_price {};
+        Price up_price {};
         Time down_publish_time {};
         Time up_publish_time {};
         int_t down_integrity {};     
@@ -395,7 +449,7 @@ namespace BK {
         std::string author {};                                      // 作者
         std::string press {};                                       // 出版社
         std::string other {};                                       // 其他信息
-        float_t price {5.20};                                       // 价格
+        Price price {int_t(520)};                                   // 价格
         Time publish_time {};                                       // 发布时间
         Time buy_time {};                                           // 购买时间
         Time reserve_time {};                                       // 预定时间

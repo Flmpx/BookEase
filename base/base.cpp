@@ -99,12 +99,12 @@ namespace BK {
         /* 比较价格 */
         {
             if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::down_price) &&
-                price < cmp_condition.down_price - EPS) {
+                price < cmp_condition.down_price) {
                 return false;
             }
     
             if (!cmp_condition.isUmlimit(BookCmpCondition::Unlimit::up_price) &&
-                price > cmp_condition.up_price + EPS) {
+                price > cmp_condition.up_price) {
                 return false;
             }
         }

@@ -371,7 +371,7 @@ namespace BK {
                 case 7: select(cmp_condition.press, "出版社", cmp_condition, BookCmpCondition::Unlimit::press); break;
                 case 8: select(cmp_condition.category, cmp_condition); break;
                 case 9: selectRange(cmp_condition.down_integrity, cmp_condition.up_integrity, "完整度", cmp_condition, BookCmpCondition::Unlimit::down_integrity, BookCmpCondition::Unlimit::up_integrity, Range<int_t>(min_integrity, max_integrity)); break;
-                case 10: selectRange(cmp_condition.down_price, cmp_condition.up_price, "售价", cmp_condition, BookCmpCondition::Unlimit::down_price, BookCmpCondition::Unlimit::up_price, Range<float_t>(0.0)); break;
+                case 10: selectRange(cmp_condition.down_price, cmp_condition.up_price, "售价", cmp_condition, BookCmpCondition::Unlimit::down_price, BookCmpCondition::Unlimit::up_price, Range<Price>(Price(int_t(0)))); break;
                 case 11: selectRange(cmp_condition.down_publish_time, cmp_condition.up_publish_time, "时间", cmp_condition, BookCmpCondition::Unlimit::down_publish_time, BookCmpCondition::Unlimit::up_publish_time, Range<Time>()); break;
             }
         } while (circle);

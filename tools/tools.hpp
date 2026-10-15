@@ -33,6 +33,7 @@ namespace BK {
             auto element(int_t& i, const std::string& info, const std::string& tip, const Range<int_t> r = Range<int_t>()) -> bool;
             auto element(float_t& f, const std::string& info, const std::string& tip, const Range<float_t> r = Range<float_t>()) -> bool;
             auto element(Time& t, const std::string& info, const std::string& tip, const Range<Time> r = Range<Time>()) -> bool;
+            auto element(Price& p, const std::string& info, const std::string& tip, const Range<Price> r = Range<Price>()) -> bool;
         }
     
         /* ÐÞ¸ÄÄÚÈÝ */

@@ -155,7 +155,7 @@ namespace BK {
                 print("     总书籍数目:", books.size(), l, t += th, w, th);
         
                 int_t num_on_sale {0}, num_reserved {0}, num_removed {0}, num_sold {0};
-                float_t all_price {0.0};
+                Price all_price(int_t(0));
         
                 for (auto& it : books) {
                     switch (static_cast<BookStatus>(it->status)) {

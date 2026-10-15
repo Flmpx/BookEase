@@ -72,14 +72,14 @@ namespace BK {
         /* ¼Û¸ñ */
         namespace Price {
             inline auto up(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
-                float_t a {book_a->price}, b {book_b->price};
-                if (a < b - EPS) return true;
+                BK::Price a {book_a->price}, b {book_b->price};
+                if (a < b) return true;
                 else return false;
             }
 
             inline auto down(const std::shared_ptr<Book>& book_a, const std::shared_ptr<Book>& book_b) {
-                float_t a {book_a->price}, b {book_b->price};
-                if (a > b + EPS) return true;
+                BK::Price a {book_a->price}, b {book_b->price};
+                if (a > b) return true;
                 else return false;
             }
 
