@@ -31,7 +31,7 @@ namespace BK {
                 int_t select_w;                     // 单个选项块宽度
                 int_t select_h;                     // 单个选项块宽度
             };
-            constexpr Normal NormalGen {80, 30, 30, 20, 200, 90};           // 普通菜单的一般布局
+            constexpr Normal NormalGen {100, 30, 10, 20, 200, 90};           // 普通菜单的一般布局
 
             /* 书籍详情菜单布局 */
             struct Book {

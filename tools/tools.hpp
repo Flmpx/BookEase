@@ -64,6 +64,12 @@ namespace BK {
             auto saveBooks(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void;
         }
 
+        /* ÖÇÄÜ¹¤¾ß */
+        namespace Smart {
+            auto showUser(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) -> void;
+            auto showBook(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) -> void;
+        }
+
     }
 }
 

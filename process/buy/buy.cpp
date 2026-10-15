@@ -175,63 +175,6 @@ namespace BK {
             } while (circle);
         }
 
-        auto revealSeller(std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const std::shared_ptr<User>& seller) -> void {
-            int_t circle {1};
-            std::vector<std::string> selections {};
-
-            do {
-                circle = 1;
-                cleardevice();
-                int_t choice {Menu::showUser("返回", "仅查看", selections, "售卖者信息", seller, Menu::Layout::UserGen)};
-
-                switch (choice) {
-                    case 0: circle = 0; break;
-                }
-
-            } while (circle);
-
-        } 
-
-        auto readyToReserve(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book) -> bool {
-            int_t circle {1};
-            std::vector<std::string> selelctions {
-                "预定", "查看售卖者信息"
-            };
-            bool reserved {false};
-            do {
-                circle = 1;
-                cleardevice();
-                int_t choice {Menu::showBook("返回", "选择操作", selelctions, "选中书籍的详情", book, Menu::Layout::BookGen, true)};
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1:
-                        if (book->seller_id != user->id) {
-                            if (MessageBox(GetHWnd(), "确定要预定吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {
-                                book->reserver_id = user->id;
-                                book->reserve_time.set(std::time(nullptr));
-                                book->status = BookStatus::reserved;
-    
-                                Tools::File::saveBooks(BOOKS_FILE_DIR, books);
-                                MessageBox(GetHWnd(), "预定成功!\n你可在我的页查看已订详情\n尝试与卖者联系\n", "提示", MB_OK | MB_ICONINFORMATION);
-                                circle = 0;
-                                reserved = true;
-                            } else {
-                                circle = 1;
-                            }
-                        } else {
-                            MessageBox(GetHWnd(), "不可以自己预定自己的书哦", "提示", MB_OK | MB_ICONSTOP);
-                            circle = 1;
-                        }
-                        break;
-                    case 2: 
-                        revealSeller(users, books, book->seller(users));
-                        break;
-                }
-            } while (circle);
-            
-            return reserved;
-        }
-
         auto revealSearchRes(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const BookCmpCondition& cmp_condition) -> void {
             std::list<std::shared_ptr<Book>> now_books {};
             for (auto& it : books) {
@@ -251,9 +194,7 @@ namespace BK {
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     auto book {std::next(now_books.begin(), idx)};
-                    if (readyToReserve(user, users, books, *book)) {
-                        now_books.erase(book);
-                    }
+                    Tools::Smart::showBook(user, users, books, *book, "选中书籍的详情");
                     continue;
                 }
 
