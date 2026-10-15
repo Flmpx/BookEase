@@ -243,11 +243,12 @@ namespace BK {
          * @param books_tip 多书籍信息块的提示信息块
          * @param books 书籍链表
          * @param layout 多书籍信息菜单的布局
+         * @param now_index 从该下标所属页开始展示
          * @return 返回 0 则为点击了返回键  
          * @return 1 为点击了第 1 个选项, 2 为第 2 个, 以此类推  
          * @return -1 为点击了第 1 本书籍, -2 为第二本, 以此类推  
          */
-        auto showBooks(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& books_tip, const std::list<std::shared_ptr<Book>>& books, const Layout::Books& layout) -> int_t {
+        auto showBooks(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& books_tip, const std::list<std::shared_ptr<Book>>& books, const Layout::Books& layout, int_t now_index) -> int_t {
             int_t l {0}, t {0}, w {0}, h {0};
             int_t screen_h {getheight()};
             int_t screen_w {getwidth()};
@@ -272,8 +273,17 @@ namespace BK {
             std::vector<int> hover_flags_dir(2);
             std::vector<int> hover_flags_book(row * col);
 
-            int_t book_now_num {0};
+            if (books.size() == 0) {
+                now_index = 0;
+            } else if (now_index >= books.size()) {
+                now_index = books.size() - 1;
+            }
+            int_t book_now_num {(now_index / (row * col)) * (row * col) };
+            
             auto book_now {books.begin()};
+            for (int_t i = 0; i < book_now_num; i++) {
+                book_now++;
+            }
 
             while (true) {
                 /* 初始化标志 */

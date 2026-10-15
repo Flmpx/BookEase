@@ -72,7 +72,7 @@ namespace BK {
         auto showBook(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& book_tip, const std::shared_ptr<Book>& book, const Layout::Book& layout, bool reveal_time = false) -> int_t;
         auto showUser(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& user_tip, const std::shared_ptr<User>& user, const Layout::User& layout, bool reveal_time = false) -> int_t;
         auto showStatistics(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& statistics_tip, const std::list<std::shared_ptr<Book>>& books, const std::list<std::shared_ptr<User>>& users, const Layout::Statistics& layout) -> int_t;
-        auto showBooks(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& books_tip, const std::list<std::shared_ptr<Book>>& books, const Layout::Books& layout) -> int_t;
+        auto showBooks(const std::string& back, const std::string& instru, const std::vector<std::string>& selections, const std::string& books_tip, const std::list<std::shared_ptr<Book>>& books, const Layout::Books& layout, int_t now_index = 0) -> int_t;
 
 
         /* ¿éÊ½Ñ¡Ïî */

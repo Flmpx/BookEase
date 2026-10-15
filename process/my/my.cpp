@@ -29,14 +29,17 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按购买时间升序", "按购买时间降序"
             };
+            int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
+                    record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    continue;
                 }
 
                 switch (choice) {
@@ -46,6 +49,7 @@ namespace BK {
                     case 3: now_books.sort(CmpBook::SoldTime::up); break;
                     case 4: now_books.sort(CmpBook::SoldTime::down); break;
                 }
+                record_index = 0;
             } while (circle);
         }
 
@@ -59,14 +63,17 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按预定时间升序", "按预定时间降序"
             };
+            int record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
+                    record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    continue;
                 }
 
                 switch (choice) {
@@ -76,6 +83,7 @@ namespace BK {
                     case 3: now_books.sort(CmpBook::ReservedTime::up); break;
                     case 4: now_books.sort(CmpBook::ReservedTime::down); break;
                 }
+                record_index = 0;
             } while (circle);
         }
 
@@ -109,14 +117,17 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按发布时间升序", "按发布时间降序"
             };
+            int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
+                    record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    continue;
                 }
 
                 switch (choice) {
@@ -126,6 +137,7 @@ namespace BK {
                     case 3: now_books.sort(CmpBook::PublishTime::up); break;
                     case 4: now_books.sort(CmpBook::PublishTime::down); break;
                 }
+                record_index = 0;
             } while (circle);
         }
 
@@ -139,14 +151,17 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按预定时间升序", "按预定时间降序"
             };
+            int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
+                    record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    continue;
                 }
 
                 switch (choice) {
@@ -156,6 +171,7 @@ namespace BK {
                     case 3: now_books.sort(CmpBook::ReservedTime::up); break;
                     case 4: now_books.sort(CmpBook::ReservedTime::down); break;
                 }
+                record_index = 0;
             } while (circle);
         }
 
@@ -169,14 +185,17 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按已购时间升序", "按已购时间降序"
             };
+            int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
+                    record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    continue;
                 }
 
                 switch (choice) {
@@ -186,6 +205,7 @@ namespace BK {
                     case 3: now_books.sort(CmpBook::SoldTime::up); break;
                     case 4: now_books.sort(CmpBook::SoldTime::down); break;
                 }
+                record_index = 0;
             } while (circle);
         }
 
@@ -199,14 +219,17 @@ namespace BK {
             std::vector<std::string> selections {
                 "按价格升序", "按价格降序", "按下架时间升序", "按下架时间降序"
             };
+            int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen)};
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
+                    record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    continue;
                 }
 
                 switch (choice) {
@@ -216,6 +239,7 @@ namespace BK {
                     case 3: now_books.sort(CmpBook::RemovedTime::up); break;
                     case 4: now_books.sort(CmpBook::RemovedTime::down); break;
                 }
+                record_index = 0;
             } while (circle);
         }
 
