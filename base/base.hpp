@@ -24,6 +24,7 @@
 namespace BK {
     inline constexpr const char* BOOKS_FILE_DIR {"./bkdata/books.json"};        // 书籍数据文件地址
     inline constexpr const char* USERS_FILE_DIR {"./bkdata/users.json"};        // 用户数据文件地址
+    inline constexpr const char* SETTINGS_FILE_DIR {"./bkdata/settings.json"};  // 配置数据文件地址
 
     using int_t = int64_t;                                      // 有符号整数
     using uint_t = uint64_t;                                    // 无符号整数
@@ -311,6 +312,19 @@ namespace std {
     }
 
 }
+
+namespace BK {
+    /* 配置 */
+    struct Settings {
+        /* 多书籍配置 */
+        struct BooksPage {
+            int_t row {3};
+            int_t col {2};
+        } bookspage;
+        
+    };
+}
+
 
 namespace BK {
     class Key {

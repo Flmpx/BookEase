@@ -133,6 +133,17 @@ namespace BK {
                     objGet(user->key, obj);
                 }
                 
+                /* 将用户中的内容输出到对象中 */
+                auto out(flJson& obj, const std::shared_ptr<User>& user) {
+                    objAdd(obj, "id", user->id);
+                    objAdd(obj, "name", user->name);
+                    objAdd(obj, "tel", user->tel);
+                    objAdd(obj, "qq", user->qq);
+                    objAdd(obj, "wechat", user->wechat);
+                    objAdd(obj, "registertime", user->register_time);
+                    objAdd(obj, user->key);
+                }
+
                 /* 将对象中的内容输入到书籍中 */
                 auto in(std::shared_ptr<Book>& book, flJson& obj) {
                     objGet(book->id, obj, "id");
@@ -152,17 +163,6 @@ namespace BK {
                     objGet(book->author, obj, "author");
                     objGet(book->press, obj, "press");
                     objGet(book->other, obj, "other");
-                }
-        
-                /* 将用户中的内容输出到对象中 */
-                auto out(flJson& obj, const std::shared_ptr<User>& user) {
-                    objAdd(obj, "id", user->id);
-                    objAdd(obj, "name", user->name);
-                    objAdd(obj, "tel", user->tel);
-                    objAdd(obj, "qq", user->qq);
-                    objAdd(obj, "wechat", user->wechat);
-                    objAdd(obj, "registertime", user->register_time);
-                    objAdd(obj, user->key);
                 }
                 
                 /* 将书籍中的内容输出到对象中 */
@@ -184,6 +184,18 @@ namespace BK {
                     objAdd(obj, "author", book->author);
                     objAdd(obj, "press", book->press);
                     objAdd(obj, "other", book->other);
+                }
+
+                /* 将对象中的内容输入到设置.多书籍界面设置中 */
+                auto in(Settings::BooksPage& bookspage, flJson& obj) {
+                    objGet(bookspage.row, obj, "row");
+                    objGet(bookspage.col, obj, "col");
+                }
+
+                /* 将设置.多书籍界面设置中的内容输出到对象中 */
+                auto out(flJson& obj, const Settings::BooksPage& bookspage) {
+                    objAdd(obj, "row", bookspage.row);
+                    objAdd(obj, "col", bookspage.col);
                 }
                 
             }
@@ -369,6 +381,91 @@ namespace BK {
                 }
                 
                 saveBooks(fout, books);
+                fout.close();
+            }
+
+            /**
+             * @brief 通过输入文件指针将文件中的设置内容加载到设置中
+             * 
+             * @param fin 输入文件指针
+             * @return 设置 
+             */
+            auto loadSettings(std::ifstream& fin) -> std::shared_ptr<Settings> {
+                auto settings {std::make_shared<Settings>()};
+
+                fin.seekg(0, std::ios::end);
+                auto size {fin.tellg()};
+                fin.seekg(0, std::ios::beg);
+                
+                std::string str(size, '\0');
+                fin.read(&str[0], size);
+
+                flJson* obj = flJson_Parse(str.c_str());
+
+                if (obj) {
+                    flJson* bookspage = flJsonObject_Get(obj, "bookspage");
+                    in(settings->bookspage, *bookspage);
+
+                    flJson_UnRef(obj);
+                }
+
+                return settings;
+            }
+
+            /**
+             * @brief 通过文件名打开文件, 并将文件中的设置内容加载到设置中
+             * 
+             * @param dir 文件名
+             * @return 设置
+             */
+            auto loadSettings(const char* dir) -> std::shared_ptr<Settings> {
+                std::ifstream fin(dir, std::ios::in | std::ios_base::binary);
+                if (!fin.is_open()) {
+                    MessageBox(GetHWnd(), "重要文件bkdata/settings.json丢失", "异常", MB_OK | MB_ICONSTOP);
+                    throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
+                }
+
+                std::shared_ptr<Settings> ret(loadSettings(fin));
+                fin.close();
+
+                return ret;
+            }
+
+            /**
+             * @brief 将设置保存到文件指针指定的文件中
+             * 
+             * @param fout 输出文件指针
+             * @param settings 设置
+             */
+            auto saveSettings(std::ofstream& fout, const std::shared_ptr<Settings>& settings) -> void {
+                flJson* obj = flJsonObject_New();
+
+                flJson* bookspage = flJsonObject_New();
+                out(*bookspage, settings->bookspage);
+                flJsonObject_Add(obj, "bookspage", bookspage);
+                flJson_UnRef(bookspage);
+
+                char* obj_str = flJson_Dump(obj);
+                fout << obj_str;
+
+                free(obj_str);
+                flJson_UnRef(obj);
+            }
+
+            /**
+             * @brief 将设置保存到文件名所指定的文件中
+             * 
+             * @param dir 文件名
+             * @param settings 设置
+             */
+            auto saveSettings(const char* dir, const std::shared_ptr<Settings>& settings) -> void {
+                std::ofstream fout(dir, std::ios::out | std::ios_base::binary);
+                if (!fout.is_open()) {
+                    MessageBox(GetHWnd(), "重要文件bkdata/settings.json丢失", "异常", MB_OK | MB_ICONSTOP);
+                    throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
+                }
+
+                saveSettings(fout, settings);
                 fout.close();
             }
         }

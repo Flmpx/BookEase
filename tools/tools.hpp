@@ -62,6 +62,12 @@ namespace BK {
 
             auto saveBooks(std::ofstream& fout, const std::list<std::shared_ptr<Book>>& books) -> void;
             auto saveBooks(const char* dir, const std::list<std::shared_ptr<Book>>& books) -> void;
+
+            auto loadSettings(std::ifstream& fin) -> std::shared_ptr<Settings>;
+            auto loadSettings(const char* dir) -> std::shared_ptr<Settings>;
+
+            auto saveSettings(std::ofstream& fout, const std::shared_ptr<Settings>& settings) -> void;
+            auto saveSettings(const char* dir, const std::shared_ptr<Settings>& settings) -> void;
         }
 
         /* ÖÇÄÜ¹¤¾ß */
