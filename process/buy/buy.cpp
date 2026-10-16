@@ -197,17 +197,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选中书籍的详情");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::PublishTime::up); break;
+                        case 4: now_books.sort(CmpBook::PublishTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::PublishTime::up); break;
-                    case 4: now_books.sort(CmpBook::PublishTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
 
         }

@@ -39,17 +39,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::SoldTime::up); break;
+                        case 4: now_books.sort(CmpBook::SoldTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::SoldTime::up); break;
-                    case 4: now_books.sort(CmpBook::SoldTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
         }
 
@@ -73,17 +73,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::ReservedTime::up); break;
+                        case 4: now_books.sort(CmpBook::ReservedTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::ReservedTime::up); break;
-                    case 4: now_books.sort(CmpBook::ReservedTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
         }
 
@@ -127,17 +127,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::PublishTime::up); break;
+                        case 4: now_books.sort(CmpBook::PublishTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::PublishTime::up); break;
-                    case 4: now_books.sort(CmpBook::PublishTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
         }
 
@@ -161,17 +161,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::ReservedTime::up); break;
+                        case 4: now_books.sort(CmpBook::ReservedTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::ReservedTime::up); break;
-                    case 4: now_books.sort(CmpBook::ReservedTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
         }
 
@@ -195,17 +195,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::SoldTime::up); break;
+                        case 4: now_books.sort(CmpBook::SoldTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::SoldTime::up); break;
-                    case 4: now_books.sort(CmpBook::SoldTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
         }
 
@@ -229,17 +229,17 @@ namespace BK {
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
                     Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
-                    continue;
+                } else {
+                    switch (choice) {
+                        case 0: circle = 0; break;
+                        case 1: now_books.sort(CmpBook::Price::up); break;
+                        case 2: now_books.sort(CmpBook::Price::down); break;
+                        case 3: now_books.sort(CmpBook::RemovedTime::up); break;
+                        case 4: now_books.sort(CmpBook::RemovedTime::down); break;
+                    }
+                    record_index = 0;
                 }
 
-                switch (choice) {
-                    case 0: circle = 0; break;
-                    case 1: now_books.sort(CmpBook::Price::up); break;
-                    case 2: now_books.sort(CmpBook::Price::down); break;
-                    case 3: now_books.sort(CmpBook::RemovedTime::up); break;
-                    case 4: now_books.sort(CmpBook::RemovedTime::down); break;
-                }
-                record_index = 0;
             } while (circle);
         }
 
