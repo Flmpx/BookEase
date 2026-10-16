@@ -79,6 +79,9 @@ flowchart TD
 │   ├── my                              # 我的页
 │   │   ├── my.cpp
 │   │   └── my.hpp
+│   ├── settings                        # 设置页
+│   │   ├── settings.cpp
+│   │   └── settings.hpp
 │   └── post                            # 发布书籍
 │       ├── post.cpp
 │       └── post.hpp
