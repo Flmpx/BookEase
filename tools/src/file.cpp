@@ -391,7 +391,7 @@ namespace BK {
              * @return 设置 
              */
             auto loadSettings(std::ifstream& fin) -> std::shared_ptr<Settings> {
-                auto settings {std::make_shared<Settings>()};
+                auto sets {std::make_shared<Settings>()};
 
                 fin.seekg(0, std::ios::end);
                 auto size {fin.tellg()};
@@ -404,12 +404,12 @@ namespace BK {
 
                 if (obj) {
                     flJson* bookspage = flJsonObject_Get(obj, "bookspage");
-                    in(settings->bookspage, *bookspage);
+                    in(sets->bookspage, *bookspage);
 
                     flJson_UnRef(obj);
                 }
 
-                return settings;
+                return sets;
             }
 
             /**
@@ -421,7 +421,7 @@ namespace BK {
             auto loadSettings(const char* dir) -> std::shared_ptr<Settings> {
                 std::ifstream fin(dir, std::ios::in | std::ios_base::binary);
                 if (!fin.is_open()) {
-                    MessageBox(GetHWnd(), "重要文件bkdata/settings.json丢失", "异常", MB_OK | MB_ICONSTOP);
+                    MessageBox(GetHWnd(), "重要文件bkdata/sets.json丢失", "异常", MB_OK | MB_ICONSTOP);
                     throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
                 }
 
@@ -435,13 +435,13 @@ namespace BK {
              * @brief 将设置保存到文件指针指定的文件中
              * 
              * @param fout 输出文件指针
-             * @param settings 设置
+             * @param sets 设置
              */
-            auto saveSettings(std::ofstream& fout, const std::shared_ptr<Settings>& settings) -> void {
+            auto saveSettings(std::ofstream& fout, const std::shared_ptr<Settings>& sets) -> void {
                 flJson* obj = flJsonObject_New();
 
                 flJson* bookspage = flJsonObject_New();
-                out(*bookspage, settings->bookspage);
+                out(*bookspage, sets->bookspage);
                 flJsonObject_Add(obj, "bookspage", bookspage);
                 flJson_UnRef(bookspage);
 
@@ -456,16 +456,16 @@ namespace BK {
              * @brief 将设置保存到文件名所指定的文件中
              * 
              * @param dir 文件名
-             * @param settings 设置
+             * @param sets 设置
              */
-            auto saveSettings(const char* dir, const std::shared_ptr<Settings>& settings) -> void {
+            auto saveSettings(const char* dir, const std::shared_ptr<Settings>& sets) -> void {
                 std::ofstream fout(dir, std::ios::out | std::ios_base::binary);
                 if (!fout.is_open()) {
-                    MessageBox(GetHWnd(), "重要文件bkdata/settings.json丢失", "异常", MB_OK | MB_ICONSTOP);
+                    MessageBox(GetHWnd(), "重要文件bkdata/sets.json丢失", "异常", MB_OK | MB_ICONSTOP);
                     throw std::system_error(errno, std::system_category(), "文件异常" + std::string(dir));
                 }
 
-                saveSettings(fout, settings);
+                saveSettings(fout, sets);
                 fout.close();
             }
         }

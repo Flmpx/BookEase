@@ -9,15 +9,16 @@
 #include "../my/my.hpp"
 #include "../post/post.hpp"
 #include "../about/about.hpp"
+#include "../settings/settings.hpp"
 #include <easyx.h>
 
 
 namespace BK {
 
-    auto mainpage(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
+    auto mainpage(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         int circle {1};
         std::vector<std::string> selections {
-            "买书", "卖书", "我的", "关于"
+            "买书", "卖书", "我的", "设置",
         };
 
         do {
@@ -30,10 +31,10 @@ namespace BK {
                         circle = 0;
                     }
                     break;
-                case 1: buy(user, users, books); break;
-                case 2: post(user, users, books);   break;
-                case 3: my(user, users, books);     break;
-                case 4: about(user, users, books);  break;
+                case 1: buy(user, sets, users, books); break;
+                case 2: post(user, sets, users, books);   break;
+                case 3: my(user, sets, users, books);     break;
+                case 4: settings(user, sets, users, books); break;
             }
         } while (circle);
     }

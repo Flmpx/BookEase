@@ -66,14 +66,14 @@ namespace BK {
             auto loadSettings(std::ifstream& fin) -> std::shared_ptr<Settings>;
             auto loadSettings(const char* dir) -> std::shared_ptr<Settings>;
 
-            auto saveSettings(std::ofstream& fout, const std::shared_ptr<Settings>& settings) -> void;
-            auto saveSettings(const char* dir, const std::shared_ptr<Settings>& settings) -> void;
+            auto saveSettings(std::ofstream& fout, const std::shared_ptr<Settings>& sets) -> void;
+            auto saveSettings(const char* dir, const std::shared_ptr<Settings>& sets) -> void;
         }
 
         /* ÖÇÄÜ¹¤¾ß */
         namespace Smart {
-            auto showUser(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) -> void;
-            auto showBook(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) -> void;
+            auto showUser(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) -> void;
+            auto showBook(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) -> void;
         }
 
     }

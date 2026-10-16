@@ -23,6 +23,7 @@ auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     /* ‘ÿ»Î */
     std::list<std::shared_ptr<BK::User>> users {BK::Tools::File::loadUsers(BK::USERS_FILE_DIR)};
     std::list<std::shared_ptr<BK::Book>> books {BK::Tools::File::loadBooks(BK::BOOKS_FILE_DIR)};
+    std::shared_ptr<BK::Settings> sets {BK::Tools::File::loadSettings(BK::SETTINGS_FILE_DIR)};
     std::shared_ptr<BK::User> user {nullptr};
 
 
@@ -43,7 +44,7 @@ auto WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
             case 0: user = BK::regis(users); break;
             case 1: user = BK::login(users); break;
         }
-        if (user) BK::mainpage(user, users, books);
+        if (user) BK::mainpage(user, sets, users, books);
     } while (circle);
 
     return 0;

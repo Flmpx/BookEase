@@ -12,7 +12,7 @@
 namespace BK {
 
     namespace {
-        auto about_statistics(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto about_statistics(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::vector<std::string> selections {};
@@ -30,7 +30,7 @@ namespace BK {
         }
     }
 
-    auto about(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
+    auto about(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         int_t circle {1};
             
         std::vector<std::string> selections {
@@ -44,7 +44,7 @@ namespace BK {
             switch (choice) {
                 case 0: circle = 0; break;
                 case 1: 
-                    about_statistics(user, users, books);
+                    about_statistics(user, sets, users, books);
                     break;
             }
         } while (circle);

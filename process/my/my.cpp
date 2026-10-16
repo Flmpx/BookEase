@@ -20,7 +20,7 @@ namespace BK {
     namespace {
 
         /* 我的 > 我的购买 > 购买的书籍 */
-        auto my_buy_sold(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_buy_sold(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::sold)};
@@ -32,13 +32,16 @@ namespace BK {
             int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选定的书籍");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -54,7 +57,7 @@ namespace BK {
         }
 
         /* 我的 > 我的购买 > 预定的书籍 */
-        auto my_buy_reserved(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_buy_reserved(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::reserved)};
@@ -66,13 +69,16 @@ namespace BK {
             int record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选定的书籍");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -88,7 +94,7 @@ namespace BK {
         }
 
         /* 我的 > 我的购买 */
-        auto my_buy(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_buy(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -101,14 +107,14 @@ namespace BK {
 
                 switch (choice) {
                     case 0: circle = 0; break;
-                    case 1: my_buy_reserved(user, users, books); break;
-                    case 2: my_buy_sold(user, users, books); break;
+                    case 1: my_buy_reserved(user, sets, users, books); break;
+                    case 2: my_buy_sold(user, sets, users, books); break;
                 }
             } while (circle);
         }
 
         /* 我的 > 我的发布 > 在售的书籍 */
-        auto my_post_onsale(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_onsale(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::on_sale)};
@@ -120,13 +126,16 @@ namespace BK {
             int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选定的书籍");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -142,7 +151,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已被预定的书籍 */
-        auto my_post_reserved(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_reserved(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::reserved)};
@@ -154,13 +163,16 @@ namespace BK {
             int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选定的书籍");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -176,7 +188,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已售的书籍 */
-        auto my_post_sold(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_sold(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::sold)};
@@ -188,13 +200,16 @@ namespace BK {
             int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选定的书籍");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -210,7 +225,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 > 已下架的书籍 */
-        auto my_post_removed(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post_removed(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
             std::list<std::shared_ptr<Book>> now_books {user->books(books, BookStatus::removed)};
@@ -222,13 +237,16 @@ namespace BK {
             int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "检索到的书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选定的书籍");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选定的书籍");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -244,7 +262,7 @@ namespace BK {
         }
 
         /* 我的 > 我的发布 */
-        auto my_post(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
+        auto my_post(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
             
             std::vector<std::string> selections {
@@ -257,17 +275,17 @@ namespace BK {
 
                 switch (choice) {
                     case 0: circle = 0; break;
-                    case 1: my_post_onsale(user, users, books); break;
-                    case 2: my_post_reserved(user, users, books); break;
-                    case 3: my_post_sold(user, users, books); break;
-                    case 4: my_post_removed(user, users, books); break;
+                    case 1: my_post_onsale(user, sets, users, books); break;
+                    case 2: my_post_reserved(user, sets, users, books); break;
+                    case 3: my_post_sold(user, sets, users, books); break;
+                    case 4: my_post_removed(user, sets, users, books); break;
                 }
             } while (circle);
         }
     }
 
     /* 我的 */
-    auto my(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
+    auto my(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         int_t circle {1};
 
         std::vector<std::string> selelctions {
@@ -280,9 +298,9 @@ namespace BK {
 
             switch (choice) {
                 case 0: circle = 0; break;
-                case 1: Tools::Smart::showUser(user, users, books, user, "个人信息"); break;
-                case 2: my_post(user, users, books); break;
-                case 3: my_buy(user, users, books); break;
+                case 1: Tools::Smart::showUser(user, sets, users, books, user, "个人信息"); break;
+                case 2: my_post(user, sets, users, books); break;
+                case 3: my_buy(user, sets, users, books); break;
             }
         } while (circle);
         

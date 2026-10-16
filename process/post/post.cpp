@@ -9,7 +9,7 @@
 #include "../../tools/tools.hpp"
 
 namespace BK {
-    auto post(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
+    auto post(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         auto tmp_book {std::make_shared<Book>()};
         tmp_book->seller_id = user->id;
         tmp_book->id = Book::book_num + 1;

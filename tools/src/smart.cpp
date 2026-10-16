@@ -22,7 +22,7 @@ namespace BK {
                  */
     
                 /* 展示用户 - 自己 */
-                auto showUser_self(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) {
+                auto showUser_self(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) {
                     int_t circle {1};
                 
                     std::vector<std::string> selections {
@@ -52,7 +52,7 @@ namespace BK {
                 }
     
                 /* 展示用户 - 其他人 */
-                auto showUser_other(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) {
+                auto showUser_other(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) {
                     int_t circle {1};
                     std::vector<std::string> selections {};
     
@@ -78,11 +78,11 @@ namespace BK {
              * @param other_user 待显示的用户
              * @param user_tip 用户详细信息块的内容
              */
-            auto showUser(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) -> void {
+            auto showUser(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<User>& other_user, const std::string& user_tip) -> void {
                 if (user->id == other_user->id) {
-                    showUser_self(user, users, books, other_user, user_tip);
+                    showUser_self(user, sets, users, books, other_user, user_tip);
                 } else {
-                    showUser_other(user, users, books, other_user, user_tip);
+                    showUser_other(user, sets, users, books, other_user, user_tip);
                 }
             }
     
@@ -93,7 +93,7 @@ namespace BK {
                  */
 
                 /* 展示在售的书籍 给 其他人 */
-                auto showBook_onsale_other(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_onsale_other(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
                     std::vector<std::string> selelctions {
                         "预定", "查看售卖者信息"
@@ -119,14 +119,14 @@ namespace BK {
                                 break;
                             case 2: 
                                 auto seller {book->seller(users)};
-                                showUser(user, users, books, seller, "售卖者信息");
+                                showUser(user, sets, users, books, seller, "售卖者信息");
                                 break;
                         }
                     } while (circle);
                 }
                 
                 /* 展示在售的书籍 给 售卖者 */
-                auto showBook_onsale_seller(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_onsale_seller(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
                 
                     std::vector<std::string> selections {
@@ -153,7 +153,7 @@ namespace BK {
                 }
     
                 /* 展示已被预定的书籍 给 售卖者 */
-                auto showBook_reserved_seller(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_reserved_seller(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
                 
                     std::vector<std::string> selections {
@@ -178,14 +178,14 @@ namespace BK {
                                 break;
                             case 2:
                                 auto reserver {book->reserver(users)};
-                                showUser_other(user, users, books, reserver, "预定者信息");
+                                showUser_other(user, sets, users, books, reserver, "预定者信息");
                                 break;
                         }
                     } while (circle);
                 }
 
                 /* 展示预定的书籍 给 预定者 */
-                auto showBook_reserved_reserver(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_reserved_reserver(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
             
                     std::vector<std::string> selections {
@@ -207,7 +207,7 @@ namespace BK {
                                 break;
                             case 2:
                                 auto seller {book->seller(users)};
-                                showUser(user, users, books, seller, "售卖者信息");
+                                showUser(user, sets, users, books, seller, "售卖者信息");
                                 break;
                                 
                         }
@@ -215,7 +215,7 @@ namespace BK {
                 }
 
                 /* 展示已售的书籍 给 售卖者 */
-                auto showBook_sold_seller(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_sold_seller(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
             
                     std::vector<std::string> selections {
@@ -230,14 +230,14 @@ namespace BK {
                             case 0: circle = 0; break;
                             case 1: 
                                 auto buyer {book->buyer(users)};
-                                showUser(user, users, books, buyer, "购买者信息");
+                                showUser(user, sets, users, books, buyer, "购买者信息");
                                 break;
                         }
                     } while (circle);
                 }
 
                 /* 展示已售的书籍 给 购买者 */
-                auto showBook_sold_buyer(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_sold_buyer(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
             
                     std::vector<std::string> selections {
@@ -252,14 +252,14 @@ namespace BK {
                             case 0: circle = 0; break;
                             case 1: 
                                 auto seller {book->seller(users)};
-                                showUser(user, users, books, seller, "售卖者信息");
+                                showUser(user, sets, users, books, seller, "售卖者信息");
                                 break;
                         }
                     } while (circle);
                 }
 
                 /* 展示已下架的书籍 给 售卖者 */
-                auto showBook_removed_seller(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_removed_seller(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
             
                     std::vector<std::string> selections {
@@ -292,7 +292,7 @@ namespace BK {
                 }
 
                 /* 展示书籍 给 其他人(异常) */
-                auto showBook_other(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
+                auto showBook_other(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) {
                     int_t circle {1};
             
                     std::vector<std::string> selections {};
@@ -318,40 +318,40 @@ namespace BK {
              * @param book 待显示的书籍
              * @param book_tip 书籍详细信息块的内容
              */
-            auto showBook(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) -> void {
+            auto showBook(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, std::shared_ptr<Book>& book, const std::string& book_tip) -> void {
                 switch (book->status) {
                     case BookStatus::on_sale:
                         if (book->seller_id == user->id) {
-                            showBook_onsale_seller(user, users, books, book, book_tip);
+                            showBook_onsale_seller(user, sets, users, books, book, book_tip);
                         } else {
-                            showBook_onsale_other(user, users, books, book, book_tip);
+                            showBook_onsale_other(user, sets, users, books, book, book_tip);
                         }
                         break;
                     case BookStatus::reserved:
                         if (book->reserver_id == user->id) {
-                            showBook_reserved_reserver(user, users, books, book, book_tip);
+                            showBook_reserved_reserver(user, sets, users, books, book, book_tip);
                         } else if (book->seller_id == user->id) {
-                            showBook_reserved_seller(user, users, books, book, book_tip);
+                            showBook_reserved_seller(user, sets, users, books, book, book_tip);
                         } else {
-                            showBook_other(user, users, books, book, book_tip);
+                            showBook_other(user, sets, users, books, book, book_tip);
                         }
                         break;
                     case BookStatus::sold:
                         if (book->buyer_id == user->id) {
-                            showBook_sold_buyer(user, users, books, book, book_tip);
+                            showBook_sold_buyer(user, sets, users, books, book, book_tip);
                         } else if (book->seller_id == user->id) {
-                            showBook_sold_seller(user, users, books, book, book_tip);
+                            showBook_sold_seller(user, sets, users, books, book, book_tip);
                         } else {
-                            showBook_other(user, users, books, book, book_tip);
+                            showBook_other(user, sets, users, books, book, book_tip);
                         }
                         break;
                     case BookStatus::removed:
                         if (book->seller_id == user->id) {
-                            showBook_removed_seller(user, users, books, book, book_tip);
+                            showBook_removed_seller(user, sets, users, books, book, book_tip);
                         }
                         break;
                     default:
-                        showBook_other(user, users, books, book, book_tip);
+                        showBook_other(user, sets, users, books, book, book_tip);
                 }
             }
         }

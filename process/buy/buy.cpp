@@ -175,7 +175,7 @@ namespace BK {
             } while (circle);
         }
 
-        auto revealSearchRes(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const BookCmpCondition& cmp_condition) -> void {
+        auto revealSearchRes(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const BookCmpCondition& cmp_condition) -> void {
             std::list<std::shared_ptr<Book>> now_books {};
             for (auto& it : books) {
                 if (*it == cmp_condition) {
@@ -190,13 +190,16 @@ namespace BK {
             int_t record_index {0};
             do {
                 circle = 1;
-                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "当前检索到的所有书籍", now_books, Menu::Layout::BooksGen, record_index)};
+                auto layout {Menu::Layout::BooksGen};
+                layout.row = sets->bookspage.row;
+                layout.col = sets->bookspage.col;
+                int_t choice {Menu::showBooks("返回", "选择排序方式", selections, "当前检索到的所有书籍", now_books, layout, record_index)};
 
                 if (choice < 0) {
                     int_t idx {-choice - 1};
                     record_index = idx;
                     auto book {std::next(now_books.begin(), idx)};
-                    Tools::Smart::showBook(user, users, books, *book, "选中书籍的详情");
+                    Tools::Smart::showBook(user, sets, users, books, *book, "选中书籍的详情");
                 } else {
                     switch (choice) {
                         case 0: circle = 0; break;
@@ -215,7 +218,7 @@ namespace BK {
 
 
 
-    auto buy(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
+    auto buy(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         BookCmpCondition cmp_condition {};
         cmp_condition.unsetUnlimit(BookCmpCondition::Unlimit::status);
         cmp_condition.status = BookStatus::on_sale;
@@ -299,7 +302,7 @@ namespace BK {
 				    }
                     break;
                 case 1:
-                    revealSearchRes(user, users, books, cmp_condition);
+                    revealSearchRes(user, sets, users, books, cmp_condition);
                     break;
                 case 2:
                     if (MessageBox(GetHWnd(), "确定要全部重置吗?", "提示", MB_YESNO | MB_ICONQUESTION) == IDYES) {

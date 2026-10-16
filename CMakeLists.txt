@@ -39,6 +39,7 @@ set(PROCESS_BUY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/buy/buy.cpp)        # 购
 set(PROCESS_POST_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/post/post.cpp)     # 发布书籍
 set(PROCESS_MY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/my/my.cpp)           # 我的页
 set(PROCESS_ABOUT_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/about/about.cpp)  # 关于页
+set(PROCESS_SETTINGS_SRC ${CMAKE_CURRENT_SOURCE_DIR}/process/settings/settings.cpp)  # 设置
 
 # 可执行文件输出到bin/目录
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
@@ -53,6 +54,7 @@ add_executable(BookEase WIN32 ${MAIN_SRC} ${BASE_SRC} ${MENU_SRC} ${TOOLS_SRC}
                               ${PROCESS_POST_SRC}
                               ${PROCESS_MY_SRC}
                               ${PROCESS_ABOUT_SRC}
+                              ${PROCESS_SETTINGS_SRC}
               )
 
 # 链接EasyX

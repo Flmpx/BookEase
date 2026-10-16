@@ -9,7 +9,7 @@
 #include "../../base/base.hpp"
 
 namespace BK {
-    auto post(std::shared_ptr<User>& user, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void;
+    auto post(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void;
 }
 
 #endif
