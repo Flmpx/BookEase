@@ -4,18 +4,21 @@
 */
 
 #include "buy.hpp"
-#include <easyx.h>
-#include <vector>
-#include <string>
 #include "../../menu/menu.hpp"
 #include "../../tools/tools.hpp"
 #include "../../tools/cmps.hpp"
+
+#include <easyx.h>
+#include <vector>
+#include <string>
 #include <cstdio>
 #include <ctime>
 
 
 namespace BK {
     namespace {
+
+        /* 选择书籍类别 */
         void select(BookCategory& c, BookCmpCondition& cmp_codition) {
             int circle {1};
             do {
@@ -45,6 +48,7 @@ namespace BK {
             } while (circle);
         } 
 
+        /* 选择字符串类 */
         auto select(std::string& str,  const std::string& selection, BookCmpCondition& cmp_codition, BookCmpCondition::Unlimit u, Range<BK::uint_t> r = Range<BK::uint_t>()) -> void {
             int circle {1};
             do {
@@ -74,6 +78,7 @@ namespace BK {
             } while (circle);
         } 
 
+        /* 选择整数类 */
         auto select(int_t& i, const std::string& selection, BookCmpCondition& cmp_codition, BookCmpCondition::Unlimit u, Range<BK::int_t> r = Range<BK::int_t>()) -> void {
             int circle {1};
             do {
@@ -103,6 +108,7 @@ namespace BK {
             } while (circle);
         }
 
+        /* 选择范围类 */
         template <typename T>
         auto selectRange(T& down_t, T& up_t, const std::string selection, BookCmpCondition& cmp_codition, BookCmpCondition::Unlimit down_u, BookCmpCondition::Unlimit up_u, Range<T> r = Range<T>()) -> void {
             int circle {1};
@@ -175,6 +181,7 @@ namespace BK {
             } while (circle);
         }
 
+        /* 展示搜索结果 */
         auto revealSearchRes(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books, const BookCmpCondition& cmp_condition) -> void {
             std::list<std::shared_ptr<Book>> now_books {};
             for (auto& it : books) {
@@ -212,12 +219,10 @@ namespace BK {
                 }
 
             } while (circle);
-
         }
     }
 
-
-
+    /* 检索与购买书籍 */
     auto buy(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         BookCmpCondition cmp_condition {};
         cmp_condition.unsetUnlimit(BookCmpCondition::Unlimit::status);
@@ -322,6 +327,5 @@ namespace BK {
                 case 11: selectRange(cmp_condition.down_publish_time, cmp_condition.up_publish_time, "时间", cmp_condition, BookCmpCondition::Unlimit::down_publish_time, BookCmpCondition::Unlimit::up_publish_time, Range<Time>()); break;
             }
         } while (circle);
-
     }
 }

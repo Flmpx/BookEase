@@ -4,6 +4,7 @@
 */
 
 #include "../tools.hpp"
+
 #include <easyx.h>
 
 namespace BK {
@@ -174,6 +175,5 @@ namespace BK {
                 print("     总交易金额:", all_price, l, t += th, w, th);
             }
         }
-
     }
 }

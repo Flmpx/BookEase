@@ -4,8 +4,10 @@
 */
 
 #include "../tools.hpp"
+
 #include <cstring>
 #include <easyx.h>
+
 
 namespace BK {
 
@@ -214,8 +216,6 @@ namespace BK {
 
                 return changed;
             }
-
         }
-
     }
 }

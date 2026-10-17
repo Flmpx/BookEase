@@ -4,6 +4,7 @@
 */
 
 #include "../tools.hpp"
+
 #include <easyx.h>
 
 namespace BK {

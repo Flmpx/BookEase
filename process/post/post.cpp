@@ -5,10 +5,13 @@
 
 #include "post.hpp"
 #include "../../menu/menu.hpp"
-#include <ctime>
 #include "../../tools/tools.hpp"
 
+#include <ctime>
+
 namespace BK {
+
+    /* ∑¢≤º ÈºÆ */
     auto post(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         auto tmp_book {std::make_shared<Book>()};
         tmp_book->seller_id = user->id;

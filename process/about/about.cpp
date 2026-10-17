@@ -4,14 +4,18 @@
 */
 
 #include "about.hpp"
+#include "../../menu/menu.hpp"
+
 #include <vector>
 #include <string>
-#include "../../menu/menu.hpp"
 #include <easyx.h>
+
 
 namespace BK {
 
     namespace {
+        
+        /* 关于 > 统计信息 */
         auto about_statistics(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) {
             int_t circle {1};
 
@@ -30,6 +34,7 @@ namespace BK {
         }
     }
 
+    /* 关于 */
     auto about(std::shared_ptr<User>& user, std::shared_ptr<Settings>& sets, std::list<std::shared_ptr<User>>& users, std::list<std::shared_ptr<Book>>& books) -> void {
         int_t circle {1};
             

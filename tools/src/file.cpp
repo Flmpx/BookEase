@@ -4,6 +4,7 @@
 */
 
 #include "../tools.hpp"
+
 #include <easyx.h>
 
 extern "C" {
@@ -470,6 +471,4 @@ namespace BK {
             }
         }
     }
-
-
 }

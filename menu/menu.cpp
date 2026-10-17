@@ -3,15 +3,15 @@
 * Licensed under MIT (see LICENSE).
 */
 
+
 #include "menu.hpp"
-#include <list>
-#include <vector>
 #include "../tools/tools.hpp"
 #include "theme.hpp"
 
+#include <list>
+#include <vector>
+
 namespace BK {
-
-
 
     namespace Menu {
 
@@ -537,7 +537,5 @@ namespace BK {
                 }
             }
         }
-
     }
-
 }

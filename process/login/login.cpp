@@ -5,12 +5,16 @@
 
 #include "login.hpp"
 #include "../../tools/tools.hpp"
+
 #include <easyx.h>
 #include <ctime>
+
 
 namespace BK {
 
     namespace {
+
+        /* 查找该id是否存在 */
         auto find(std::list<std::shared_ptr<User>>& users, int_t id) -> std::shared_ptr<User> {
             for (auto& it : users) {
                 if (it->id == id) {
@@ -21,6 +25,7 @@ namespace BK {
             return nullptr;
         }
 
+        /* 创建一个用户 */
         auto createUser(int_t id) -> std::shared_ptr<User> {
             std::string password {};
             int circle {1};
